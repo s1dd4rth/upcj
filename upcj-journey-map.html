@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" class="govuk-template">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPCJ — Unified Patient Claim Journey Map</title>
+    <style>
+        :root {
+            --black: #0b0c0c;
+            --white: #ffffff;
+            --link: #1d70b8;
+            --link-hover: #003078;
+            --link-visited: #4c2c92;
+            --green: #00703c;
+            --green-bg: #cce2d8;
+            --red: #d4351c;
+            --yellow: #ffdd00;
+            --orange: #f47738;
+            --light-grey: #f3f2f1;
+            --mid-grey: #b1b4b6;
+            --dark-grey: #505a5f;
+            --border: #b1b4b6;
+            --focus: #ffdd00;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font);
+            font-size: 19px;
+            line-height: 1.47;
+            color: var(--black);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── GDS Header ── */
+        .gds-header {
+            background: var(--black);
+            padding: 10px 0;
+            border-bottom: 10px solid var(--white);
+        }
+        .gds-header__inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .gds-header__title {
+            color: var(--white);
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .gds-header__tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--white);
+            color: var(--black);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        /* ── Phase Banner ── */
+        .phase-banner {
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+            background: var(--light-grey);
+        }
+        .phase-banner__inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 30px;
+            font-size: 16px;
+            color: var(--dark-grey);
+        }
+        .phase-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--link);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-right: 8px;
+        }
+
+        /* ── Main ── */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        .main {
+            padding: 40px 0 80px;
+        }
+        .two-thirds {
+            max-width: 640px;
+        }
+
+        /* ── Typography ── */
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.04;
+            margin: 0 0 30px 0;
+        }
+        h2 {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.11;
+            margin: 50px 0 20px 0;
+            padding-top: 10px;
+            border-top: none;
+        }
+        h3 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.25;
+            margin: 30px 0 10px 0;
+        }
+        h4 {
+            font-size: 19px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+        }
+        p {
+            margin: 0 0 20px 0;
+        }
+        .lede {
+            font-size: 24px;
+            line-height: 1.25;
+            margin-bottom: 30px;
+        }
+        .caption {
+            font-size: 24px;
+            color: var(--dark-grey);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* ── Tabs ── */
+        .tabs {
+            margin-bottom: 30px;
+        }
+        .tab-list {
+            display: flex;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border-bottom: 1px solid var(--border);
+        }
+        .tab-list li { margin: 0; }
+        .tab-link {
+            display: block;
+            padding: 10px 20px;
+            font-size: 19px;
+            font-weight: 400;
+            color: var(--link);
+            text-decoration: none;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-bottom: -1px;
+            background: none;
+            cursor: pointer;
+            font-family: var(--font);
+        }
+        .tab-link:hover {
+            color: var(--link-hover);
+            background: var(--light-grey);
+        }
+        .tab-link.active {
+            color: var(--black);
+            background: var(--white);
+            border-color: var(--border);
+            border-bottom: 1px solid var(--white);
+            font-weight: 700;
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── Actors Summary List ── */
+        .actor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-top: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+        .actor-item {
+            padding: 15px 15px 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .actor-item dt {
+            font-weight: 700;
+            font-size: 16px;
+            margin: 0;
+        }
+        .actor-item dd {
+            margin: 0;
+            font-size: 16px;
+            color: var(--dark-grey);
+        }
+
+        /* ── Phase Sections ── */
+        .phase-section {
+            margin-bottom: 50px;
+        }
+        .phase-heading {
+            background: var(--black);
+            color: var(--white);
+            padding: 10px 15px;
+            font-size: 19px;
+            font-weight: 700;
+            margin: 0 0 0 0;
+        }
+        .phase-heading .num {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+        /* ── Step ── */
+        .step {
+            border-left: 4px solid var(--border);
+            padding: 20px 0 20px 25px;
+            margin: 0;
+            position: relative;
+        }
+        .step::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 26px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--black);
+        }
+        .step + .step { border-top: none; }
+        .step:last-child { border-left-color: transparent; }
+
+        .step-actor {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dark-grey);
+            margin-bottom: 2px;
+        }
+        .step-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            line-height: 1.25;
+        }
+        .step-desc {
+            font-size: 16px;
+            color: var(--dark-grey);
+            margin-bottom: 10px;
+        }
+
+        /* ── Tags ── */
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .tag-owner {
+            background: var(--green-bg);
+            color: #00552e;
+        }
+        .tag-executes {
+            background: #fef3cd;
+            color: #594300;
+        }
+        .tag-doc {
+            background: var(--light-grey);
+            color: var(--dark-grey);
+            border: 1px solid var(--border);
+        }
+        .tag-consult {
+            background: #d4e4f7;
+            color: #003078;
+        }
+
+        /* ── Junction (Warning/Panel) ── */
+        .junction-panel {
+            border: 5px solid var(--black);
+            padding: 25px 30px;
+            margin: 40px 0;
+        }
+        .junction-panel h3 {
+            margin: 0 0 10px 0;
+            font-size: 27px;
+        }
+        .junction-panel p {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            color: var(--dark-grey);
+        }
+        .junction-questions {
+            margin: 0;
+            padding: 0 0 0 20px;
+            font-size: 16px;
+        }
+        .junction-questions li {
+            margin-bottom: 5px;
+        }
+
+        /* ── Branch Grid ── */
+        .branch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .branch {
+            border-top: 5px solid;
+        }
+        .branch-cashless { border-color: var(--link); }
+        .branch-reimburse { border-color: var(--red); }
+        .branch-header {
+            padding: 10px 0;
+            font-size: 24px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 15px;
+        }
+        .branch-cashless .branch-header { color: var(--link); }
+        .branch-reimburse .branch-header { color: var(--red); }
+        .branch-num {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+        .branch-step {
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--light-grey);
+        }
+        .branch-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .branch-step h4 {
+            font-size: 19px;
+            font-weight: 700;
+            margin: 0 0 2px 0;
+        }
+        .branch-step p {
+            font-size: 16px;
+            color: var(--dark-grey);
+            margin: 0 0 8px 0;
+        }
+
+        /* ── Converge ── */
+        .converge {
+            text-align: center;
+            padding: 15px 0;
+            margin-bottom: 40px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dark-grey);
+        }
+
+        /* ── RACI Table ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 10px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        th {
+            font-weight: 700;
+            background: var(--light-grey);
+            border-bottom: 2px solid var(--black);
+        }
+        .row-cashless { background: #f0f6fc; }
+        .row-reimburse { background: #fdf3f2; }
+        .cell-label {
+            font-weight: 700;
+            min-width: 140px;
+        }
+        .cell-label small {
+            display: block;
+            font-weight: 400;
+            color: var(--dark-grey);
+            font-size: 14px;
+        }
+        .role {
+            display: inline-block;
+            padding: 1px 6px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .role-owner { background: var(--green-bg); color: #00552e; }
+        .role-exec { background: #fef3cd; color: #594300; }
+        .role-consult { background: #d4e4f7; color: #003078; }
+        .role-inform { background: var(--light-grey); color: var(--dark-grey); }
+        .role-none { color: var(--mid-grey); }
+
+        /* ── Footer ── */
+        .gds-footer {
+            background: var(--light-grey);
+            border-top: 1px solid var(--border);
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .gds-footer__inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 30px;
+            font-size: 16px;
+            color: var(--dark-grey);
+        }
+        .gds-footer__inner a {
+            color: var(--link);
+        }
+        .gds-footer__licence {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            body { font-size: 16px; }
+            h1 { font-size: 32px; }
+            h2 { font-size: 27px; }
+            .lede { font-size: 19px; }
+            .branch-grid { grid-template-columns: 1fr; }
+            .actor-grid { grid-template-columns: 1fr 1fr; }
+            .container { padding: 0 15px; }
+            table { font-size: 14px; }
+            th, td { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="gds-header">
+    <div class="gds-header__inner">
+        <a href="#" class="gds-header__title">UPCJ<span class="gds-header__tag">v1.0</span></a>
+    </div>
+</header>
+
+<div class="phase-banner">
+    <div class="phase-banner__inner">
+        <span class="phase-tag">Open Source</span>
+        This is an open-source patient welfare framework. <a href="https://github.com/s1dd4rth/upcj">Contribute on GitHub</a>.
+    </div>
+</div>
+
+<div class="container">
+    <main class="main">
+
+        <div class="two-thirds">
+            <h1>Unified Patient Claim Journey</h1>
+            <p class="lede">A standardised map of the Indian health insurance claim process. From initial symptoms to final settlement.</p>
+        </div>
+
+        <div class="actor-grid">
+            <dl class="actor-item"><dt>Patient</dt><dd>Policyholder</dd></dl>
+            <dl class="actor-item"><dt>Doctor</dt><dd>Clinical owner</dd></dl>
+            <dl class="actor-item"><dt>Hospital</dt><dd>Service provider</dd></dl>
+            <dl class="actor-item"><dt>Managed Care</dt><dd>Support and coordination</dd></dl>
+            <dl class="actor-item"><dt>TPA</dt><dd>Claims administrator</dd></dl>
+            <dl class="actor-item"><dt>Insurer</dt><dd>Financial risk bearer</dd></dl>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <ul class="tab-list">
+                <li><button class="tab-link active" onclick="switchTab('flow',this)">Journey flow</button></li>
+                <li><button class="tab-link" onclick="switchTab('matrix',this)">Ownership matrix</button></li>
+            </ul>
+        </div>
+
+        <!-- ═══ JOURNEY FLOW ═══ -->
+        <div id="flow" class="tab-panel active">
+
+            <section class="phase-section">
+                <div class="phase-heading"><span class="num">1</span> Common entry — Diagnosis</div>
+
+                <div class="step">
+                    <div class="step-actor">Patient + Doctor</div>
+                    <div class="step-title">Initial consultation (OPD)</div>
+                    <div class="step-desc">Patient presents symptoms. Doctor performs clinical assessment — history, vitals, preliminary examination.</div>
+                    <span class="tag tag-owner">Owner: Doctor</span>
+                    <span class="tag tag-executes">Executes: Patient, Doctor</span>
+                    <span class="tag tag-doc">Prescription</span>
+                </div>
+
+                <div class="step">
+                    <div class="step-actor">Hospital Lab + Doctor</div>
+                    <div class="step-title">Diagnostic workup</div>
+                    <div class="step-desc">Lab tests, imaging, pathology performed at hospital. Results interpreted by treating doctor to confirm diagnosis.</div>
+                    <span class="tag tag-owner">Owner: Doctor</span>
+                    <span class="tag tag-executes">Executes: Lab, Patient (OPD cost)</span>
+                    <span class="tag tag-doc">Lab reports</span>
+                    <span class="tag tag-doc">Imaging results</span>
+                </div>
+
+                <div class="step">
+                    <div class="step-actor">Doctor</div>
+                    <div class="step-title">Admission advice</div>
+                    <div class="step-desc">Clinical decision that in-patient hospitalisation is medically necessary. Formal admission advice note issued — the trigger document for any claim.</div>
+                    <span class="tag tag-owner">Owner: Doctor</span>
+                    <span class="tag tag-doc">Admission advice note</span>
+                </div>
+            </section>
+
+            <div class="junction-panel">
+                <h3>Decision junction — Hospital admission desk</h3>
+                <p>The path splits based on network status and policy type. This determines who pays upfront and how the claim flows.</p>
+                <ol class="junction-questions">
+                    <li>Is the hospital in the insurer's network?</li>
+                    <li>Does the policy support cashless facility?</li>
+                    <li>Does the patient's ID match policy records?</li>
+                </ol>
+            </div>
+
+            <section class="phase-section">
+                <div class="phase-heading"><span class="num">2</span> Parallel settlement paths</div>
+
+                <div class="branch-grid">
+                    <div class="branch branch-cashless">
+                        <div class="branch-header">Path A — Cashless</div>
+                        <div class="branch-step">
+                            <div class="branch-num">A.1</div>
+                            <h4>Pre-authorisation filing</h4>
+                            <p>Hospital admin submits pre-auth request to TPA with patient details, diagnosis, estimated cost, and admission advice.</p>
+                            <span class="tag tag-executes">Hospital admin</span>
+                            <span class="tag tag-owner">Owner: TPA</span>
+                            <span class="tag tag-doc">Pre-auth form</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">A.2</div>
+                            <h4>Query / deficiency loop</h4>
+                            <p>TPA may raise queries — missing documents, unclear diagnosis codes, or additional clinical justification needed. Hospital and doctor respond.</p>
+                            <span class="tag tag-consult">Doctor consulted</span>
+                            <span class="tag tag-executes">Hospital admin</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">A.3</div>
+                            <h4>Pre-auth approval</h4>
+                            <p>TPA sanctions initial amount. Approval letter issued with sanctioned amount and conditions.</p>
+                            <span class="tag tag-owner">Owner: TPA</span>
+                            <span class="tag tag-doc">Approval letter</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">A.4</div>
+                            <h4>In-patient treatment</h4>
+                            <p>Treatment proceeds. Doctor manages clinical care. TPA monitors via interim updates from hospital.</p>
+                            <span class="tag tag-owner">Owner: Doctor</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">A.5</div>
+                            <h4>Enhancement request</h4>
+                            <p>If treatment cost exceeds sanctioned amount, hospital files enhancement with TPA for additional approval.</p>
+                            <span class="tag tag-executes">Hospital admin</span>
+                            <span class="tag tag-owner">Owner: TPA</span>
+                            <span class="tag tag-doc">Enhancement form</span>
+                        </div>
+                    </div>
+
+                    <div class="branch branch-reimburse">
+                        <div class="branch-header">Path B — Reimbursement</div>
+                        <div class="branch-step">
+                            <div class="branch-num">B.1</div>
+                            <h4>Upfront payment</h4>
+                            <p>Patient pays full estimated cost or deposit out-of-pocket at the time of admission.</p>
+                            <span class="tag tag-executes">Patient</span>
+                            <span class="tag tag-doc">Payment receipt</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">B.2</div>
+                            <h4>In-patient treatment</h4>
+                            <p>Treatment proceeds. No TPA involvement during stay. Hospital bills directly to patient.</p>
+                            <span class="tag tag-owner">Owner: Doctor</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">B.3</div>
+                            <h4>Records collection</h4>
+                            <p>Patient collects all original medical documents — bills, discharge summary, investigation reports, payment receipts.</p>
+                            <span class="tag tag-executes">Patient</span>
+                            <span class="tag tag-owner">Owner: Hospital</span>
+                            <span class="tag tag-doc">Original bills</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">B.4</div>
+                            <h4>Claim submission to TPA</h4>
+                            <p>Patient or managed care provider compiles and submits reimbursement claim with all originals within policy deadline (15–30 days).</p>
+                            <span class="tag tag-executes">Patient</span>
+                            <span class="tag tag-consult">Managed care</span>
+                            <span class="tag tag-doc">Claim form</span>
+                        </div>
+                        <div class="branch-step">
+                            <div class="branch-num">B.5</div>
+                            <h4>Query / deficiency loop</h4>
+                            <p>TPA may request additional documents, clarifications, or investigation before processing.</p>
+                            <span class="tag tag-executes">Patient</span>
+                            <span class="tag tag-owner">Owner: TPA</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="converge">Paths converge</div>
+
+            <section class="phase-section">
+                <div class="phase-heading"><span class="num">3</span> Post-discharge and settlement</div>
+
+                <div class="step">
+                    <div class="step-actor">Doctor + Hospital</div>
+                    <div class="step-title">Discharge summary</div>
+                    <div class="step-desc">Doctor issues clinical closure — diagnosis, treatment administered, medications, follow-up instructions. Hospital admin finalises billing.</div>
+                    <span class="tag tag-owner">Owner: Doctor</span>
+                    <span class="tag tag-doc">Discharge summary</span>
+                    <span class="tag tag-doc">Final bill</span>
+                </div>
+
+                <div class="step">
+                    <div class="step-actor">TPA + Insurer</div>
+                    <div class="step-title">Claim adjudication</div>
+                    <div class="step-desc">TPA reviews all documents, verifies medical necessity, checks policy terms, sub-limits, exclusions, and co-pay clauses. Recommends settlement amount to insurer.</div>
+                    <span class="tag tag-owner">Owner: TPA</span>
+                    <span class="tag tag-consult">Insurer (escalations)</span>
+                </div>
+
+                <div class="step">
+                    <div class="step-actor">Patient</div>
+                    <div class="step-title">Post-hospitalisation recovery</div>
+                    <div class="step-desc">Follow-up visits, pharmacy, and rehab within policy window (typically 60–90 days post-discharge). These expenses are separately claimable.</div>
+                    <span class="tag tag-executes">Patient</span>
+                    <span class="tag tag-consult">Managed care</span>
+                    <span class="tag tag-doc">Follow-up bills</span>
+                </div>
+
+                <div class="step">
+                    <div class="step-actor">Insurer</div>
+                    <div class="step-title">Final settlement</div>
+                    <div class="step-desc">Insurer disburses approved amount — to hospital (cashless) or directly to patient's bank account (reimbursement). Settlement letter issued.</div>
+                    <span class="tag tag-owner">Owner: Insurer</span>
+                    <span class="tag tag-executes">Insurer finance</span>
+                    <span class="tag tag-doc">Settlement letter</span>
+                </div>
+            </section>
+        </div>
+
+        <!-- ═══ OWNERSHIP MATRIX ═══ -->
+        <div id="matrix" class="tab-panel">
+            <h2>Responsibility ownership matrix</h2>
+            <p>Who owns, executes, is consulted, and is informed at each step across both claim paths.</p>
+            <table>
+                <thead>
+                    <tr><th>Step</th><th>Patient</th><th>Doctor</th><th>Hospital</th><th>Managed Care</th><th>TPA / Insurer</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="cell-label">OPD consultation</td><td><span class="role role-exec">Executes</span></td><td><span class="role role-owner">Owner</span></td><td><span class="role role-inform">Informed</span></td><td><span class="role role-inform">Informed</span></td><td><span class="role-none">—</span></td></tr>
+                    <tr><td class="cell-label">Diagnostics</td><td><span class="role role-exec">Executes</span></td><td><span class="role role-owner">Owner</span></td><td><span class="role role-exec">Executes</span></td><td><span class="role-none">—</span></td><td><span class="role-none">—</span></td></tr>
+                    <tr><td class="cell-label">Admission advice</td><td><span class="role role-consult">Consent</span></td><td><span class="role role-owner">Owner</span></td><td><span class="role role-inform">Informed</span></td><td><span class="role role-inform">Informed</span></td><td><span class="role-none">—</span></td></tr>
+                    <tr class="row-cashless"><td class="cell-label">Pre-auth filing<small>Cashless</small></td><td><span class="role role-inform">Informed</span></td><td><span class="role role-consult">Med data</span></td><td><span class="role role-exec">Executes</span></td><td><span class="role role-consult">Coord</span></td><td><span class="role role-owner">Owner</span></td></tr>
+                    <tr class="row-cashless"><td class="cell-label">Enhancement<small>Cashless</small></td><td><span class="role role-inform">Informed</span></td><td><span class="role role-consult">Justifies</span></td><td><span class="role role-exec">Executes</span></td><td><span class="role-none">—</span></td><td><span class="role role-owner">Owner</span></td></tr>
+                    <tr class="row-reimburse"><td class="cell-label">Upfront payment<small>Reimbursement</small></td><td><span class="role role-exec">Executes</span></td><td><span class="role-none">—</span></td><td><span class="role role-inform">Informed</span></td><td><span class="role-none">—</span></td><td><span class="role-none">—</span></td></tr>
+                    <tr class="row-reimburse"><td class="cell-label">Claim submission<small>Reimbursement</small></td><td><span class="role role-exec">Executes</span></td><td><span class="role-none">—</span></td><td><span class="role-none">—</span></td><td><span class="role role-consult">Assists</span></td><td><span class="role role-owner">Owner</span></td></tr>
+                    <tr><td class="cell-label">In-patient treatment</td><td><span class="role role-inform">Informed</span></td><td><span class="role role-owner">Owner</span></td><td><span class="role role-exec">Executes</span></td><td><span class="role-none">—</span></td><td><span class="role role-inform">Monitors</span></td></tr>
+                    <tr><td class="cell-label">Discharge summary</td><td><span class="role role-inform">Receives</span></td><td><span class="role role-owner">Owner</span></td><td><span class="role role-exec">Executes</span></td><td><span class="role-none">—</span></td><td><span class="role role-inform">Receives</span></td></tr>
+                    <tr><td class="cell-label">Claim adjudication</td><td><span class="role role-inform">Informed</span></td><td><span class="role-none">—</span></td><td><span class="role role-inform">Informed</span></td><td><span class="role-none">—</span></td><td><span class="role role-owner">Owner</span></td></tr>
+                    <tr><td class="cell-label">Post-hosp recovery</td><td><span class="role role-exec">Executes</span></td><td><span class="role role-consult">Consulted</span></td><td><span class="role-none">—</span></td><td><span class="role role-consult">Assists</span></td><td><span class="role-none">—</span></td></tr>
+                    <tr><td class="cell-label">Final settlement</td><td><span class="role role-inform">Informed</span></td><td><span class="role-none">—</span></td><td><span class="role role-inform">Informed</span></td><td><span class="role-none">—</span></td><td><span class="role role-owner">Owner</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+</div>
+
+<footer class="gds-footer">
+    <div class="gds-footer__inner">
+        UPCJ — Unified Patient Claim Journey<br>
+        An open-source framework for standardising the Indian health insurance claim experience.<br>
+        <a href="https://github.com/s1dd4rth/upcj">github.com/s1dd4rth/upcj</a>
+        <div class="gds-footer__licence">
+            Released under <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0</a>. Free to use, modify, and distribute.
+        </div>
+    </div>
+</footer>
+
+<script>
+function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>

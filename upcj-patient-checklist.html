@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="govuk-template">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>UPCJ — Patient Companion Checklist</title>
+    <style>
+        :root {
+            --black: #0b0c0c;
+            --white: #ffffff;
+            --link: #1d70b8;
+            --green: #00703c;
+            --green-bg: #cce2d8;
+            --red: #d4351c;
+            --yellow: #ffdd00;
+            --light-grey: #f3f2f1;
+            --mid-grey: #b1b4b6;
+            --dark-grey: #505a5f;
+            --border: #b1b4b6;
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        body { margin: 0; font-family: var(--font); font-size: 19px; line-height: 1.47; color: var(--black); background: var(--white); -webkit-font-smoothing: antialiased; }
+
+        .header { background: var(--black); padding: 10px 0; border-bottom: 10px solid var(--white); }
+        .header__inner { max-width: 720px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .header__title { color: var(--white); font-size: 20px; font-weight: 700; }
+        .header__tag { display: inline-block; padding: 1px 6px; background: var(--white); color: var(--black); font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-left: 8px; }
+
+        .progress-bar { background: var(--light-grey); padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .progress-bar__inner { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+        .progress-stats { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; font-size: 16px; }
+        .progress-stats strong { font-size: 19px; }
+        .progress-track { height: 8px; background: var(--mid-grey); }
+        .progress-fill { height: 100%; background: var(--green); transition: width 0.4s ease; width: 0%; }
+
+        .container { max-width: 720px; margin: 0 auto; padding: 30px 20px 100px; }
+
+        h1 { font-size: 36px; font-weight: 700; line-height: 1.11; margin: 0 0 10px 0; }
+        h2 { font-size: 27px; font-weight: 700; line-height: 1.18; margin: 40px 0 15px; }
+        h3 { font-size: 22px; font-weight: 700; margin: 25px 0 10px; }
+        p { margin: 0 0 15px; }
+        .lede { font-size: 24px; line-height: 1.25; margin-bottom: 20px; }
+
+        /* ── Path Selector ── */
+        .path-select { margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 25px; }
+        .path-select legend { font-size: 19px; font-weight: 700; margin-bottom: 10px; display: block; }
+        .path-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .path-btn { padding: 10px 20px; border: 2px solid var(--black); background: var(--white); font-family: var(--font); font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+        .path-btn:hover { background: var(--light-grey); }
+        .path-btn.active { background: var(--black); color: var(--white); }
+
+        /* ── Warning ── */
+        .warning { border-left: 5px solid var(--red); padding: 15px 20px; margin-bottom: 20px; background: #fdf3f2; }
+        .warning strong { display: block; margin-bottom: 3px; }
+        .warning p { margin: 0; font-size: 16px; }
+
+        /* ── Inset (Ask prompts) ── */
+        .inset { border-left: 5px solid var(--border); padding: 15px 20px; margin: 15px 0 20px; }
+        .inset-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--dark-grey); margin-bottom: 8px; }
+        .inset p { font-size: 16px; margin: 0 0 5px; font-style: italic; color: var(--dark-grey); }
+        .inset p:last-child { margin-bottom: 0; }
+
+        /* ── Section heading ── */
+        .section-heading { background: var(--black); color: var(--white); padding: 10px 15px; font-size: 19px; font-weight: 700; margin: 35px 0 0; }
+        .section-heading .num { display: inline-block; min-width: 24px; }
+
+        /* ── Group label ── */
+        .group-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--dark-grey); margin: 20px 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+
+        /* ── Checklist ── */
+        .check-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--light-grey); cursor: pointer; -webkit-tap-highlight-color: transparent; align-items: flex-start; }
+        .check-item:last-child { border-bottom: 1px solid var(--border); }
+        .check-box { width: 24px; height: 24px; border: 2px solid var(--black); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+        .check-box svg { width: 16px; height: 16px; stroke: var(--white); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+        .check-item.done .check-box { background: var(--green); border-color: var(--green); }
+        .check-item.done .check-box svg { opacity: 1; }
+        .check-item.done .check-text { text-decoration: line-through; color: var(--dark-grey); }
+        .check-content { flex: 1; }
+        .check-text { font-size: 16px; font-weight: 700; line-height: 1.4; }
+        .check-hint { font-size: 14px; color: var(--dark-grey); margin-top: 2px; line-height: 1.5; }
+        .check-tags { margin-top: 5px; }
+        .tag { display: inline-block; padding: 1px 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px; }
+        .tag-doc { background: var(--light-grey); color: var(--dark-grey); border: 1px solid var(--border); }
+        .tag-deadline { background: #fef3cd; color: #594300; }
+        .tag-critical { background: #fdf3f2; color: var(--red); }
+        .tag-ask { background: #f0f6fc; color: var(--link); }
+
+        /* ── Branch badge ── */
+        .branch-badge { display: inline-block; padding: 3px 10px; font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+        .badge-cashless { border-left: 5px solid var(--link); background: #f0f6fc; }
+        .badge-reimburse { border-left: 5px solid var(--red); background: #fdf3f2; }
+
+        /* ── Doc Tracker ── */
+        .doc-tracker { border: 1px solid var(--border); padding: 20px; margin-bottom: 30px; }
+        .doc-tracker h3 { margin: 0 0 5px; }
+        .doc-tracker > p { font-size: 14px; color: var(--dark-grey); margin-bottom: 15px; }
+        .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .doc-item { display: flex; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--light-grey); cursor: pointer; -webkit-tap-highlight-color: transparent; font-size: 14px; font-weight: 600; }
+        .doc-item:hover { background: var(--light-grey); }
+        .doc-check { width: 18px; height: 18px; border: 2px solid var(--black); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .doc-check svg { width: 12px; height: 12px; stroke: var(--white); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+        .doc-item.collected .doc-check { background: var(--green); border-color: var(--green); }
+        .doc-item.collected .doc-check svg { opacity: 1; }
+        .doc-item.collected { color: var(--dark-grey); text-decoration: line-through; }
+
+        /* ── Hotline ── */
+        .hotline { background: var(--black); color: var(--white); padding: 20px; margin-bottom: 30px; }
+        .hotline h3 { margin: 0 0 10px; color: var(--white); font-size: 19px; }
+        .hotline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .hotline-item { padding: 10px; border: 1px solid rgba(255,255,255,0.2); }
+        .hotline-item dt { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--mid-grey); }
+        .hotline-item dd { margin: 2px 0 0; font-size: 16px; font-weight: 700; }
+        .hotline-note { margin-top: 10px; font-size: 14px; color: var(--mid-grey); }
+
+        /* ── Conditional display ── */
+        .cashless-only, .reimburse-only { display: none; }
+        body.path-cashless .cashless-only { display: block; }
+        body.path-reimburse .reimburse-only { display: block; }
+        body.path-unknown .cashless-only, body.path-unknown .reimburse-only { display: block; }
+
+        /* ── Footer ── */
+        .footer { background: var(--light-grey); border-top: 1px solid var(--border); padding: 25px 0; margin-top: 40px; }
+        .footer__inner { max-width: 720px; margin: 0 auto; padding: 0 20px; font-size: 14px; color: var(--dark-grey); }
+        .footer__inner a { color: var(--link); }
+
+        /* ── Reset Button ── */
+        .reset-btn { background: none; border: 1px solid rgba(255,255,255,0.3); color: var(--mid-grey); padding: 4px 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--font); }
+        .reset-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+
+        @media (max-width: 500px) {
+            body { font-size: 16px; }
+            h1 { font-size: 27px; }
+            .lede { font-size: 19px; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .hotline-grid { grid-template-columns: 1fr; }
+            .path-options { flex-direction: column; }
+        }
+    </style>
+</head>
+<body class="path-unknown">
+
+<header class="header">
+    <div class="header__inner">
+        <span class="header__title">UPCJ<span class="header__tag">Checklist</span></span>
+        <button class="reset-btn" onclick="resetAll()">Reset all</button>
+    </div>
+</header>
+
+<div class="progress-bar">
+    <div class="progress-bar__inner">
+        <div class="progress-stats">
+            <span><strong id="doneCount">0</strong> of <strong id="totalCount">0</strong> steps completed</span>
+            <span id="pctText">0%</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1>Your insurance claim checklist</h1>
+    <p class="lede">Use this during your hospital visit. Check off each step as you complete it.</p>
+
+    <!-- Path selector -->
+    <fieldset class="path-select">
+        <legend>What type of claim are you filing?</legend>
+        <div class="path-options">
+            <button class="path-btn" onclick="setPath('cashless',this)">Cashless</button>
+            <button class="path-btn" onclick="setPath('reimburse',this)">Reimbursement</button>
+            <button class="path-btn active" onclick="setPath('unknown',this)">I don't know yet</button>
+        </div>
+    </fieldset>
+
+    <!-- Hotline -->
+    <div class="hotline">
+        <h3>Numbers you will need</h3>
+        <dl class="hotline-grid">
+            <div class="hotline-item"><dt>Your TPA helpline</dt><dd>Check policy card</dd></div>
+            <div class="hotline-item"><dt>Insurer helpline</dt><dd>Check policy card</dd></div>
+            <div class="hotline-item"><dt>Hospital insurance desk</dt><dd>Ask at reception</dd></div>
+            <div class="hotline-item"><dt>IRDAI grievance</dt><dd>155255</dd></div>
+        </dl>
+        <div class="hotline-note">Keep your policy number, TPA ID, and UHID (hospital ID) written down at all times.</div>
+    </div>
+
+    <!-- Document tracker -->
+    <div class="doc-tracker">
+        <h3>Document tracker</h3>
+        <p>Tap each document as you receive it. Collect originals — photocopies are not accepted for reimbursement claims.</p>
+        <div class="doc-grid">
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Policy card / e-card</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Photo ID (Aadhaar / PAN)</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Doctor's prescription</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Lab / test reports</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Admission advice note</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Pre-auth approval letter</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Discharge summary</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Final hospital bill (itemised)</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Payment receipts</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Pharmacy bills (stamped)</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Investigation reports</div>
+            <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Follow-up consultation bills</div>
+        </div>
+    </div>
+
+    <!-- ═══ PHASE 1 ═══ -->
+    <div class="section-heading"><span class="num">1.</span> Before and at admission</div>
+
+    <div class="group-label">Before leaving home</div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Locate your insurance policy card or e-card</div><div class="check-hint">Also note: policy number, TPA name, sum insured, and policy period.</div><div class="check-tags"><span class="tag tag-critical">Critical</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Carry a valid photo ID (Aadhaar, PAN, Passport)</div><div class="check-hint">Must match the name on the policy. Carry ID for both patient and policyholder if different.</div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Check if the hospital is in your insurer's network</div><div class="check-hint">Call TPA helpline (on your policy card) or check insurer's website. This determines cashless versus reimbursement.</div><div class="check-tags"><span class="tag tag-ask">Ask TPA</span></div></div></div>
+
+    <div class="inset">
+        <div class="inset-label">Ask at the hospital insurance desk</div>
+        <p>"Is this hospital empanelled with [your insurer name]?"</p>
+        <p>"Where is the TPA / insurance desk?"</p>
+        <p>"What documents do you need from me right now?"</p>
+    </div>
+
+    <div class="group-label">At the hospital</div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Get the doctor's admission advice note</div><div class="check-hint">This is the single most important document. Without it, no claim — cashless or reimbursement — can be initiated.</div><div class="check-tags"><span class="tag tag-doc">Document</span><span class="tag tag-critical">Critical</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Visit the hospital's insurance / TPA desk</div><div class="check-hint">Submit your policy card, ID, and admission advice. They will guide you on whether cashless is available.</div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Inform your TPA or insurer about hospitalisation</div><div class="check-hint">Planned admission: 48–72 hours before. Emergency: within 24 hours of admission.</div><div class="check-tags"><span class="tag tag-deadline">Time-sensitive</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Confirm your claim path: cashless or reimbursement</div><div class="check-hint">The hospital insurance desk will confirm. Update your selection at the top of this checklist.</div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Note your UHID (hospital ID) and bed/room number</div><div class="check-hint">You will need this for every form and follow-up query.</div></div></div>
+
+    <!-- ═══ PHASE 2 ═══ -->
+    <div class="section-heading"><span class="num">2.</span> During hospitalisation</div>
+
+    <div class="cashless-only">
+        <div class="branch-badge badge-cashless">Cashless path</div>
+        <div class="group-label">Pre-authorisation process</div>
+
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Confirm the hospital has filed the pre-authorisation</div><div class="check-hint">The hospital admin files this, not you. But confirm it has been submitted — delays here delay everything.</div><div class="check-tags"><span class="tag tag-ask">Ask hospital desk</span></div></div></div>
+
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Check if TPA raised any queries (deficiency)</div><div class="check-hint">TPA may ask for additional medical reports or clarification. The hospital handles this but follow up proactively.</div></div></div>
+
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Get a copy of the pre-auth approval letter</div><div class="check-hint">Shows the sanctioned amount. Check: does it cover the estimated treatment cost? Is there a co-pay?</div><div class="check-tags"><span class="tag tag-doc">Document</span></div></div></div>
+
+        <div class="warning"><strong>Watch for enhancement</strong><p>If the sanctioned amount is less than the estimated bill, the hospital must file an enhancement request. Ask the insurance desk: "Has the enhancement been filed?"</p></div>
+    </div>
+
+    <div class="reimburse-only">
+        <div class="branch-badge badge-reimburse">Reimbursement path</div>
+        <div class="group-label">Payment and records</div>
+
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Get receipts for every payment you make</div><div class="check-hint">Deposit, interim bills, pharmacy — every rupee must be documented. Ask for stamped original receipts.</div><div class="check-tags"><span class="tag tag-doc">Document</span><span class="tag tag-critical">Critical</span></div></div></div>
+
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Keep all pharmacy and medical supply bills</div><div class="check-hint">Should be stamped by hospital pharmacy and match entries in your treatment chart.</div></div></div>
+    </div>
+
+    <div class="group-label">During treatment (both paths)</div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Note treating doctor's name, department, and registration number</div><div class="check-hint">You will need this for the claim form. Ask the nursing station if unsure.</div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Keep a daily log of treatments and medications</div><div class="check-hint">Photograph the daily treatment chart on the patient's bed. Helps if charges are disputed later.</div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Collect copies of all investigation reports</div><div class="check-hint">X-ray, MRI, blood work. Ask the lab or nursing station. Keep photocopies for your records.</div><div class="check-tags"><span class="tag tag-doc">Document</span></div></div></div>
+
+    <!-- ═══ PHASE 3 ═══ -->
+    <div class="section-heading"><span class="num">3.</span> At discharge</div>
+
+    <div class="warning"><strong>Do not leave the hospital without collecting every document listed below.</strong><p>It is extremely difficult to get documents from hospitals after discharge.</p></div>
+
+    <div class="group-label">Mandatory documents</div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Collect the discharge summary</div><div class="check-hint">Signed by the treating doctor. Must include: diagnosis, treatment given, medications prescribed, follow-up instructions.</div><div class="check-tags"><span class="tag tag-doc">Document</span><span class="tag tag-critical">Critical</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Get the final itemised hospital bill</div><div class="check-hint">Not just the total — an itemised bill showing room charges, doctor fees, investigations, pharmacy, consumables.</div><div class="check-tags"><span class="tag tag-doc">Document</span><span class="tag tag-critical">Critical</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Verify any deductions or co-pay amounts</div><div class="check-hint">For cashless: hospital will tell you the balance to pay. Ask for a written breakup of non-covered items, co-pay, sub-limit excess.</div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Collect all original investigation reports</div><div class="check-hint">Lab reports, imaging, histopathology — ask each department individually. They may not volunteer these.</div><div class="check-tags"><span class="tag tag-doc">Document</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Collect all original payment receipts</div><div class="check-hint">Including advance deposits, interim payments, and final settlement. Stamped originals only.</div><div class="check-tags"><span class="tag tag-doc">Document</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Photograph every document before leaving</div><div class="check-hint">Clear photos of every original. This is your backup if anything gets lost in the claim process.</div></div></div>
+
+    <div class="inset">
+        <div class="inset-label">Ask before you leave</div>
+        <p>"Is there any balance I need to pay?"</p>
+        <p>"Can I get the itemised breakup of deductions?"</p>
+        <p>"Have all insurance formalities been completed from the hospital side?"</p>
+    </div>
+
+    <!-- ═══ PHASE 4 ═══ -->
+    <div class="section-heading"><span class="num">4.</span> After discharge</div>
+
+    <div class="reimburse-only">
+        <div class="warning"><strong>Reimbursement deadline.</strong><p>You must submit your claim with all original documents to your TPA or insurer within 15–30 days of discharge. Check your policy for the exact deadline.</p></div>
+
+        <div class="group-label">Claim submission (reimbursement)</div>
+
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Fill the reimbursement claim form</div><div class="check-hint">Download from your insurer's or TPA's website. Fill every field — incomplete forms get rejected.</div><div class="check-tags"><span class="tag tag-doc">Document</span></div></div></div>
+
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Submit all original documents to TPA or insurer</div><div class="check-hint">Send via registered post or courier (keep tracking number). Some TPAs accept walk-in submissions.</div><div class="check-tags"><span class="tag tag-deadline">Time-sensitive</span><span class="tag tag-critical">Critical</span></div></div></div>
+    </div>
+
+    <div class="group-label">Post-hospitalisation (both paths)</div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Keep all follow-up consultation bills</div><div class="check-hint">Follow-up visits within 60–90 days post-discharge (check your policy) are covered. Keep prescriptions and bills.</div><div class="check-tags"><span class="tag tag-doc">Document</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Keep all post-discharge pharmacy bills</div><div class="check-hint">Medicines prescribed in the discharge summary are claimable. Keep bills and the corresponding prescription.</div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Respond to any TPA queries promptly</div><div class="check-hint">If TPA sends a deficiency letter, respond within the stated deadline. Missing this can result in claim rejection.</div><div class="check-tags"><span class="tag tag-deadline">Time-sensitive</span></div></div></div>
+
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="check-content"><div class="check-text">Track your claim status</div><div class="check-hint">Call TPA helpline weekly. Note claim reference number, status, and any pending actions.</div></div></div>
+
+    <div class="inset">
+        <div class="inset-label">If your claim is rejected or short-settled</div>
+        <p>"Can I get the rejection or deduction reasons in writing?"</p>
+        <p>"What is the grievance redressal process?"</p>
+        <p>Escalation path: TPA → Insurer → IRDAI (155255) → Insurance Ombudsman</p>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="footer__inner">
+        UPCJ — Unified Patient Claim Journey<br>
+        <a href="https://github.com/s1dd4rth/upcj">github.com/s1dd4rth/upcj</a> · Released under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+    </div>
+</footer>
+
+<script>
+function setPath(path, btn) {
+    document.body.className = 'path-' + path;
+    document.querySelectorAll('.path-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateProgress();
+}
+function toggleCheck(el) {
+    el.classList.toggle('done');
+    updateProgress();
+}
+function toggleDoc(el) {
+    el.classList.toggle('collected');
+}
+function resetAll() {
+    if (!confirm('Reset all checkboxes?')) return;
+    document.querySelectorAll('.check-item').forEach(e => e.classList.remove('done'));
+    document.querySelectorAll('.doc-item').forEach(e => e.classList.remove('collected'));
+    updateProgress();
+}
+function updateProgress() {
+    const items = document.querySelectorAll('.check-item');
+    let total = 0, done = 0;
+    items.forEach(item => {
+        if (item.offsetParent !== null) {
+            total++;
+            if (item.classList.contains('done')) done++;
+        }
+    });
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('doneCount').textContent = done;
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('pctText').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+updateProgress();
+</script>
+
+</body>
+</html>

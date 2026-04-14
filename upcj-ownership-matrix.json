@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "framework": "UPCJ — Unified Patient Claim Journey",
+  "license": "CC BY-SA 4.0",
+  "roles": ["Owner", "Executes", "Consulted", "Informed"],
+  "actors": ["Patient", "Doctor", "Hospital", "Managed Care", "TPA", "Insurer"],
+  "steps": [
+    {
+      "id": "1.1",
+      "name": "OPD Consultation",
+      "phase": 1,
+      "path": "common",
+      "raci": {
+        "Patient": "Executes",
+        "Doctor": "Owner",
+        "Hospital": "Informed",
+        "Managed Care": "Informed",
+        "TPA": null,
+        "Insurer": null
+      }
+    },
+    {
+      "id": "1.2",
+      "name": "Diagnostics",
+      "phase": 1,
+      "path": "common",
+      "raci": {
+        "Patient": "Executes",
+        "Doctor": "Owner",
+        "Hospital": "Executes",
+        "Managed Care": null,
+        "TPA": null,
+        "Insurer": null
+      }
+    },
+    {
+      "id": "1.3",
+      "name": "Admission Advice",
+      "phase": 1,
+      "path": "common",
+      "raci": {
+        "Patient": "Consulted",
+        "Doctor": "Owner",
+        "Hospital": "Informed",
+        "Managed Care": "Informed",
+        "TPA": null,
+        "Insurer": null
+      }
+    },
+    {
+      "id": "A.1",
+      "name": "Pre-Auth Filing",
+      "phase": 2,
+      "path": "cashless",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": "Consulted",
+        "Hospital": "Executes",
+        "Managed Care": "Consulted",
+        "TPA": "Owner",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "A.2",
+      "name": "Query / Deficiency Loop",
+      "phase": 2,
+      "path": "cashless",
+      "raci": {
+        "Patient": null,
+        "Doctor": "Consulted",
+        "Hospital": "Executes",
+        "Managed Care": null,
+        "TPA": "Owner",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "A.3",
+      "name": "Pre-Auth Approval",
+      "phase": 2,
+      "path": "cashless",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": null,
+        "Hospital": "Informed",
+        "Managed Care": null,
+        "TPA": "Owner",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "A.4",
+      "name": "IPD Treatment (Cashless)",
+      "phase": 2,
+      "path": "cashless",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": "Owner",
+        "Hospital": "Executes",
+        "Managed Care": null,
+        "TPA": "Informed",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "A.5",
+      "name": "Enhancement Request",
+      "phase": 2,
+      "path": "cashless",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": "Consulted",
+        "Hospital": "Executes",
+        "Managed Care": null,
+        "TPA": "Owner",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "B.1",
+      "name": "Upfront Payment",
+      "phase": 2,
+      "path": "reimbursement",
+      "raci": {
+        "Patient": "Executes",
+        "Doctor": null,
+        "Hospital": "Informed",
+        "Managed Care": null,
+        "TPA": null,
+        "Insurer": null
+      }
+    },
+    {
+      "id": "B.2",
+      "name": "IPD Treatment (Reimbursement)",
+      "phase": 2,
+      "path": "reimbursement",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": "Owner",
+        "Hospital": "Executes",
+        "Managed Care": null,
+        "TPA": null,
+        "Insurer": null
+      }
+    },
+    {
+      "id": "B.3",
+      "name": "Records Collection",
+      "phase": 2,
+      "path": "reimbursement",
+      "raci": {
+        "Patient": "Executes",
+        "Doctor": null,
+        "Hospital": "Owner",
+        "Managed Care": null,
+        "TPA": null,
+        "Insurer": null
+      }
+    },
+    {
+      "id": "B.4",
+      "name": "Claim Submission to TPA",
+      "phase": 2,
+      "path": "reimbursement",
+      "raci": {
+        "Patient": "Executes",
+        "Doctor": null,
+        "Hospital": null,
+        "Managed Care": "Consulted",
+        "TPA": "Owner",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "B.5",
+      "name": "Query / Deficiency Loop (Reimbursement)",
+      "phase": 2,
+      "path": "reimbursement",
+      "raci": {
+        "Patient": "Executes",
+        "Doctor": null,
+        "Hospital": null,
+        "Managed Care": null,
+        "TPA": "Owner",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "3.1",
+      "name": "Discharge Summary",
+      "phase": 3,
+      "path": "common",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": "Owner",
+        "Hospital": "Executes",
+        "Managed Care": null,
+        "TPA": "Informed",
+        "Insurer": null
+      }
+    },
+    {
+      "id": "3.2",
+      "name": "Claim Adjudication",
+      "phase": 3,
+      "path": "common",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": null,
+        "Hospital": "Informed",
+        "Managed Care": null,
+        "TPA": "Owner",
+        "Insurer": "Consulted"
+      }
+    },
+    {
+      "id": "3.3",
+      "name": "Post-Hospitalisation Recovery",
+      "phase": 3,
+      "path": "common",
+      "raci": {
+        "Patient": "Executes",
+        "Doctor": "Consulted",
+        "Hospital": null,
+        "Managed Care": "Consulted",
+        "TPA": null,
+        "Insurer": null
+      }
+    },
+    {
+      "id": "3.4",
+      "name": "Final Settlement",
+      "phase": 3,
+      "path": "common",
+      "raci": {
+        "Patient": "Informed",
+        "Doctor": null,
+        "Hospital": "Informed",
+        "Managed Care": null,
+        "TPA": null,
+        "Insurer": "Owner"
+      }
+    }
+  ]
+}
