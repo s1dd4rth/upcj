@@ -8,8 +8,8 @@ Modelled on the governance patterns of [ONDC (Open Network for Digital Commerce)
 
 **Try it now:**
 [Readable overview](docs/index.html) ·
-[Interactive journey map](framework/journey-map.html) ·
-[Patient checklist](framework/patient-checklist.html)
+[Interactive journey map](docs/framework/journey-map.html) ·
+[Patient checklist](docs/framework/patient-checklist.html)
 
 ---
 
@@ -31,23 +31,23 @@ The process itself is structurally identical across every insurer and TPA in Ind
 
 ### 1. Universal journey map
 A 3-phase, 12-step visual flow covering both Cashless and Reimbursement paths. Applies to every insurer in India.
-→ [framework/journey-map.html](framework/journey-map.html)
+→ [framework/journey-map.html](docs/framework/journey-map.html)
 
 ### 2. Ownership matrix
 A RACI-style responsibility map making explicit who owns, executes, is consulted, and is informed at every step — for every actor.
-→ [framework/ownership-matrix.json](framework/ownership-matrix.json)
+→ [framework/ownership-matrix.json](docs/framework/ownership-matrix.json)
 
 ### 3. Patient companion checklist
 A practical, phase-by-phase checklist caregivers can follow in real-time during hospitalisation. Includes exact scripts for what to ask at each stage.
-→ [framework/patient-checklist.html](framework/patient-checklist.html)
+→ [framework/patient-checklist.html](docs/framework/patient-checklist.html)
 
 ### 4. Document registry
 A canonical list of every document in the claim lifecycle — who generates it, who needs it, what fields it must contain, and when.
-→ [framework/document-registry.json](framework/document-registry.json)
+→ [framework/document-registry.json](docs/framework/document-registry.json)
 
 ### 5. Governance model (ONDC-inspired)
 Six governance patterns adopted from ONDC, adapted for health insurance claims.
-→ [framework/governance-model.md](framework/governance-model.md)
+→ [framework/governance-model.md](docs/framework/governance-model.md)
 
 ## Governance model — adopted from ONDC
 
@@ -64,7 +64,7 @@ UPCJ adopts six structural patterns from the ONDC framework:
 
 The critical difference: ONDC had to build an entire technical infrastructure. UPCJ does not. The insurance claim process already exists and is already identical across providers. UPCJ only standardises the communication layer. UPI did not change how banks work — it standardised how users interact with banks. UPCJ does not change how insurance works — it standardises how patients interact with the claim process.
 
-Full details: [framework/governance-model.md](framework/governance-model.md)
+Full details: [framework/governance-model.md](docs/framework/governance-model.md)
 
 ## The three phases
 
@@ -123,12 +123,14 @@ upcj/
 ├── README.md
 ├── LICENSE
 ├── CONTRIBUTING.md
-└── framework/
-    ├── journey-map.html           # Interactive visual journey map (GDS style)
-    ├── patient-checklist.html     # Interactive patient companion checklist
-    ├── ownership-matrix.json      # Machine-readable RACI data
-    ├── document-registry.json     # Canonical document list with schemas
-    └── governance-model.md        # ONDC-inspired governance framework
+└── docs/                              # GitHub Pages site root
+    ├── index.html                     # Readable framework overview
+    └── framework/
+        ├── journey-map.html           # Interactive visual journey map (GDS style)
+        ├── patient-checklist.html     # Interactive patient companion checklist
+        ├── ownership-matrix.json      # Machine-readable RACI data
+        ├── document-registry.json     # Canonical document list with schemas
+        └── governance-model.md        # ONDC-inspired governance framework
 ```
 
 ## Design principles
