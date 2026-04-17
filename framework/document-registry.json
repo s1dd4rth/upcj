@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "framework": "UPCJ — Unified Patient Claim Journey",
+  "license": "CC BY-SA 4.0",
+  "documents": [
+    {
+      "id": "DOC-001",
+      "name": "Insurance Policy Card / E-Card",
+      "generated_by": "Insurer",
+      "held_by": "Patient",
+      "needed_at": "1.1 — OPD Consultation",
+      "path": "both",
+      "format": "Physical card or digital PDF",
+      "critical_fields": ["Policy number", "TPA name and helpline", "Sum insured", "Policy period", "Policyholder name", "Insured members"],
+      "notes": "Patient must carry this at all times during hospitalisation. Without it, the hospital insurance desk cannot verify eligibility."
+    },
+    {
+      "id": "DOC-002",
+      "name": "Photo ID (Aadhaar / PAN / Passport)",
+      "generated_by": "Government",
+      "held_by": "Patient",
+      "needed_at": "1.1 — OPD Consultation",
+      "path": "both",
+      "format": "Original + photocopy",
+      "critical_fields": ["Name (must match policy)", "Photo", "ID number"],
+      "notes": "Carry ID for both patient and policyholder if they are different persons."
+    },
+    {
+      "id": "DOC-003",
+      "name": "Doctor's Prescription",
+      "generated_by": "Doctor",
+      "held_by": "Patient",
+      "needed_at": "1.1 — OPD Consultation",
+      "path": "both",
+      "format": "Hospital letterhead, doctor signature",
+      "critical_fields": ["Patient name", "Date", "Diagnosis", "Medications prescribed", "Doctor name and registration number"],
+      "notes": "OPD prescriptions leading to hospitalisation are claimable under pre-hospitalisation expenses."
+    },
+    {
+      "id": "DOC-004",
+      "name": "Lab / Investigation Reports",
+      "generated_by": "Hospital Lab",
+      "held_by": "Patient / Hospital",
+      "needed_at": "1.2 — Diagnostic Workup",
+      "path": "both",
+      "format": "Original reports on hospital letterhead",
+      "critical_fields": ["Patient name", "UHID", "Date", "Test name", "Results", "Reference ranges", "Lab technician signature"],
+      "notes": "Collect originals from every department individually — lab, radiology, pathology. Hospitals do not volunteer these at discharge."
+    },
+    {
+      "id": "DOC-005",
+      "name": "Admission Advice Note",
+      "generated_by": "Doctor",
+      "held_by": "Hospital / TPA",
+      "needed_at": "1.3 — Admission Advice",
+      "path": "both",
+      "format": "Hospital letterhead, doctor signature",
+      "critical_fields": ["Patient name", "UHID", "Policy number", "Diagnosis (ICD-10)", "Reason for admission", "Treating doctor name and registration number", "Estimated duration of stay"],
+      "notes": "This is the trigger document for any insurance claim. Without it, neither cashless nor reimbursement can be initiated. The most critical single document in the entire process."
+    },
+    {
+      "id": "DOC-006",
+      "name": "Pre-Authorisation Request Form",
+      "generated_by": "Hospital Admin",
+      "held_by": "TPA",
+      "needed_at": "A.1 — Pre-Auth Filing",
+      "path": "cashless",
+      "format": "TPA-specific form (should be standardised)",
+      "critical_fields": ["Patient details", "Policy number", "TPA ID", "Admission advice reference", "Estimated cost breakup", "Room category", "Treating doctor details", "Provisional diagnosis"],
+      "notes": "Filed by hospital, not by patient. Patient should confirm with hospital insurance desk that this has been submitted."
+    },
+    {
+      "id": "DOC-007",
+      "name": "Pre-Auth Approval Letter (AL)",
+      "generated_by": "TPA",
+      "held_by": "Hospital / Patient",
+      "needed_at": "A.3 — Pre-Auth Approval",
+      "path": "cashless",
+      "format": "TPA letterhead or digital approval",
+      "critical_fields": ["Sanctioned amount", "Conditions or exclusions", "Validity period", "Co-pay percentage if applicable", "Sub-limit details"],
+      "notes": "Patient should request a copy. Check: does the sanctioned amount cover the estimated bill? If not, an enhancement will be needed."
+    },
+    {
+      "id": "DOC-008",
+      "name": "Enhancement Request Form",
+      "generated_by": "Hospital Admin",
+      "held_by": "TPA",
+      "needed_at": "A.5 — Enhancement Request",
+      "path": "cashless",
+      "format": "TPA-specific form",
+      "critical_fields": ["Original approval reference", "Revised estimated cost", "Reason for enhancement", "Supporting medical justification"],
+      "notes": "Filed when treatment cost exceeds sanctioned amount. Common for extended stays, complications, or additional procedures."
+    },
+    {
+      "id": "DOC-009",
+      "name": "Payment Receipts",
+      "generated_by": "Hospital",
+      "held_by": "Patient",
+      "needed_at": "B.1 — Upfront Payment / 3.1 — Discharge",
+      "path": "both",
+      "format": "Original stamped receipts",
+      "critical_fields": ["Patient name", "UHID", "Date", "Amount", "Mode of payment", "Receipt number", "Hospital stamp"],
+      "notes": "Every payment — deposit, interim, pharmacy, final — must have a stamped original receipt. These are mandatory for reimbursement claims."
+    },
+    {
+      "id": "DOC-010",
+      "name": "Discharge Summary",
+      "generated_by": "Doctor",
+      "held_by": "Patient / TPA",
+      "needed_at": "3.1 — Discharge Summary",
+      "path": "both",
+      "format": "Hospital letterhead, treating doctor signature",
+      "critical_fields": ["Patient name", "UHID", "Admission date", "Discharge date", "Final diagnosis (ICD-10)", "Procedures performed", "Medications administered", "Medications prescribed at discharge", "Follow-up instructions", "Treating doctor name and registration number", "Doctor signature"],
+      "notes": "Second most critical document after admission advice. Do not leave the hospital without it. Must be signed by the treating doctor, not just a junior resident."
+    },
+    {
+      "id": "DOC-011",
+      "name": "Final Hospital Bill (Itemised)",
+      "generated_by": "Hospital Admin",
+      "held_by": "Patient / TPA",
+      "needed_at": "3.1 — Discharge Summary",
+      "path": "both",
+      "format": "Hospital billing system printout",
+      "critical_fields": ["Patient name", "UHID", "Admission and discharge dates", "Room charges (per day)", "Doctor/surgeon fees", "Anaesthesia charges", "Investigation charges (itemised)", "Pharmacy charges (itemised)", "Consumables", "Nursing charges", "Total amount", "Amount paid by insurer (cashless)", "Amount paid by patient", "Balance due"],
+      "notes": "Must be itemised, not just a total. Itemisation is needed for TPA to verify charges against policy sub-limits. Ask specifically for itemised breakup if hospital offers only a summary."
+    },
+    {
+      "id": "DOC-012",
+      "name": "Pharmacy Bills (Stamped)",
+      "generated_by": "Hospital Pharmacy",
+      "held_by": "Patient",
+      "needed_at": "During treatment / Post-discharge",
+      "path": "both",
+      "format": "Pharmacy bill with hospital stamp",
+      "critical_fields": ["Patient name", "Date", "Medicine name", "Quantity", "Batch number", "Amount", "Pharmacy stamp"],
+      "notes": "Must match entries in the treatment chart and discharge summary. External pharmacy bills (non-hospital) should also be stamped and accompanied by the corresponding prescription."
+    },
+    {
+      "id": "DOC-013",
+      "name": "Reimbursement Claim Form",
+      "generated_by": "Patient",
+      "held_by": "TPA / Insurer",
+      "needed_at": "B.4 — Claim Submission",
+      "path": "reimbursement",
+      "format": "Insurer/TPA-specific form (should be standardised)",
+      "critical_fields": ["Policy number", "Patient details", "Hospitalisation details", "Diagnosis", "Treating doctor details", "Total claim amount", "List of enclosed original documents", "Bank account details for settlement", "Patient/policyholder signature"],
+      "notes": "Must be submitted with all original documents within 15-30 days of discharge (check policy for exact deadline). Incomplete forms are the single most common reason for reimbursement delays."
+    },
+    {
+      "id": "DOC-014",
+      "name": "Settlement Letter",
+      "generated_by": "Insurer",
+      "held_by": "Patient / Hospital",
+      "needed_at": "3.4 — Final Settlement",
+      "path": "both",
+      "format": "Insurer letterhead",
+      "critical_fields": ["Claim reference number", "Total claimed amount", "Approved amount", "Deductions with reasons", "Co-pay amount", "Net settlement amount", "Settlement date", "Payment mode and reference"],
+      "notes": "If the approved amount is less than claimed, the deduction reasons must be itemised. This document is the basis for any grievance filing if the patient disagrees with the settlement."
+    },
+    {
+      "id": "DOC-015",
+      "name": "Follow-up Consultation Bills",
+      "generated_by": "Doctor / Hospital",
+      "held_by": "Patient",
+      "needed_at": "3.3 — Post-Hospitalisation Recovery",
+      "path": "both",
+      "format": "Prescription + bill on letterhead",
+      "critical_fields": ["Patient name", "Date", "Relation to original hospitalisation", "Consultation charges", "Medications prescribed", "Doctor name"],
+      "notes": "Claimable within the post-hospitalisation window (typically 60-90 days, check policy). Must be accompanied by the prescription and should reference the original hospitalisation."
+    }
+  ]
+}
