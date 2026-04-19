@@ -6,10 +6,10 @@ Modelled on the governance patterns of [ONDC (Open Network for Digital Commerce)
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
-**Try it now:**
-[Readable overview](docs/index.html) ·
-[Interactive journey map](framework/journey-map.html) ·
-[Patient checklist](framework/patient-checklist.html)
+**Try it now** (live on GitHub Pages):
+[Overview](https://s1dd4rth.github.io/upcj/) ·
+[Journey map](https://s1dd4rth.github.io/upcj/framework/journey-map.html) ·
+[Patient checklist](https://s1dd4rth.github.io/upcj/framework/patient-checklist.html)
 
 ---
 
@@ -123,6 +123,7 @@ upcj/
 ├── README.md
 ├── LICENSE
 ├── CONTRIBUTING.md
+├── index.html                     # Readable framework overview (site landing page)
 └── framework/
     ├── journey-map.html           # Interactive visual journey map (GDS style)
     ├── patient-checklist.html     # Interactive patient companion checklist
