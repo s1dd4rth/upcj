@@ -2,7 +2,7 @@
 
 **Status:** Draft for approval
 **Date:** 2026-04-20
-**Target:** UPCJ roadmap item "Printable starter kit" (sits alongside v1.2 A3 poster, v1.3 WhatsApp bot)
+**Target:** UPCJ roadmap item "Printable starter kit" (sits alongside the A3 poster, WhatsApp bot, and translations already on the roadmap)
 **License:** CC BY-SA 4.0 (inherited)
 
 ## 1. Purpose
@@ -17,18 +17,18 @@ A single kit serves three audiences without forking:
 ## 2. Scope
 
 **In v1:**
-- ~18 **guide pages** — one per journey step: `1.1`, `1.2`, `1.3`, `A.1`–`A.5`, `B.1`–`B.5`, `3.1`–`3.4`.
-- ~15 **template pages** — one per canonical document: `DOC-001` through `DOC-015` in `document-registry.json`.
-- 4 **front/back-matter pages** — cover, how to use this kit, decision-junction flowchart, glossary + grievance phone tree.
+- 17 **guide pages** — one per journey step: `1.1`, `1.2`, `1.3`, `A.1`–`A.5`, `B.1`–`B.5`, `3.1`–`3.4`.
+- 15 **template pages** — one per canonical document: `DOC-001` through `DOC-015` in `document-registry.json`.
+- 5 **front/back-matter pages** — cover, how to use this kit (2 sheets), decision-junction flowchart, glossary + grievance phone tree. Total: 37 A4 pages.
 - Two released PDFs from the same source: **print-ready** (flat pages) and **fillable** (AcroForm fields preserved).
 - HTML preview published on the existing GitHub Pages site.
 - Both claim paths: cashless (`A.*`) and reimbursement (`B.*`) covered fully.
 - English only.
 
 **Out of scope for v1** (deferred, already on roadmap):
-- Hindi/Tamil translations — v1.2.
-- WhatsApp image cards — v1.3. Layout will be chosen so extraction is mechanical.
-- App screens — v2.
+- Hindi/Tamil translations. v1 defines the content structure so translation becomes a find-and-replace exercise.
+- WhatsApp image cards. Layout chosen so extraction is mechanical, but no cards built.
+- App screens.
 - A3 fold-out poster — separate roadmap item.
 - Aadhaar, DigiLocker, or other Public Digital Infrastructure integration.
 - Digital signatures, encrypted fields, or any form of online submission.
