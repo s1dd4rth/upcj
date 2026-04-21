@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Build print-ready and fillable PDFs from dist/html using Chromium via
-# Playwright. Chromium (unlike WeasyPrint) emits tagged PDF and AcroForm
-# widgets natively, making the output PDF/UA-1 conformant.
+# Build the tagged print-ready PDF from dist/html using Chromium via
+# Playwright. The v1.0.0 output is a single PDF/UA-1 conformant document.
+# Fillable AcroForm output is deferred to v1.1 — see spec §2, §8.
 #
 # Pipeline:
 #   1. Node — concatenate dist/html/ pages into dist/html/_all.html
-#   2. Docker (Playwright image) — render _all.html → two raw tagged PDFs
-#   3. Docker (same image) — post-process both PDFs for PDF/UA-1 compliance:
+#   2. Docker (Playwright image) — render _all.html → raw tagged PDF
+#   3. Docker (same image) — post-process for PDF/UA-1 compliance:
 #        • inject XMP metadata stream (rule 7.1.8)
 #        • wrap untagged content items in /Artifact BMC…EMC (rule 7.1.3)
 set -euo pipefail
@@ -97,7 +97,6 @@ docker run --rm \
     DEBIAN_FRONTEND=noninteractive apt-get update -qq
     DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pikepdf 2>&1 | grep -E "pikepdf|error|Error" || true
     python3 /fix-pdf-ua.py /out/upcj-starter-kit.pdf /out/upcj-starter-kit.pdf
-    python3 /fix-pdf-ua.py /out/upcj-starter-kit-fillable.pdf /out/upcj-starter-kit-fillable.pdf
   '
 
-echo "Wrote dist/upcj-starter-kit.pdf and dist/upcj-starter-kit-fillable.pdf"
+echo "Wrote dist/upcj-starter-kit.pdf"
