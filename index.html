@@ -440,6 +440,7 @@
             <li><a href="#actors">The six actors</a></li>
             <li><a href="#adopt">Who should adopt UPCJ</a></li>
             <li><a href="#principles">Design principles</a></li>
+            <li><a href="#starter-kit">Starter kit</a></li>
             <li><a href="#contribute">How to contribute</a></li>
             <li><a href="#license">License</a></li>
         </ol>
@@ -624,6 +625,32 @@
                 <div class="principle__title">Open</div>
                 <p>CC BY-SA 4.0. Anyone can use, modify, and redistribute.</p>
             </div>
+        </div>
+    </section>
+
+    <section id="starter-kit">
+        <h2>Starter kit</h2>
+        <p>
+            The <code>starter-kit/</code> directory generates a 37-page printable A4 patient companion
+            from <code>framework/document-registry.json</code> and authored markdown. A tagged PDF is
+            attached to each <code>starter-kit-v*</code> release.
+        </p>
+        <ul>
+            <li>
+                <strong><a href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">Print-ready PDF</a></strong>
+                — 37 A4 pages, PDF/UA-1 tagged, CC BY-SA 4.0.
+            </li>
+            <li>
+                <strong><a href="starter-kit/README.md">Authoring guide</a></strong>
+                — how to add a new step or document; how to build and preview locally.
+            </li>
+            <li>
+                <strong><a href="starter-kit/">Kit source</a></strong>
+                — markdown content, build scripts, and Puppeteer PDF renderer.
+            </li>
+        </ul>
+        <div class="panel panel--info">
+            <p>A fillable AcroForm variant is planned for v1.1. The HTML preview is generated at build time — run <code>cd starter-kit &amp;&amp; npm install &amp;&amp; npm run build &amp;&amp; npm run preview</code> locally.</p>
         </div>
     </section>
 
