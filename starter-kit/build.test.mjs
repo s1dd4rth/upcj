@@ -41,7 +41,7 @@ test("renderGuidePage embeds title, lede, script, and next-step pointer", () => 
   });
   assert.match(html, /OPD Consultation/);
   assert.match(html, /You visit a doctor/);
-  assert.match(html, /Please write my diagnosis/);
+  assert.match(html, /<q>Please write my diagnosis[^<]*<\/q>/);
   assert.match(html, /DOC-003/);
   assert.match(html, /Next:.*1\.2/s);
 });

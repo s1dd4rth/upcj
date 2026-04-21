@@ -13,6 +13,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
 const PAGE_ORDER_PREFIX = ["cover", "how-to-use-1", "how-to-use-2", "decision-junction"];
+const PAGE_ORDER_SUFFIX = ["glossary"];
+const MATTER_PAGE_COUNT = PAGE_ORDER_PREFIX.length + PAGE_ORDER_SUFFIX.length;
 
 export function loadDocumentRegistry({ fixture } = {}) {
   const path = fixture
@@ -121,7 +123,7 @@ async function main() {
   const templates = loadTemplates();
   const version = loadVersion();
 
-  const totalPages = steps.length + documents.length + 5; // 17 + 15 + 5 (matter)
+  const totalPages = steps.length + documents.length + MATTER_PAGE_COUNT;
   const context = { version, totalPages };
 
   let pageNumber = PAGE_ORDER_PREFIX.length + 1;

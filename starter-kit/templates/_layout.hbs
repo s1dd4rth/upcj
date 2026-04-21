@@ -15,6 +15,10 @@
     <span>{{contextLeft}}</span>
     <span>{{contextRight}}</span>
   </div>
+  {{!-- CONTRACT: body templates MUST emit exactly one element with id="page-title"
+        (the <article> above binds aria-labelledby to it). Do not emit duplicate
+        role="banner" or role="contentinfo" landmarks in body content — this layout
+        already declares them once per page. --}}
   {{{body}}}
   <footer class="foot" role="contentinfo">
     <span>UPCJ/SK/{{pageCode}}/EN v{{version}}</span>
