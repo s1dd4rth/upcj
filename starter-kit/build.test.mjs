@@ -47,11 +47,39 @@ test("renderGuidePage embeds title, lede, script, and next-step pointer", () => 
 });
 
 test("fieldInputType maps known labels to HTML input types", () => {
-  assert.equal(fieldInputType("Date of admission").type, "text");
+  // Date fields — anywhere in the label
   assert.equal(fieldInputType("Date of admission").hint, "DD-MM-YYYY");
+  assert.equal(fieldInputType("Admission date").hint, "DD-MM-YYYY");
+  assert.equal(fieldInputType("Settlement date").hint, "DD-MM-YYYY");
+  // DoB must win over the generic date rule
+  assert.equal(fieldInputType("Date of birth").autocomplete, "bday");
+  assert.equal(fieldInputType("DOB").autocomplete, "bday");
+  // Contact fields
   assert.equal(fieldInputType("TPA helpline").type, "tel");
+  assert.equal(fieldInputType("TPA helpline").autocomplete, "tel");
+  assert.equal(fieldInputType("Contact phone").autocomplete, "tel");
+  assert.equal(fieldInputType("Postal code").autocomplete, "postal-code");
+  assert.equal(fieldInputType("Pincode").autocomplete, "postal-code");
+  // Name autocomplete — only for the form owner's name
   assert.equal(fieldInputType("Patient name").autocomplete, "name");
+  assert.equal(fieldInputType("Policyholder name").autocomplete, "name");
+  assert.equal(fieldInputType("Name (must match policy)").autocomplete, "name");
+  // Third-party or non-person names must NOT get autocomplete="name"
+  assert.equal(fieldInputType("Doctor name").autocomplete, undefined);
+  assert.equal(fieldInputType("Test name").autocomplete, undefined);
+  assert.equal(fieldInputType("Medicine name").autocomplete, undefined);
+  // Multiline fields
+  assert.equal(fieldInputType("Diagnosis").multiline, true);
   assert.equal(fieldInputType("Diagnosis (ICD-10)").multiline, true);
+  assert.equal(fieldInputType("Reason for admission").multiline, true);
+  assert.equal(fieldInputType("Symptoms").multiline, true);
+  // Amount/sum — word-boundary guard so Consumables does NOT match
+  assert.equal(fieldInputType("Sum insured").hint, "INR");
+  assert.equal(fieldInputType("Approved amount").hint, "INR");
+  assert.equal(fieldInputType("Consumables").hint, undefined);
+  // Default fallthrough
+  assert.equal(fieldInputType("Arbitrary label").type, "text");
+  assert.equal(fieldInputType("Arbitrary label").hint, undefined);
 });
 
 test("renderTemplatePage emits one input per critical field and a stamp box", () => {

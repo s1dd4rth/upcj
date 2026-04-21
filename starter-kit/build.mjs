@@ -25,6 +25,11 @@ export function loadDocumentRegistry({ fixture } = {}) {
     if (!Array.isArray(doc.critical_fields) || doc.critical_fields.length === 0) {
       throw new Error(`${doc.id}: critical_fields must be a non-empty array`);
     }
+    for (const field of doc.critical_fields) {
+      if (typeof field !== "string" || field.trim() === "") {
+        throw new Error(`${doc.id}: critical_fields contains an empty or non-string entry`);
+      }
+    }
   }
   return documents;
 }
@@ -111,15 +116,23 @@ function findStep(steps, id) {
 }
 
 const FIELD_RULES = [
-  { match: /^date\b/i,            type: "text", hint: "DD-MM-YYYY" },
-  { match: /\bhelpline\b/i,       type: "tel",  autocomplete: "tel" },
-  { match: /\bphone\b/i,          type: "tel",  autocomplete: "tel" },
-  { match: /\bpostal\b|pincode/i, type: "text", autocomplete: "postal-code" },
-  { match: /\bname\b/i,           type: "text", autocomplete: "name" },
-  { match: /date of birth|dob/i,  type: "text", hint: "DD-MM-YYYY", autocomplete: "bday" },
-  { match: /diagnosis|reason for|notes|symptoms/i, multiline: true, type: "text" },
-  { match: /icd-10/i,             multiline: true, type: "text", hint: "ICD-10 code + description" },
-  { match: /amount|sum/i,         type: "text", hint: "INR" }
+  // Date of birth must precede the generic date rule, otherwise "Date of birth"
+  // matches /^date\b/ first and never gets autocomplete="bday".
+  { match: /date of birth|dob/i,                          type: "text", hint: "DD-MM-YYYY", autocomplete: "bday" },
+  // Match "date" anywhere in the label (not just at the start) so "Admission date",
+  // "Discharge date", "Settlement date" all receive the DD-MM-YYYY hint.
+  { match: /\bdate\b/i,                                   type: "text", hint: "DD-MM-YYYY" },
+  { match: /\bhelpline\b/i,                               type: "tel",  autocomplete: "tel" },
+  { match: /\bphone\b/i,                                  type: "tel",  autocomplete: "tel" },
+  { match: /\bpostal\b|\bpincode\b/i,                     type: "text", autocomplete: "postal-code" },
+  // Narrow: only fire autocomplete="name" for the patient's/policyholder's own name.
+  // "Doctor name", "Test name", "Medicine name" must NOT match — they are third-party
+  // or non-person labels where autocomplete="name" is wrong.
+  { match: /\b(patient|policyholder|insured|member)\s+name\b|^name\b/i, type: "text", autocomplete: "name" },
+  { match: /diagnosis|reason for|notes|symptoms/i,        multiline: true, type: "text" },
+  { match: /\bicd-10\b/i,                                 multiline: true, type: "text", hint: "ICD-10 code + description" },
+  // Word boundaries so "consumables" does not false-match on the substring "sum".
+  { match: /\bamount\b|\bsum\b/i,                         type: "text", hint: "INR" }
 ];
 
 export function fieldInputType(label) {
@@ -136,19 +149,34 @@ function slugify(s) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+const ACTOR_ROLE_LABEL = {
+  "Doctor":             "Treating doctor",
+  "Hospital":           "Hospital authorised signatory",
+  "Hospital Admin":     "Hospital administrator",
+  "Hospital Lab":       "Laboratory in-charge",
+  "Hospital Pharmacy":  "Pharmacist",
+  "Insurer":            "Insurer authorised signatory",
+  "TPA":                "TPA authorised signatory",
+  "Patient":            "Patient / policyholder",
+  "Doctor / Hospital":  "Treating doctor / hospital",
+  "Government":         null  // no signature block for government-issued IDs
+};
+
 export function renderTemplatePage({ document: doc, templates, context }) {
   const fields = doc.critical_fields.map((label) => ({
     label,
     slug: slugify(`${doc.id}-${label}`),
     ...fieldInputType(label)
   }));
-  const actor = doc.generated_by; // "Doctor", "Hospital", "Insurer", etc.
-  const actorRole = actor === "Doctor" ? "doctor" : actor.toLowerCase();
+  const actor = doc.generated_by;
+  const signatureLabel = Object.prototype.hasOwnProperty.call(ACTOR_ROLE_LABEL, actor)
+    ? ACTOR_ROLE_LABEL[actor]
+    : `${actor} authorised signatory`;
   const body = templates["template-page"]({
     docId: doc.id,
     docName: doc.name,
     actor,
-    actorRole,
+    signatureLabel,
     fields
   });
   return templates.layout({

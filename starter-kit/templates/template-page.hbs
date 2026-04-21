@@ -24,12 +24,14 @@
     {{/each}}
   </fieldset>
 
+  {{#if signatureLabel}}
   <div class="signature">
-    <span class="signature__label">Treating {{actorRole}} — name &amp; registration number</span>
+    <span class="signature__label">{{signatureLabel}} — name &amp; registration number</span>
   </div>
+  {{/if}}
 </form>
 
-<div class="stamp-box" role="img" aria-label="Hospital stamp area, 45mm square">
+<div class="stamp-box" role="note" aria-label="Hospital stamp area, 45mm square">
   <div class="stamp-box__bleed" aria-hidden="true"></div>
   Hospital stamp
 </div>
