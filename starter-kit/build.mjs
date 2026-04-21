@@ -189,6 +189,28 @@ export function renderTemplatePage({ document: doc, templates, context }) {
   });
 }
 
+export function renderMatterPage({ id, matter, templates, context }) {
+  const template = templates[id] ?? templates["how-to-use"];
+  const body = template({
+    title: matter.title,
+    lede: matter.lede,
+    edition: matter.edition,
+    license: matter.license,
+    cashlessCriterion: matter.cashlessCriterion,
+    reimbursementCriterion: matter.reimbursementCriterion,
+    terms: matter.terms,
+    bodyHtml: matter.bodyHtml
+  });
+  return templates.layout({
+    ...context,
+    pageCode: id.toUpperCase(),
+    contextLeft: id === "cover" ? "" : "Front/back matter",
+    contextRight: matter.title ?? "",
+    title: matter.title ?? "UPCJ Starter Kit",
+    body
+  });
+}
+
 async function main() {
   const distHtml = join(__dirname, "dist", "html");
   rmSync(join(__dirname, "dist"), { recursive: true, force: true });
@@ -205,7 +227,25 @@ async function main() {
   const totalPages = steps.length + documents.length + MATTER_PAGE_COUNT;
   const context = { version, totalPages };
 
-  let pageNumber = PAGE_ORDER_PREFIX.length + 1;
+  let pageNumber = 1;
+
+  // Prefix matter: cover, how-to-use (rendered as 2 pages), decision-junction
+  const coverHtml = renderMatterPage({ id: "cover", matter: matterPages.cover, templates,
+    context: { ...context, pageNumber } });
+  writeFileSync(join(distHtml, "cover.html"), coverHtml); pageNumber++;
+
+  for (const key of ["how-to-use-1", "how-to-use-2"]) {
+    const html = renderMatterPage({ id: "how-to-use", matter: matterPages[key], templates,
+      context: { ...context, pageNumber } });
+    writeFileSync(join(distHtml, `${key}.html`), html);
+    pageNumber++;
+  }
+
+  const djHtml = renderMatterPage({ id: "decision-junction", matter: matterPages["decision-junction"], templates,
+    context: { ...context, pageNumber } });
+  writeFileSync(join(distHtml, "decision-junction.html"), djHtml); pageNumber++;
+
+  // Guide pages
   for (const step of steps) {
     const nextStep = step.nextStepId ? findStep(steps, step.nextStepId) : null;
     const html = renderGuidePage({
@@ -215,8 +255,7 @@ async function main() {
     pageNumber++;
   }
 
-  console.log(`Built ${steps.length} guide pages into ${distHtml}`);
-
+  // Template pages
   for (const doc of documents) {
     const html = renderTemplatePage({
       document: doc, templates, context: { ...context, pageNumber }
@@ -224,7 +263,13 @@ async function main() {
     writeFileSync(join(distHtml, `${doc.id}.html`), html);
     pageNumber++;
   }
-  console.log(`Built ${documents.length} template pages`);
+
+  // Suffix matter: glossary
+  const gHtml = renderMatterPage({ id: "glossary", matter: matterPages.glossary, templates,
+    context: { ...context, pageNumber } });
+  writeFileSync(join(distHtml, "glossary.html"), gHtml);
+
+  console.log(`Built ${pageNumber} pages`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

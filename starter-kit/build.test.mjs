@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { loadDocumentRegistry, loadSteps, renderGuidePage, loadTemplates, fieldInputType, renderTemplatePage } from "./build.mjs";
+import { loadDocumentRegistry, loadSteps, renderGuidePage, loadTemplates, fieldInputType, renderTemplatePage, renderMatterPage, loadMatter } from "./build.mjs";
 
 test("loadDocumentRegistry returns all 15 documents", () => {
   const docs = loadDocumentRegistry();
@@ -99,4 +99,16 @@ test("renderTemplatePage emits one input per critical field and a stamp box", ()
   assert.match(html, /stamp-box/);
   assert.match(html, /Hospital stamp/);
   assert.match(html, /All fields are mandatory/);
+});
+
+test("renderMatterPage embeds the kit version and license", () => {
+  const templates = loadTemplates();
+  const matterPages = loadMatter();
+  const html = renderMatterPage({
+    id: "cover", matter: matterPages.cover, templates,
+    context: { version: "1.0.0-dev", totalPages: 37, pageNumber: 1 }
+  });
+  assert.match(html, /UPCJ/);
+  assert.match(html, /v1\.0\.0-dev/);
+  assert.match(html, /CC BY-SA/);
 });
