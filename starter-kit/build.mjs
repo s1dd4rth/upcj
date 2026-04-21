@@ -36,8 +36,12 @@ export function loadSteps() {
   const steps = files.map((file) => {
     const id = file.replace(/\.md$/, "");
     const raw = readFileSync(join(dir, file), "utf8");
-    const { data, content } = matter(raw);
-    return { id, ...data, bodyHtml: marked.parse(content) };
+    try {
+      const { data, content } = matter(raw);
+      return { id, ...data, bodyHtml: marked.parse(content) };
+    } catch (err) {
+      throw new Error(`content/steps/${file}: ${err.message}`, { cause: err });
+    }
   });
   steps.sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
   return steps;
@@ -50,8 +54,12 @@ export function loadMatter() {
     files.map((file) => {
       const id = file.replace(/\.md$/, "");
       const raw = readFileSync(join(dir, file), "utf8");
-      const { data, content } = matter(raw);
-      return [id, { id, ...data, bodyHtml: marked.parse(content) }];
+      try {
+        const { data, content } = matter(raw);
+        return [id, { id, ...data, bodyHtml: marked.parse(content) }];
+      } catch (err) {
+        throw new Error(`content/matter/${file}: ${err.message}`, { cause: err });
+      }
     })
   );
 }
@@ -92,6 +100,6 @@ async function main() {
   console.log(`  ${documents.length} documents, ${steps.length} steps, ${Object.keys(matterPages).length} matter pages`);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main().catch((err) => { console.error(err); process.exit(1); });
 }
