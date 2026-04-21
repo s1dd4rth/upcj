@@ -20,7 +20,7 @@ A single kit serves three audiences without forking:
 - 17 **guide pages** — one per journey step: `1.1`, `1.2`, `1.3`, `A.1`–`A.5`, `B.1`–`B.5`, `3.1`–`3.4`.
 - 15 **template pages** — one per canonical document: `DOC-001` through `DOC-015` in `document-registry.json`.
 - 5 **front/back-matter pages** — cover, how to use this kit (2 sheets), decision-junction flowchart, glossary + grievance phone tree. Total: 37 A4 pages.
-- Two released PDFs from the same source: **print-ready** (flat pages) and **fillable** (AcroForm fields preserved).
+- One released PDF: **print-ready** (flat A4 pages, tagged for PDF/UA-1). Users print and hand-fill — reflects real hospital context where digital submission is not assumed.
 - HTML preview published on the existing GitHub Pages site.
 - Both claim paths: cashless (`A.*`) and reimbursement (`B.*`) covered fully.
 - English only.
@@ -32,12 +32,13 @@ A single kit serves three audiences without forking:
 - A3 fold-out poster — separate roadmap item.
 - Aadhaar, DigiLocker, or other Public Digital Infrastructure integration.
 - Digital signatures, encrypted fields, or any form of online submission.
+- **Fillable AcroForm PDF** (deferred to v1.1). The v1 implementation prototype showed that open-source HTML-to-PDF renderers either skip PDF/UA-1 tags (WeasyPrint) or skip AcroForm widget emission (Chromium headless, even with `--enable-blink-features=PdfFormRendering`). A tagged-PDF + AcroForm output requires a post-processor that places widget annotations from HTML field geometry — scoped as a v1.1 follow-up. The v1 print-ready PDF already carries semantic `<input>`/`<textarea>`/`<fieldset>`/`<label>` structure in its content stream, so the HTML source remains the AcroForm-ready substrate.
 
 ## 3. Success criteria
 
 - A patient handed the kit at admission can navigate to the step they are on, know what to ask for, and verify a received document contains the right fields — without calling anyone.
 - A doctor or hospital clerk can fill a template in under 2 minutes; the completed form is acceptable to any TPA in India.
-- Both PDFs pass WCAG 2.1 AA (WCAG 2.2 AA where applicable) and PDF/UA-1 automated validation.
+- The print-ready PDF passes WCAG 2.1 AA (WCAG 2.2 AA where applicable) and PDF/UA-1 automated validation.
 - When a `critical_fields` array changes in `document-registry.json`, the corresponding template page regenerates with the new fields; no manual HTML edit required.
 
 ## 4. Benchmarks and governing standards
@@ -215,12 +216,11 @@ starter-kit/
 ## 8. Risks and open questions
 
 **Risks:**
-- **WeasyPrint AcroForm fidelity.** Fillable PDFs must preserve form semantics. Mitigation: prototype on one template page in week 1 of implementation and validate with veraPDF + Acrobat before committing to 15.
-- **Stamp-box size drift across printers.** 45 mm × 45 mm is sized for a typical Indian stamp, but reprography variance can shift the box. Mitigation: a 3 mm bleed area marked inside the border in the print-ready PDF; the fillable PDF has no stamp until printed.
+- **PDF/UA-1 fidelity from open-source renderers.** _(Retired 2026-04-21.)_ The implementation prototype confirmed WeasyPrint cannot emit tagged PDF and Chromium headless cannot emit AcroForm widgets from HTML forms. Resolution: v1.0.0 ships a Chromium-rendered tagged print-ready PDF with a `pikepdf`-based post-processor that injects XMP metadata and wraps untagged path operations as `/Artifact`. AcroForm fillable output deferred to v1.1 (pdf-lib widget injection from HTML field geometry).
+- **Stamp-box size drift across printers.** 45 mm × 45 mm is sized for a typical Indian stamp, but reprography variance can shift the box. Mitigation: a 3 mm bleed area marked inside the border in the print-ready PDF.
 - **Content authoring load.** ~18 step `.md` files need careful, plain-language content. Mitigation: seed drafts from `framework/patient-checklist.html` existing copy; peer review by a patient-advocacy contributor before v1.0.0 tag.
 
 **Open questions (tracked in implementation plan, not blocking this spec):**
-- Does WeasyPrint's AcroForm output satisfy veraPDF's PDF/UA-1 check, or do we need a post-processing step with `qpdf` or `pdfcs` to add missing tags? Answered in implementation prototype.
 - Cover page — does it carry a QR code to the GitHub Pages HTML version? Defer to authoring review.
 - Licensing line on every page, or only on cover? Defer to authoring review.
 
