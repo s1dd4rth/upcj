@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { loadDocumentRegistry, loadSteps } from "./build.mjs";
+import { loadDocumentRegistry, loadSteps, renderGuidePage, loadTemplates } from "./build.mjs";
 
 test("loadDocumentRegistry returns all 15 documents", () => {
   const docs = loadDocumentRegistry();
@@ -22,4 +22,26 @@ test("loadSteps parses front-matter and body from every step file", () => {
   assert.ok(step, "step 1.1 must exist");
   assert.ok(step.title, "step must have title from front-matter");
   assert.ok(step.bodyHtml.length > 0, "body must be rendered");
+});
+
+test("renderGuidePage embeds title, lede, script, and next-step pointer", () => {
+  const templates = loadTemplates();
+  const step = {
+    id: "1.1", title: "OPD Consultation", phase: 1, path: "common",
+    lede: "You visit a doctor for the first time.",
+    whatHappens: ["The doctor examines you."],
+    sayThis: "Please write my diagnosis.",
+    criticalFieldsDocId: "DOC-003",
+    checkFor: ["Patient name", "Date"]
+  };
+  const next = { id: "1.2", title: "Diagnostics" };
+  const html = renderGuidePage({
+    step, nextStep: next, templates,
+    context: { version: "1.0.0-dev", totalPages: 37, pageNumber: 5 }
+  });
+  assert.match(html, /OPD Consultation/);
+  assert.match(html, /You visit a doctor/);
+  assert.match(html, /Please write my diagnosis/);
+  assert.match(html, /DOC-003/);
+  assert.match(html, /Next:.*1\.2/s);
 });

@@ -12,6 +12,8 @@ import { marked } from "marked";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
+const PAGE_ORDER_PREFIX = ["cover", "how-to-use-1", "how-to-use-2", "decision-junction"];
+
 export function loadDocumentRegistry({ fixture } = {}) {
   const path = fixture
     ? resolve(__dirname, fixture)
@@ -81,14 +83,37 @@ export function loadVersion() {
   return readFileSync(join(__dirname, "VERSION"), "utf8").trim();
 }
 
+export function renderGuidePage({ step, nextStep, templates, context }) {
+  const body = templates["guide-page"]({
+    stepTitle: step.title,
+    lede: step.lede,
+    whatHappens: step.whatHappens,
+    sayThis: step.sayThis,
+    checkFor: step.checkFor,
+    criticalFieldsDocId: step.criticalFieldsDocId,
+    deadline: step.deadline,
+    nextStep: nextStep && { id: nextStep.id, title: nextStep.title }
+  });
+  return templates.layout({
+    ...context,
+    pageCode: step.id,
+    contextLeft: `Phase ${step.phase} · Path: ${step.path}`,
+    contextRight: step.id,
+    title: step.title,
+    body
+  });
+}
+
+function findStep(steps, id) {
+  return steps.find((s) => s.id === id) ?? null;
+}
+
 async function main() {
   const distHtml = join(__dirname, "dist", "html");
   rmSync(join(__dirname, "dist"), { recursive: true, force: true });
   mkdirSync(distHtml, { recursive: true });
-
-  // Copy kit.css into dist so preview and PDF stages share one asset.
-  const css = readFileSync(join(__dirname, "templates", "kit.css"), "utf8");
-  writeFileSync(join(distHtml, "kit.css"), css);
+  writeFileSync(join(distHtml, "kit.css"),
+    readFileSync(join(__dirname, "templates", "kit.css"), "utf8"));
 
   const documents = loadDocumentRegistry();
   const steps = loadSteps();
@@ -96,8 +121,20 @@ async function main() {
   const templates = loadTemplates();
   const version = loadVersion();
 
-  console.log(`upcj-starter-kit v${version}`);
-  console.log(`  ${documents.length} documents, ${steps.length} steps, ${Object.keys(matterPages).length} matter pages`);
+  const totalPages = steps.length + documents.length + 5; // 17 + 15 + 5 (matter)
+  const context = { version, totalPages };
+
+  let pageNumber = PAGE_ORDER_PREFIX.length + 1;
+  for (const step of steps) {
+    const nextStep = step.nextStepId ? findStep(steps, step.nextStepId) : null;
+    const html = renderGuidePage({
+      step, nextStep, templates, context: { ...context, pageNumber }
+    });
+    writeFileSync(join(distHtml, `${step.id}.html`), html);
+    pageNumber++;
+  }
+
+  console.log(`Built ${steps.length} guide pages into ${distHtml}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

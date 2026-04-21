@@ -1,0 +1,40 @@
+<h1 id="page-title">{{stepTitle}}</h1>
+<p class="lede">{{lede}}</p>
+
+{{#if whatHappens}}
+<section aria-labelledby="what-happens-heading">
+  <h2 id="what-happens-heading">What happens</h2>
+  <ul>
+    {{#each whatHappens}}<li>{{this}}</li>{{/each}}
+  </ul>
+</section>
+{{/if}}
+
+{{#if sayThis}}
+<aside class="say-this" aria-labelledby="say-this-heading">
+  <div class="say-this__label" id="say-this-heading">Say this</div>
+  <p>"{{sayThis}}"</p>
+</aside>
+{{/if}}
+
+{{#if checkFor}}
+<section aria-labelledby="check-for-heading">
+  <h2 id="check-for-heading">Check the document has</h2>
+  <ul class="check-list">
+    {{#each checkFor}}<li>{{this}}</li>{{/each}}
+  </ul>
+  <p class="small">Source: <code>{{criticalFieldsDocId}}</code> in the document registry.</p>
+</section>
+{{/if}}
+
+{{#if deadline}}
+<aside class="deadline" aria-labelledby="deadline-heading">
+  <div class="deadline__label" id="deadline-heading">Deadline</div>
+  <p><strong>{{deadline.unit}}</strong> — {{deadline.actor}} must complete this.</p>
+  <p>Consequence if missed: {{deadline.consequence}}.</p>
+</aside>
+{{/if}}
+
+{{#if nextStep}}
+<p class="small">Next: <strong>{{nextStep.id}}</strong> — {{nextStep.title}}.</p>
+{{/if}}
