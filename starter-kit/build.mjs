@@ -269,6 +269,20 @@ async function main() {
     context: { ...context, pageNumber } });
   writeFileSync(join(distHtml, "glossary.html"), gHtml);
 
+  // Preview index — one link per rendered page in the natural sort order.
+  const allPages = readdirSync(distHtml)
+    .filter((f) => f.endsWith(".html") && f !== "index.html")
+    .sort();
+  const index = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>UPCJ Starter Kit — Preview</title>
+<link rel="stylesheet" href="kit.css"></head>
+<body><main style="max-width:210mm;margin:20mm auto;padding:0 20mm">
+<h1>UPCJ Starter Kit — HTML preview</h1>
+<p class="small">Version ${version}. ${allPages.length} pages.</p>
+<ol>${allPages.map((p) => `<li><a href="${p}">${p.replace(/\.html$/, "")}</a></li>`).join("")}</ol>
+</main></body></html>`;
+  writeFileSync(join(distHtml, "index.html"), index);
+
   console.log(`Built ${pageNumber} pages`);
 }
 
