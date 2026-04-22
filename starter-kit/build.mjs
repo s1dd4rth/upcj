@@ -13,7 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
 const PAGE_ORDER_PREFIX = ["cover", "how-to-use-1", "how-to-use-2", "decision-junction"];
-const PAGE_ORDER_SUFFIX = ["glossary"];
+const PAGE_ORDER_SUFFIX = ["icd-10-reference", "glossary"];
 const MATTER_PAGE_COUNT = PAGE_ORDER_PREFIX.length + PAGE_ORDER_SUFFIX.length;
 
 export function loadDocumentRegistry({ fixture } = {}) {
@@ -264,10 +264,15 @@ async function main() {
     pageNumber++;
   }
 
-  // Suffix matter: glossary
-  const gHtml = renderMatterPage({ id: "glossary", matter: matterPages.glossary, templates,
-    context: { ...context, pageNumber } });
-  writeFileSync(join(distHtml, "glossary.html"), gHtml);
+  // Suffix matter: icd-10-reference, glossary
+  for (const id of PAGE_ORDER_SUFFIX) {
+    const html = renderMatterPage({
+      id, matter: matterPages[id], templates,
+      context: { ...context, pageNumber }
+    });
+    writeFileSync(join(distHtml, `${id}.html`), html);
+    pageNumber++;
+  }
 
   // Preview index — one link per rendered page in the natural sort order.
   const allPages = readdirSync(distHtml)
@@ -283,7 +288,7 @@ async function main() {
 </main></body></html>`;
   writeFileSync(join(distHtml, "index.html"), index);
 
-  console.log(`Built ${pageNumber} pages`);
+  console.log(`Built ${totalPages} pages`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
