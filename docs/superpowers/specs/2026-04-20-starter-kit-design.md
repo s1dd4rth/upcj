@@ -19,7 +19,7 @@ A single kit serves three audiences without forking:
 **In v1:**
 - 17 **guide pages** — one per journey step: `1.1`, `1.2`, `1.3`, `A.1`–`A.5`, `B.1`–`B.5`, `3.1`–`3.4`.
 - 15 **template pages** — one per canonical document: `DOC-001` through `DOC-015` in `document-registry.json`.
-- 5 **front/back-matter pages** — cover, how to use this kit (2 sheets), decision-junction flowchart, glossary + grievance phone tree. Total: 37 A4 pages.
+- 6 **front/back-matter pages** — cover, how to use this kit (2 sheets), decision-junction flowchart, ICD-10 quick reference, glossary + grievance phone tree. Total: 38 A4 pages.
 - One released PDF: **print-ready** (flat A4 pages, tagged for PDF/UA-1). Users print and hand-fill — reflects real hospital context where digital submission is not assumed.
 - HTML preview published on the existing GitHub Pages site.
 - Both claim paths: cashless (`A.*`) and reimbursement (`B.*`) covered fully.
