@@ -1,0 +1,39 @@
+<div class="op-note" role="note">For completion by the {{actor}}</div>
+<h1 id="page-title">{{docName}}</h1>
+<p class="mandatory-line">All fields are mandatory unless marked <em>optional</em>.</p>
+
+<form action="#" method="post" novalidate>
+  <fieldset>
+    <legend>{{docId}}</legend>
+    {{#each fields}}
+      <div class="field">
+        <label class="field__label" for="{{slug}}">{{label}}</label>
+        {{#if hint}}<span class="field__hint" id="{{slug}}-hint">{{hint}}</span>{{/if}}
+        {{#if multiline}}
+          <textarea id="{{slug}}" name="{{slug}}"
+                    class="field__input field__input--multiline field__input--lines-3"
+                    {{#if hint}}aria-describedby="{{slug}}-hint"{{/if}}
+                    rows="3"></textarea>
+        {{else}}
+          <input id="{{slug}}" name="{{slug}}" type="{{type}}"
+                 class="field__input"
+                 {{#if autocomplete}}autocomplete="{{autocomplete}}"{{/if}}
+                 {{#if hint}}aria-describedby="{{slug}}-hint"{{/if}}>
+        {{/if}}
+      </div>
+    {{/each}}
+  </fieldset>
+
+  {{#if signatureLabel}}
+  <div class="signature">
+    <span class="signature__label">{{signatureLabel}} — name &amp; registration number</span>
+  </div>
+  {{/if}}
+</form>
+
+<div class="stamp-box" role="note" aria-label="Hospital stamp area, 45mm square">
+  <div class="stamp-box__bleed" aria-hidden="true"></div>
+  Hospital stamp
+</div>
+
+<p class="small">Source: <code>{{docId}}</code> in <code>framework/document-registry.json</code>.</p>

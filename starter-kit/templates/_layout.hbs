@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}} — UPCJ Starter Kit</title>
+  <link rel="stylesheet" href="kit.css">
+  <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js" defer></script>
+</head>
+<body>
+<article class="page" aria-labelledby="page-title">
+  <header class="masthead" role="banner">
+    <span>UPCJ Starter Kit</span>
+    <span class="masthead__tag">{{pageCode}}</span>
+  </header>
+  <div class="context-band">
+    <span>{{contextLeft}}</span>
+    <span>{{contextRight}}</span>
+  </div>
+  {{!-- CONTRACT: body templates MUST emit exactly one element with id="page-title"
+        (the <article> above binds aria-labelledby to it). Do not emit duplicate
+        role="banner" or role="contentinfo" landmarks in body content — this layout
+        already declares them once per page. --}}
+  <main id="main-content">
+  {{{body}}}
+  </main>
+  <footer class="foot" role="contentinfo">
+    <span>UPCJ/SK/{{pageCode}}/EN v{{version}}</span>
+    <span>{{pageNumber}} / {{totalPages}}</span>
+  </footer>
+</article>
+</body>
+</html>

@@ -2,3 +2,5 @@
 .DS_Store
 .worktrees/
 docs/superpowers/plans/
+starter-kit/node_modules/
+starter-kit/dist/

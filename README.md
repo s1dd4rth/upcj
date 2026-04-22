@@ -154,6 +154,16 @@ upcj/
 - [ ] v3.0 — Integration with ABHA (Ayushman Bharat Health Account)
 - [ ] v3.1 — Bima Sugam integration specification
 
+## Starter kit
+
+The `starter-kit/` directory generates a 37-page printable A4 patient companion from `framework/document-registry.json` and authored markdown in `starter-kit/content/`. A tagged PDF is attached to each `starter-kit-v*` release.
+
+- **[Download the latest print-ready PDF](https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf)** (PDF/UA-1 tagged, CC BY-SA 4.0)
+- **[Preview the HTML locally](starter-kit/README.md#build)** — `cd starter-kit && npm install && npm run build && npm run preview`
+- **[Authoring guide](starter-kit/README.md)** — how to add a new step or document
+
+A fillable AcroForm variant is planned for v1.1 (see [spec §2](docs/superpowers/specs/2026-04-20-starter-kit-design.md#2-scope)).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. We welcome contributions in translations, validation from industry professionals, design improvements, integrations, and patient stories.
