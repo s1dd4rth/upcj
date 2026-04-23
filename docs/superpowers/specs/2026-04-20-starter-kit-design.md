@@ -81,7 +81,7 @@ The kit honours "start with user needs," "do the hard work to make it simple," "
 - **Single-line field:** ≥10 mm vertical handwriting height. Label above, 9 pt uppercase, left-aligned. Format hint in `--dark-grey` below the label.
 - **Multi-line field (diagnosis, reason for admission, etc.):** ≥20 mm per visual line, minimum 3 lines. Box border in `--black`, 1.5 pt.
 - **Signature block:** 60 mm × 25 mm rule with label beneath ("Treating doctor — name & registration number").
-- **Stamp box:** fixed 45 mm × 45 mm bordered square, bottom-right of every provider-generated template, labelled "Hospital stamp" in 9 pt uppercase. Sized for the standard ~40 mm round Indian rubber stamp with 2–3 mm bleed tolerance.
+- **Stamp box:** fixed 90 mm × 45 mm bordered rectangle, bottom-right of every provider-generated template, labelled "Hospital stamp or seal" in 9 pt uppercase. Sized to accept both the ~40 mm round Indian rubber stamp (with 2–3 mm bleed tolerance) and a horizontal rectangular rubber stamp up to ~85 × 40 mm. Many hospitals apply both on the same document — a circular hospital seal and a rectangular doctor-name-and-registration stamp.
 - Grouped fields use `<fieldset>` with `<legend>`. Required-field convention: "All fields are mandatory unless marked *optional*." Every template leads with this line.
 - Tab order follows reading order (top-to-bottom, left-to-right).
 - `autocomplete` attributes used where applicable: `bday`, `tel`, `name`, `postal-code`.

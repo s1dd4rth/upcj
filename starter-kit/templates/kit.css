@@ -191,7 +191,7 @@ legend   { font-weight: 700; font-size: 11pt; margin-bottom: 2mm; }
   position: absolute;
   right: 0;
   bottom: 15mm;
-  width: 45mm;
+  width: 90mm;
   height: 45mm;
   border: 1pt solid var(--black);
   display: flex;
