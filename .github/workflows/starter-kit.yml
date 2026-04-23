@@ -78,6 +78,12 @@ jobs:
     permissions:
       contents: write
     steps:
+      # Check out main so we can commit the PDF back to assets/ after release.
+      # Default checkout would land in detached-HEAD on the tag commit.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
       - uses: actions/download-artifact@v4
         with:
           name: starter-kit-pdf
@@ -87,3 +93,25 @@ jobs:
         with:
           files: dist/upcj-starter-kit.pdf
           generate_release_notes: true
+
+      # Sync the released PDF to assets/ on main so the inline preview in
+      # preview.html (served from Pages) stays in sync with the latest tag.
+      # The push only touches assets/upcj-starter-kit.pdf, which is outside
+      # the workflow's path filter (starter-kit/**, framework/**, the
+      # workflow file itself) — no infinite loop.
+      - name: Publish PDF to Pages (assets/upcj-starter-kit.pdf)
+        run: |
+          set -euo pipefail
+          cp dist/upcj-starter-kit.pdf assets/upcj-starter-kit.pdf
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/upcj-starter-kit.pdf
+          if git diff --staged --quiet; then
+            echo "PDF unchanged from main; nothing to commit."
+          else
+            git commit -m "chore: publish ${GITHUB_REF_NAME} PDF to Pages
+
+          Auto-committed by the starter-kit release workflow so the inline
+          preview at preview.html stays in sync with the tagged artifact."
+            git push origin HEAD:main
+          fi
