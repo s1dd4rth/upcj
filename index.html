@@ -386,6 +386,42 @@
             font-size: 14px;
         }
 
+        /* ── Kit preview gallery ── */
+        .kit-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .kit-thumb {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid var(--border);
+            background: var(--white);
+            transition: border-color 0.15s, transform 0.15s;
+        }
+        .kit-thumb:hover,
+        .kit-thumb:focus {
+            border-color: var(--link);
+            transform: translateY(-2px);
+        }
+        .kit-thumb img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid var(--border);
+        }
+        .kit-thumb__label {
+            padding: 8px 10px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--dark-grey);
+            text-transform: uppercase;
+        }
+
         /* ── Print ── */
         @media print {
             .gds-header, .gds-footer, .phase-banner, .btn-group { display: none; }
@@ -635,6 +671,32 @@
             from <code>framework/document-registry.json</code> and authored markdown. A tagged PDF is
             attached to each <code>starter-kit-v*</code> release.
         </p>
+        <div class="kit-preview">
+            <a class="kit-thumb" href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">
+                <img src="assets/starter-kit-preview/cover.png" alt="Starter kit — cover page showing title, edition, version, and CC BY-SA license" loading="lazy">
+                <span class="kit-thumb__label">Cover</span>
+            </a>
+            <a class="kit-thumb" href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">
+                <img src="assets/starter-kit-preview/decision-junction.png" alt="Decision junction — cashless vs reimbursement deciding questions" loading="lazy">
+                <span class="kit-thumb__label">Decision junction</span>
+            </a>
+            <a class="kit-thumb" href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">
+                <img src="assets/starter-kit-preview/guide-with-deadline.png" alt="Guide page — Admission Advice with red deadline block and Say this script" loading="lazy">
+                <span class="kit-thumb__label">Guide page · deadline</span>
+            </a>
+            <a class="kit-thumb" href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">
+                <img src="assets/starter-kit-preview/template-with-form.png" alt="Template page — Admission Advice Note with named form fields, signature rule, and stamp box" loading="lazy">
+                <span class="kit-thumb__label">Template · form fields</span>
+            </a>
+            <a class="kit-thumb" href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">
+                <img src="assets/starter-kit-preview/icd-10-reference.png" alt="ICD-10 quick reference — chapter ranges for common Indian hospitalisation" loading="lazy">
+                <span class="kit-thumb__label">ICD-10 reference</span>
+            </a>
+            <a class="kit-thumb" href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">
+                <img src="assets/starter-kit-preview/glossary.png" alt="Glossary and grievance phone tree" loading="lazy">
+                <span class="kit-thumb__label">Glossary</span>
+            </a>
+        </div>
         <ul>
             <li>
                 <strong><a href="https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf">Print-ready PDF</a></strong>
