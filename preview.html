@@ -87,7 +87,13 @@
 
     <script>
         (function () {
-            var PDF_URL = "https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf";
+            // Self-hosted on Pages so the iframe renders the PDF inline in
+            // every browser (Safari respects Content-Disposition: attachment
+            // even in iframes; GitHub Releases sends that header, Pages does
+            // not). The Download button still goes to the canonical Release
+            // URL so users always get the latest published artifact.
+            var PDF_URL = "assets/upcj-starter-kit.pdf";
+            var DOWNLOAD_URL = "https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf";
             var params = new URLSearchParams(window.location.search);
             var page = parseInt(params.get("page"), 10);
             if (!Number.isFinite(page) || page < 1) page = 1;
@@ -96,7 +102,7 @@
             // built-in PDF viewers (and pdf.js).
             var frameSrc = PDF_URL + "#page=" + page + "&toolbar=1&view=FitH";
             document.getElementById("pdf-frame").src = frameSrc;
-            document.getElementById("download-btn").href = PDF_URL;
+            document.getElementById("download-btn").href = DOWNLOAD_URL;
 
             document.getElementById("print-btn").addEventListener("click", function () {
                 var f = document.getElementById("pdf-frame");
