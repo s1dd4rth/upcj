@@ -20,16 +20,16 @@ A single shared spec serves four audiences without forking:
 ## 2. Scope
 
 **In v1 (lean+):**
-- **JSON Schemas** (draft 2020-12) for six objects: `Claim`, `Document`, `Step`, `SLA`, `Interaction`, `Query`.
-- **Lifecycle state machines** for the three objects with state: `Claim`, `Document`, `Query`.
+- **JSON Schemas** (draft 2020-12) for seven objects: `Claim`, `Document`, `Step`, `SLA`, `Interaction`, `Query`, and a **minimal `Grievance`** (data-only — id, claimRef, raisedAt, level, status, raisedAgainst). The full Grievance lifecycle is deferred to v1.1, but the minimal schema lets a v1 engine record that a breach-driven escalation happened (closing the audit-trail loop).
+- **Lifecycle state machines** for the three stateful objects: `Claim`, `Document`, `Query`. Grievance has no lifecycle in v1.
 - **Machine-readable registries**: `slas.json` (the 10 SLAs with ISO 8601 durations), `events.json` (every event the engine accepts, with typed payloads), `step-sla-map.json` (which SLAs apply at which step).
-- **Reference engine** (`@upcj/engine`) — three pure functions: `validate`, `advance`, `evaluateSLAs`. Pure functions, no system-clock reads, no global state.
+- **Reference engine** (`@upcj/engine`) — four pure functions: `validate`, `advance`, `replay`, `evaluateSLAs`. Pure functions, no system-clock reads, no global state.
 - **Conformance fixtures** as language-neutral contract: ≥25 input/event/expected-output triples in `spec/conformance/`, plus a `coverage.json` declaring what the fixture set must collectively prove.
 - **CI workflow** (`core.yml`) that runs unit tests, conformance tests, framework-JSON validation, and publishes the npm package on a `core-v*` tag.
 - The spec validates the existing `framework/document-registry.json` and `framework/ownership-matrix.json` without moving them — additive, not migrating.
 
 **Out of scope for v1** (deferred):
-- **Grievance lifecycle** — covered as an object type with attributes only; full state-machine + escalation engine deferred to v1.1. Grievance fires only when other systems have already failed; v1 covers the operational happy path and the deficiency loop.
+- **Grievance lifecycle** — full state machine (level 1 → 2 → 3 escalation, acknowledgement-SLA + resolution-SLA, evidence aggregation from CIP) deferred to v1.1. v1 ships the minimal schema only, so breach-driven escalations have a typed object to land on.
 - **Full actor schemas** (Patient, Doctor, Hospital, Managed Care, TPA, Insurer beyond minimal references). Actor objects are mostly attribute bags with limited behaviour; v1.1 adds them as schemas.
 - **Policy lifecycle** — Policy is referenced as an ID in v1; full schema + coverage rules in v1.1.
 - **Eligibility / rules engine** — `is hospital in network`, `is diagnosis in exclusion list`. These are policy-derived predicates, structurally different from claim-state transitions; they belong in a separate `spec/rules/` tree, not in lifecycles. v1.2.
@@ -43,7 +43,8 @@ A single shared spec serves four audiences without forking:
 - Any modification to `spec/registries/events.json`, `spec/lifecycles/*.json`, or `spec/registries/slas.json` without a corresponding fixture update fails CI.
 - A claim ID + the full interaction history is sufficient to reconstruct the claim's current state and SLA picture deterministically (replay produces the same output as the live computation).
 - The existing `framework/document-registry.json` and `framework/ownership-matrix.json` validate against `spec/schemas/document.schema.json` and `spec/schemas/step.schema.json` respectively, with zero changes to those files.
-- An IRDAI circular can reference SLA IDs (`SLA-pre-auth-response`) and event names (`pre-auth-filed`) and any UPCJ-conformant system can be audited against the named identifiers.
+- The bundled `dist/spec/` inside the published `@upcj/engine` package is provably identical to the canonical `spec/` directory at the publish commit (CI fails on mismatch). `engine.getSpecHash()` returns the sha-256 fingerprint at runtime; consumers can verify they're not running against a stale spec.
+- A `Claim` object carries `specVersion: "v1"`. Cross-system imports that reference an unsupported spec version are rejected with a clear error, not silently accepted.
 
 ## 4. Benchmarks and standards alignment
 
@@ -147,14 +148,17 @@ Standard JSON Schema draft 2020-12. Each schema has an absolute `$id` URL. Cross
   "$id": "https://upcj.org/spec/v1/schemas/claim.schema.json",
   "title": "Claim",
   "type": "object",
-  "required": ["id", "status", "path", "admissionType", "patientId", "policyId"],
+  "required": ["id", "specVersion", "status", "path", "admissionType", "patientId", "policyId"],
   "properties": {
     "id": { "type": "string", "pattern": "^CLM-[A-Z0-9-]+$" },
+    "specVersion": { "const": "v1" },
     "status": {
       "enum": ["pre-admission", "intimated", "admission-advised",
                "in-treatment-cashless", "in-treatment-reimbursement",
                "pre-auth-pending", "discharged", "in-adjudication",
-               "in-query", "settled", "rejected"]
+               "in-query", "awaiting-patient-action",
+               "settled", "partially-settled",
+               "withdrawn", "closed-without-settlement", "rejected"]
     },
     "path": { "enum": ["undecided", "cashless", "reimbursement"] },
     "admissionType": { "enum": ["planned", "emergency"] },
@@ -183,12 +187,32 @@ Standard JSON Schema draft 2020-12. Each schema has an absolute `$id` URL. Cross
     "insurerId":  { "type": "string" },
     "documents":     { "type": "array", "items": { "$ref": "document-instance.schema.json" } },
     "interactions":  { "type": "array", "items": { "$ref": "interaction.schema.json" } },
-    "queries":       { "type": "array", "items": { "$ref": "query.schema.json" } }
+    "queries":       { "type": "array", "items": { "$ref": "query.schema.json" } },
+    "grievances":    { "type": "array", "items": { "$ref": "grievance.schema.json" } }
   }
 }
 ```
 
-ID convention: prefixed (`CLM-`, `DOC-`, `INT-`, `SLA-`, `QRY-`) for grep-ability and disambiguation in human-read logs.
+ID convention: prefixed (`CLM-`, `DOC-`, `INT-`, `SLA-`, `QRY-`, `GRV-`) for grep-ability and disambiguation in human-read logs.
+
+A minimal `grievance.schema.json` ships in v1 (the full lifecycle is deferred to v1.1):
+
+```json
+{
+  "$id": "https://upcj.org/spec/v1/schemas/grievance.schema.json",
+  "type": "object",
+  "required": ["id", "claimRef", "raisedAt", "level", "status", "raisedAgainst"],
+  "properties": {
+    "id":            { "type": "string", "pattern": "^GRV-[A-Z0-9-]+$" },
+    "claimRef":      { "type": "string", "pattern": "^CLM-[A-Z0-9-]+$" },
+    "raisedAt":      { "type": "string", "format": "date-time" },
+    "level":         { "enum": [1, 2, 3] },
+    "status":        { "enum": ["open", "acknowledged", "resolved", "escalated"] },
+    "raisedAgainst": { "enum": ["Hospital", "TPA", "Insurer"] },
+    "citedSLAs":     { "type": "array", "items": { "type": "string", "pattern": "^SLA-" } }
+  }
+}
+```
 
 ### 6.2 Lifecycles (`spec/lifecycles/*.lifecycle.json`)
 
@@ -251,8 +275,8 @@ The 10 SLAs from the governance model, machine-readable. ISO 8601 durations. Adm
       "step": "A.1",
       "actor": "Hospital",
       "duration": "PT2H",
-      "startsOn": "doctor-signs-admission-advice",
-      "endsOn": "pre-auth-filed",
+      "startsOn": ["doctor-signs-admission-advice"],
+      "endsOn":   ["pre-auth-filed"],
       "escalation": { "action": "patient-files-direct", "target": "TPA" }
     },
     {
@@ -260,8 +284,8 @@ The 10 SLAs from the governance model, machine-readable. ISO 8601 durations. Adm
       "step": "A.3",
       "actor": "TPA",
       "durationByAdmissionType": { "emergency": "PT4H", "planned": "PT12H" },
-      "startsOn": "pre-auth-filed",
-      "endsOn": "pre-auth-approved | pre-auth-rejected",
+      "startsOn": ["pre-auth-filed"],
+      "endsOn":   ["pre-auth-approved", "pre-auth-rejected"],
       "escalation": { "action": "auto-escalate", "target": "Insurer" }
     },
     {
@@ -269,15 +293,15 @@ The 10 SLAs from the governance model, machine-readable. ISO 8601 durations. Adm
       "step": "3.4",
       "actor": "Insurer",
       "duration": "P30D",
-      "startsOn": "claim-form-submitted",
-      "endsOn": "claim-settled | claim-rejected",
+      "startsOn": ["claim-form-submitted"],
+      "endsOn":   ["claim-settled", "claim-rejected", "claim-partially-settled"],
       "escalation": { "action": "interest-payable-to-patient", "target": "Patient" }
     }
   ]
 }
 ```
 
-`endsOn` accepts pipe-separated alternates meaning "any of". The engine watches the interaction stream and computes "active SLAs" as the set where `startsOn` has fired but no `endsOn` has.
+`startsOn` and `endsOn` are JSON arrays of event names — the SLA starts when any listed start-event fires, ends when any listed end-event fires. Always arrays even when single-element, so the format is uniform across all SLAs and other-language ports never need to special-case "string vs array". The engine watches the interaction stream and computes "active SLAs" as the set where any `startsOn` event has fired but no `endsOn` event has.
 
 #### `spec/registries/events.json`
 
@@ -312,6 +336,10 @@ Every event the engine accepts, with its payload schema. This is what makes the 
   }
 }
 ```
+
+The `produces` field is constrained by the meta-schema: `{ "enum": ["Interaction", "Document", "Query", "Grievance"] }`. Every event produces exactly one new typed object. Most events produce an Interaction; events like `query-raised` produce a Query (and an Interaction logging the production); breach-driven `grievance-filed` produces a Grievance.
+
+Event names match `^[a-z][a-z0-9-]*$` (kebab-case, lowercase, no spaces or punctuation) — enforced by the events meta-schema. This guarantees `startsOn` / `endsOn` arrays can never contain ambiguous tokens.
 
 #### `spec/registries/step-sla-map.json`
 
@@ -357,34 +385,35 @@ The contract every UPCJ-compliant engine must satisfy. Each fixture is an input 
       "documentIds": ["DOC-006-A"],
       "linkedSLAs": ["SLA-pre-auth-response"]
     }],
-    "activeSLAs": [{
-      "id": "SLA-pre-auth-response",
-      "state": "active",
-      "deadline": "2026-04-26T01:00:00+05:30"
-    }]
+    "slaStatuses": [
+      { "id": "SLA-pre-auth-submission",        "state": "completed", "endedAt": "2026-04-25T13:00:00+05:30" },
+      { "id": "SLA-pre-auth-response",          "state": "active",    "deadline": "2026-04-26T01:00:00+05:30" },
+      { "id": "SLA-reimbursement-settlement",   "state": "pending" }
+    ]
   }
 }
 ```
 
-Engines read `given.claim`, apply `when.event` with `when.payload` at `when.at`, and assert the result equals `then`. Identical fixtures run by a Python or Go engine implementation must produce identical outputs.
+Engines read `given.claim`, apply `when.event` with `when.payload` at `when.at`, and assert the result equals `then`. **`then.slaStatuses` is the FULL output of `evaluateSLAs(claim, { now: when.at })` — including pending SLAs that haven't started, not just active ones.** Asserting the whole truth (rather than a filtered subset) prevents engines from drifting on which SLAs they consider "currently relevant". Identical fixtures run by a Python or Go engine implementation must produce identical outputs.
 
 ### 6.5 Conventions summary
 
 - **All durations** ISO 8601 (`PT4H`, `P30D`).
 - **All timestamps** carry timezone, defaulting to `+05:30` (IST).
 - **No system-clock reads**; functions that need "now" take an explicit `now` parameter.
-- **Events** named in `kebab-case-imperative` (`pre-auth-filed`, `claim-form-submitted`).
-- **IDs** prefixed by object type (`CLM-`, `DOC-`, `INT-`, `SLA-`, `QRY-`).
+- **Events** named in `kebab-case-imperative` (`pre-auth-filed`, `claim-form-submitted`); regex `^[a-z][a-z0-9-]*$`.
+- **IDs** prefixed by object type (`CLM-`, `DOC-`, `INT-`, `SLA-`, `QRY-`, `GRV-`).
 - **Schema `$id`s** absolute (`https://upcj.org/spec/v1/...`), so `$ref` resolution works whether files are loaded from disk, npm package, or CDN.
+- **Step IDs name positions in the journey map; they are not monotonically increasing along a claim's path.** A claim can move from step `A.4` (in-treatment cashless) to `A.3` (pre-auth response pending) when an enhancement is filed mid-treatment; from `B.4` to `B.5` and back; from `3.1` to `3.4` skipping `3.2` if no query is raised. Lifecycle interpreters MUST NOT assume monotonic step transitions, and CI MUST validate every `meta.step` value in every lifecycle file is present in the `currentStep` enum.
 
 ## 7. Engine API
 
 ### 7.1 Public surface (the entire export of `@upcj/engine`)
 
-Three functions. Pure. No side effects. No global state. No system-clock reads.
+Four functions plus one constant. Pure. No side effects. No global state. No system-clock reads.
 
 ```ts
-import { validate, advance, evaluateSLAs } from "@upcj/engine";
+import { validate, advance, replay, evaluateSLAs, getSpecHash } from "@upcj/engine";
 import type { Claim, Event, Interaction, SLAStatus } from "@upcj/engine";
 
 const result: ValidationResult = validate(claim, "claim");
@@ -397,14 +426,23 @@ const event: Event = {
 };
 const advanced = advance(claim, event);
 
+// replay folds advance() over an ordered event list — the canonical primitive
+// for reconstructing a claim from its audit history.
+const final = replay(initialClaim, [event1, event2, event3]);
+
 const slas: SLAStatus[] = evaluateSLAs(claim, {
   now: "2026-04-25T18:30:00+05:30"
 });
+
+// getSpecHash() returns the sha-256 of the bundled spec/ at publish time —
+// consumers can verify they're running against the canonical spec:
+//   if (getSpecHash() !== expectedFromCanonicalRepo) throw …
+const hash: string = getSpecHash();
 ```
 
 ### 7.2 Result types
 
-All three functions return Result-style discriminated unions. Domain conditions are returned as data. Programming errors (wrong argument types in TS, malformed spec files) throw `Error`.
+`validate`, `advance`, and `replay` return Result-style discriminated unions. `evaluateSLAs` returns an array (never fails — empty array means no SLAs in registry, which is itself a programming error caught at engine init). Domain conditions are returned as data. Programming errors (wrong argument types in TS, malformed spec files) throw `Error`.
 
 ```ts
 type ValidationResult =
@@ -425,7 +463,12 @@ type AdvanceError =
   | { kind: "claim-invalid";       errors: ValidationError[] }
   | { kind: "event-unknown";       eventName: string }
   | { kind: "payload-invalid";     eventName: string; errors: ValidationError[] }
-  | { kind: "transition-illegal";  currentState: string; eventName: string };
+  | { kind: "transition-illegal";  currentState: string; eventName: string }
+  | { kind: "spec-version-mismatch"; expected: string; actual: string };
+
+type ReplayResult =
+  | { ok: true; claim: Claim; interactions: Interaction[] }
+  | { ok: false; error: AdvanceError; processedCount: number };  // events successfully applied before the failure
 
 type SLAStatus = {
   id: string;
@@ -455,25 +498,26 @@ The four SLA states map cleanly:
 
 Given `(claim, event)`:
 
-1. `validate(claim, "claim")`. If `!ok` → `{ kind: "claim-invalid", errors }`.
-2. Look up `event.name` in `events.json`. If absent → `{ kind: "event-unknown", eventName }`.
-3. Validate `event.payload` against the event's payload schema. If `!ok` → `{ kind: "payload-invalid", … }`.
-4. Read `claim.lifecycle.json`. Look up `claim.status` → state node. Look up `event.name` in the state's `on` map. If absent → `{ kind: "transition-illegal", currentState, eventName }`.
-5. Resolve target state. Read its `meta.step`.
-6. Construct new `Interaction`:
+1. Check `claim.specVersion === "v1"`. If mismatch → `{ kind: "spec-version-mismatch", expected: "v1", actual: claim.specVersion }`.
+2. `validate(claim, "claim")`. If `!ok` → `{ kind: "claim-invalid", errors }`.
+3. Look up `event.name` in `events.json`. If absent → `{ kind: "event-unknown", eventName }`.
+4. Validate `event.payload` against the event's payload schema. If `!ok` → `{ kind: "payload-invalid", … }`.
+5. Read `claim.lifecycle.json`. Look up `claim.status` → state node. Look up `event.name` in the state's `on` map. If absent → `{ kind: "transition-illegal", currentState, eventName }`.
+6. Resolve target state. Read its `meta.step`.
+7. Construct new `Interaction`:
    ```ts
    {
-     id: deterministicId(claim, event),         // sha-256 of claim.id + event.at + event.name
+     id: deterministicId(claim, event),         // see definition below
      claimRef: claim.id,
      timestamp: event.at,
      initiatingActor: event.actor,
      respondingActor: null,
      nature: events[event.name].produces,
      payload: event.payload,
-     linkedSLAs: matchingSLAsForEvent(event.name)
+     linkedSLAs: matchingSLAsForEvent(event.name) // every SLA whose startsOn includes event.name
    }
    ```
-7. Construct new claim:
+8. Construct new claim:
    ```ts
    { ...claim,
      status: targetState,
@@ -481,10 +525,16 @@ Given `(claim, event)`:
      interactions: [...claim.interactions, newInteraction]
    }
    ```
-8. Re-validate the new claim. If somehow invalid → `{ kind: "claim-invalid", errors }`. (Catches lifecycle-spec bugs.)
-9. Return `{ ok: true, claim: newClaim, interactions: [newInteraction] }`.
+9. Re-validate the new claim. If somehow invalid → `{ kind: "claim-invalid", errors }`. (Catches lifecycle-spec bugs.)
+10. Return `{ ok: true, claim: newClaim, interactions: [newInteraction] }`.
 
-`deterministicId` uses sha-256 of stable inputs so the same `(claim, event)` always produces the same Interaction ID. Conformance fixtures can assert exact IDs.
+`deterministicId(claim, event)` is `sha-256` of the canonical concatenation:
+
+```
+claim.id + "|" + claim.interactions.length + "|" + event.at + "|" + event.name + "|" + canonicalJson(event.payload)
+```
+
+Including `claim.interactions.length` (a per-claim sequence number) AND `canonicalJson(event.payload)` eliminates collisions on legitimate same-second same-name events from the same claim — e.g., two `document-uploaded` events at `13:00:00` with different `documentId`s, or any source system whose timestamps lose subsecond precision. `canonicalJson` is RFC 8785 JCS (JSON Canonicalization Scheme): sorted keys, no whitespace, deterministic number formatting. The same `(claim, event)` always produces the same Interaction ID across implementations and across runs; conformance fixtures can assert exact IDs.
 
 ### 7.5 Error model conventions
 
@@ -526,9 +576,11 @@ for (const name of fixtures) {
     assert.equal(result.ok, true);
     assert.deepStrictEqual(result.claim, expectedClaim(fx));
     assert.deepStrictEqual(result.interactions, fx.then.interactions);
-    if (fx.then.activeSLAs) {
+    if (fx.then.slaStatuses) {
+      // Assert the FULL output of evaluateSLAs, not a filtered subset.
+      // Filtering convention is "the spec is the contract — assert the whole truth."
       const slas = evaluateSLAs(result.claim, { now: fx.when.at });
-      assert.deepStrictEqual(activeOnly(slas), fx.then.activeSLAs);
+      assert.deepStrictEqual(slas, fx.then.slaStatuses);
     }
   });
 }
@@ -554,32 +606,45 @@ test("coverage requirements satisfied", () => {
       "rationale": "Each declared event must appear in at least one fixture's `when.event` field."
     },
     {
+      "rule": "every-transition-exercised",
+      "from": "lifecycles/",
+      "rationale": "Every (state, event) → state edge in every lifecycle must appear in at least one fixture. Catches dead lifecycle edges that pass `every-event-covered` but exercise only a subset of transitions."
+    },
+    {
+      "rule": "every-state-entered",
+      "from": "lifecycles/",
+      "rationale": "Every state in every lifecycle must be the resulting state of at least one fixture."
+    },
+    {
       "rule": "every-sla-has-state",
       "from": "registries/slas.json",
       "states": ["completed", "breached"],
       "rationale": "Every SLA must have at least one fixture proving it can complete and one proving it can be breached."
     },
     {
-      "rule": "tag-min-count",
-      "tag": "happy-path-cashless",
-      "minCount": 1
+      "rule": "lifecycle-meta-step-valid",
+      "from": "lifecycles/",
+      "rationale": "Every `meta.step` value in every lifecycle file must be a member of `claim.schema.json`'s `currentStep` enum. Catches schema drift before runtime."
     },
     {
-      "rule": "tag-min-count",
-      "tag": "happy-path-reimbursement",
-      "minCount": 1
+      "rule": "tag-min-count", "tag": "happy-path-cashless",       "minCount": 1
     },
     {
-      "rule": "tag-min-count",
-      "tag": "query-loop",
-      "minCount": 2,
+      "rule": "tag-min-count", "tag": "happy-path-reimbursement",  "minCount": 1
+    },
+    {
+      "rule": "tag-min-count", "tag": "query-loop",                "minCount": 2,
       "rationale": "Both A.2 (cashless) and B.5 (reimbursement) query flows must be covered."
+    },
+    {
+      "rule": "tag-min-count", "tag": "partial-settlement",        "minCount": 1,
+      "rationale": "Partial-settlement is the most common real-world Indian outcome (room-rent caps, sub-limits). Must be exercised."
     }
   ]
 }
 ```
 
-Five built-in rule kinds: `every-event-covered`, `every-sla-has-state`, `tag-min-count`, `every-state-entered`, `every-transition-exercised`. Adding a new event to `events.json` without authoring a fixture breaks CI.
+Six built-in rule kinds, all required: `every-event-covered`, `every-transition-exercised`, `every-state-entered`, `every-sla-has-state`, `lifecycle-meta-step-valid`, `tag-min-count`. Adding a new event to `events.json` or a new transition to a lifecycle without authoring a fixture breaks CI.
 
 ### 8.4 Framework JSON validation
 
@@ -614,7 +679,7 @@ The published tarball includes:
   }
   ```
 
-A build step (`npm run build` in `engine/`, `scripts/bundle-spec.mjs`) copies `../spec/` into `engine/dist/spec/` before publishing. The runtime engine resolves spec files via the package's own paths — works in apps that consume `@upcj/engine` from npm without cloning the upcj repo.
+A build step (`npm run build` in `engine/`, `scripts/bundle-spec.mjs`) copies `../spec/` into `engine/dist/spec/` before publishing AND computes a sha-256 fingerprint over the canonical spec/ directory (sorted file list, RFC 8785 JCS for each JSON). The hash is written to `engine/dist/spec-hash.json` and embedded as `SPEC_HASH` in the built engine. At runtime, `engine.getSpecHash()` returns this constant. CI verifies the bundled hash matches a freshly-computed canonical hash at publish time; mismatch fails the release. Consumers can pin against expected hashes or simply check `getSpecHash()` against the canonical published value to detect drift between npm and the GitHub repo.
 
 **Non-JS adopters** read the same files from GitHub raw URLs:
 
@@ -702,9 +767,12 @@ After v1.0.0 ships, v1.1 work begins (Query state machine completeness, then Gri
 - **Other-language adoption never materializes.** The "language-neutral" framing is moot if every adopter ends up using `@upcj/engine`. Acceptable failure mode: the spec is still a useful internal contract for the JS engine. Validates the approach without proving the multi-language thesis.
 
 **Open questions (tracked in implementation plan, not blocking this spec):**
-- Do we need a fourth engine function `derivePath(claim) → "cashless" | "reimbursement" | "undecided"` for callers that want to compute path from interaction history without setting it explicitly? Defer to v1.1 if no consumer needs it.
-- Strict vs permissive event ordering on `advance()`. Current proposal: permissive (accept out-of-order events, flag `outOfOrder: true` on the resulting Interaction). Real-world claims have racing events; strict ordering would force callers to manually reorder. Confirm during implementation.
-- `https://upcj.org/spec/v1/` is the canonical schema namespace in the spec — do we register the domain and host the schemas there, or treat the URL as opaque identifier with files served only from GitHub? Defer to authoring review.
+- `https://upcj.org/spec/v1/` is the canonical schema namespace in the spec — do we register the domain and host the schemas there, or treat the URL as opaque identifier with files served only from GitHub? Defer to authoring review; if `upcj.org` is not registered before v1.0.0 freeze, fall back to `https://github.com/s1dd4rth/upcj/spec/v1/` as the namespace.
+- DST and cross-border timezone semantics. The engine adds durations to the `startsOn` instant in UTC and formats deadlines in the original timezone for display. Leap seconds are ignored. India does not observe DST so the IST baseline is unaffected; cross-border claims (e.g., Mauritius hospital, Indian patient) need a v1.1 sentence in the spec covering UTC-arithmetic semantics — not a v1 blocker.
+
+**Resolved during external review (2026-04-26):**
+- Event ordering on `advance()`: **permissive** — out-of-order events accepted, flagged with `outOfOrder: true` on the resulting Interaction. Strict ordering would force every caller to maintain an event-sequencing buffer; real-world claims have constant racing between hospital, TPA, and patient timestamps.
+- `derivePath(claim) → "cashless" | "reimbursement" | "undecided"`: **not in v1**. Path is set by an explicit event (`cashless-eligibility-confirmed` or `cashless-eligibility-declined`) and stored on the Claim. Deriving from interaction history is redundant when the field is authoritative. Add in v1.1 only if a consumer surfaces a real need.
 
 ## 11. Links
 
