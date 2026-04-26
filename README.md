@@ -124,12 +124,18 @@ upcj/
 ├── LICENSE
 ├── CONTRIBUTING.md
 ├── index.html                     # Readable framework overview (site landing page)
-└── framework/
-    ├── journey-map.html           # Interactive visual journey map (GDS style)
-    ├── patient-checklist.html     # Interactive patient companion checklist
-    ├── ownership-matrix.json      # Machine-readable RACI data
-    ├── document-registry.json     # Canonical document list with schemas
-    └── governance-model.md        # ONDC-inspired governance framework
+├── preview.html                   # Inline PDF viewer for the starter kit
+├── framework/
+│   ├── journey-map.html           # Interactive visual journey map (GDS style)
+│   ├── patient-checklist.html     # Interactive patient companion checklist
+│   ├── ownership-matrix.json      # Machine-readable RACI data
+│   ├── document-registry.json     # Canonical document list with schemas
+│   ├── data-analysis.md           # Domain model (14 objects, OOUX/ORCA derived)
+│   └── governance-model.md        # ONDC-inspired governance framework
+├── starter-kit/                   # 38-page printable A4 patient companion
+├── spec/                          # Machine-readable JSON spec (schemas, lifecycles, registries)
+├── engine/                        # @upcj/engine — TypeScript reference implementation
+└── assets/                        # Published artifacts (PDF, thumbnails)
 ```
 
 ## Design principles
@@ -146,9 +152,12 @@ upcj/
 
 - [x] v1.0 — Core framework (journey map + checklist + ownership matrix)
 - [x] v1.1 — ONDC-inspired governance model, document registry
+- [x] **Patient Starter Kit v1.0** — printable 38-page A4 companion ([npm/Releases](https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf))
+- [x] **Core ontology + reference engine v1.0** — JSON spec at `spec/` + [`@upcj/engine`](https://www.npmjs.com/package/@upcj/engine) on npm
 - [ ] v1.2 — Hindi and Tamil translations
 - [ ] v1.3 — Printable A3 poster for hospital display
 - [ ] v1.4 — WhatsApp bot template
+- [ ] Engine v1.1 — Full Grievance lifecycle, fillable AcroForm PDF, eligibility/policy-rules
 - [ ] v2.0 — Group/corporate policy extensions
 - [ ] v2.1 — Super top-up and floater policy logic
 - [ ] v3.0 — Integration with ABHA (Ayushman Bharat Health Account)
@@ -156,13 +165,32 @@ upcj/
 
 ## Starter kit
 
-The `starter-kit/` directory generates a 37-page printable A4 patient companion from `framework/document-registry.json` and authored markdown in `starter-kit/content/`. A tagged PDF is attached to each `starter-kit-v*` release.
+The `starter-kit/` directory generates a 38-page printable A4 patient companion from `framework/document-registry.json` and authored markdown in `starter-kit/content/`. A tagged PDF is attached to each `starter-kit-v*` release.
 
 - **[Download the latest print-ready PDF](https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf)** (PDF/UA-1 tagged, CC BY-SA 4.0)
 - **[Preview the HTML locally](starter-kit/README.md#build)** — `cd starter-kit && npm install && npm run build && npm run preview`
 - **[Authoring guide](starter-kit/README.md)** — how to add a new step or document
 
-A fillable AcroForm variant is planned for v1.1 (see [spec §2](docs/superpowers/specs/2026-04-20-starter-kit-design.md#2-scope)).
+A fillable AcroForm variant is planned for kit v1.1 (see [spec §2](docs/superpowers/specs/2026-04-20-starter-kit-design.md#2-scope)).
+
+## Core ontology + reference engine
+
+The `spec/` directory is the machine-canonical UPCJ — JSON Schemas, state-machine lifecycles, and SLA/event registries that any language can read. `engine/` is the TypeScript reference implementation, published on npm so JS adopters can use it directly:
+
+```bash
+npm install @upcj/engine
+```
+
+```ts
+import { validate, advance, replay, evaluateSLAs, getSpecHash } from "@upcj/engine";
+```
+
+- **[Engine on npm](https://www.npmjs.com/package/@upcj/engine)** — five pure functions, 79 tests, OIDC trusted publishing
+- **[Engine README](engine/README.md)** — quick start + full public surface
+- **[Spec design](docs/superpowers/specs/2026-04-26-ontology-design.md)** — architecture, conventions, conformance contract
+- **[Spec files](spec/)** — schemas, lifecycles, registries, 44 conformance fixtures (the cross-language contract)
+
+Non-JS adopters skip the npm package and read the spec from raw GitHub URLs (`raw.githubusercontent.com/s1dd4rth/upcj/main/spec/...`). The 44 conformance fixtures define the contract every conformant implementation must pass — port the engine in any language and prove correctness against the same JSON triples.
 
 ## Contributing
 
