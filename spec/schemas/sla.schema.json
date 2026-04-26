@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/sla.schema.json",
+  "title": "SLARegistry",
+  "type": "object",
+  "required": ["slas"],
+  "properties": {
+    "slas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "step", "actor", "startsOn", "endsOn", "escalation"],
+        "properties": {
+          "id":    { "type": "string", "pattern": "^SLA-[a-z0-9-]+$" },
+          "step":  { "type": "string" },
+          "actor": { "enum": ["Hospital", "Doctor", "TPA", "Insurer", "Patient", "ManagedCare"] },
+          "duration": { "type": "string", "pattern": "^P(T.+|.+)$" },
+          "durationByAdmissionType": {
+            "type": "object",
+            "required": ["emergency", "planned"],
+            "properties": {
+              "emergency": { "type": "string", "pattern": "^P(T.+|.+)$" },
+              "planned":   { "type": "string", "pattern": "^P(T.+|.+)$" }
+            }
+          },
+          "startsOn": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+            "minItems": 1
+          },
+          "endsOn": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+            "minItems": 1
+          },
+          "escalation": {
+            "type": "object",
+            "required": ["action", "target"],
+            "properties": {
+              "action": { "type": "string" },
+              "target": { "type": "string" }
+            }
+          }
+        },
+        "oneOf": [
+          { "required": ["duration"],                "properties": { "duration":                true } },
+          { "required": ["durationByAdmissionType"], "properties": { "durationByAdmissionType": true } }
+        ]
+      }
+    }
+  }
+}

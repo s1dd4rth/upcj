@@ -1,0 +1,22 @@
+{
+  "$schema": "../schemas/lifecycle.schema.json",
+  "object": "Query",
+  "initial": "open",
+  "states": {
+    "open": {
+      "on": {
+        "query-responded": "responded",
+        "query-escalated": "escalated"
+      }
+    },
+    "responded": {
+      "on": {
+        "query-resolved":  "resolved",
+        "query-reopened":  "open",
+        "query-escalated": "escalated"
+      }
+    },
+    "resolved":  { "on": {} },
+    "escalated": { "on": {} }
+  }
+}

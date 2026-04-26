@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/document-instance.schema.json",
+  "title": "DocumentInstance",
+  "type": "object",
+  "required": ["id", "registryRef"],
+  "properties": {
+    "id":          { "type": "string", "pattern": "^DOC-[0-9]{3}-[A-Z0-9-]+$" },
+    "registryRef": { "type": "string", "pattern": "^DOC-[0-9]{3}$" },
+    "validated":   { "type": "boolean" },
+    "collectedAt": { "type": "string", "format": "date-time" },
+    "isOriginal":  { "type": "boolean" }
+  }
+}

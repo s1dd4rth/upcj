@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/document.schema.json",
+  "title": "DocumentRegistryEntry",
+  "type": "object",
+  "required": ["id", "name", "generated_by", "held_by", "needed_at", "path", "format", "critical_fields"],
+  "properties": {
+    "id":              { "type": "string", "pattern": "^DOC-[0-9]{3}$" },
+    "name":            { "type": "string", "minLength": 1 },
+    "generated_by":    { "type": "string", "minLength": 1 },
+    "held_by":         { "type": "string", "minLength": 1 },
+    "needed_at":       { "type": "string", "minLength": 1 },
+    "path":            { "enum": ["cashless", "reimbursement", "both"] },
+    "format":          { "type": "string", "minLength": 1 },
+    "critical_fields": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "notes":           { "type": "string" }
+  }
+}

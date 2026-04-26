@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/grievance.schema.json",
+  "title": "Grievance",
+  "type": "object",
+  "required": ["id", "claimRef", "raisedAt", "level", "status", "raisedAgainst"],
+  "properties": {
+    "id":            { "type": "string", "pattern": "^GRV-[A-Z0-9-]+$" },
+    "claimRef":      { "type": "string", "pattern": "^CLM-[A-Z0-9-]+$" },
+    "raisedAt":      { "type": "string", "format": "date-time" },
+    "level":         { "enum": [1, 2, 3] },
+    "status":        { "enum": ["open", "acknowledged", "resolved", "escalated"] },
+    "raisedAgainst": { "enum": ["Hospital", "TPA", "Insurer"] },
+    "citedSLAs":     { "type": "array", "items": { "type": "string", "pattern": "^SLA-" } }
+  }
+}

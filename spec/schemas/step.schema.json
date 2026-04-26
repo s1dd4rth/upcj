@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/step.schema.json",
+  "title": "OwnershipMatrixEntry",
+  "type": "object",
+  "required": ["id", "name", "phase", "path", "raci"],
+  "properties": {
+    "id":    { "type": "string", "pattern": "^(1\\.[1-3]|[AB]\\.[1-5]|3\\.[1-4])$" },
+    "name":  { "type": "string", "minLength": 1 },
+    "phase": { "enum": [1, 2, 3] },
+    "path":  { "enum": ["common", "cashless", "reimbursement"] },
+    "raci": {
+      "type": "object",
+      "properties": {
+        "Patient":      { "enum": ["Owner", "Executes", "Consulted", "Informed", null] },
+        "Doctor":       { "enum": ["Owner", "Executes", "Consulted", "Informed", null] },
+        "Hospital":     { "enum": ["Owner", "Executes", "Consulted", "Informed", null] },
+        "Managed Care": { "enum": ["Owner", "Executes", "Consulted", "Informed", null] },
+        "TPA":          { "enum": ["Owner", "Executes", "Consulted", "Informed", null] },
+        "Insurer":      { "enum": ["Owner", "Executes", "Consulted", "Informed", null] }
+      }
+    }
+  }
+}

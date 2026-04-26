@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/coverage.schema.json",
+  "title": "Coverage",
+  "type": "object",
+  "required": ["requirements"],
+  "properties": {
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule"],
+        "properties": {
+          "rule": {
+            "enum": [
+              "every-event-covered",
+              "every-transition-exercised",
+              "every-state-entered",
+              "every-sla-has-state",
+              "lifecycle-meta-step-valid",
+              "tag-min-count"
+            ]
+          },
+          "from":      { "type": "string" },
+          "tag":       { "type": "string" },
+          "minCount":  { "type": "integer", "minimum": 1 },
+          "states":    { "type": "array", "items": { "type": "string" } },
+          "rationale": { "type": "string" }
+        }
+      }
+    }
+  }
+}

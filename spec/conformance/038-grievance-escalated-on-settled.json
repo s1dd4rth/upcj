@@ -1,0 +1,144 @@
+{
+  "name": "TPA escalates unresolved grievance on settled claim to IRDAI",
+  "tags": ["grievance", "sla-breach", "cashless"],
+  "given": {
+    "claim": {
+      "id": "CLM-FIXTURE-038",
+      "specVersion": "v1",
+      "status": "settled",
+      "path": "cashless",
+      "admissionType": "planned",
+      "patientId": "PAT-1",
+      "policyId": "POL-001",
+      "hospitalId": "HOS-1",
+      "tpaId": "TPA-1",
+      "insurerId": "INS-1",
+      "interactions": [
+        {
+          "id": "INT-001-INTIMATION",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-04-20T09:00:00.000Z",
+          "eventName": "intimate-hospitalisation",
+          "initiatingActor": { "type": "Patient", "id": "PAT-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "method": "phone", "tpaReferenceNumber": "TPA-REF-038" },
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-002-ADMISSION-ADVICE",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-04-20T10:00:00.000Z",
+          "eventName": "doctor-signs-admission-advice",
+          "initiatingActor": { "type": "Doctor", "id": "DOC-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "documentId": "DOC-005-Q" },
+          "linkedSLAs": ["SLA-pre-auth-submission"]
+        },
+        {
+          "id": "INT-003-CASHLESS-CONFIRMED",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-04-20T10:30:00.000Z",
+          "eventName": "cashless-eligibility-confirmed",
+          "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": {},
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-004-PRE-AUTH-FILED",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-04-20T11:00:00.000Z",
+          "eventName": "pre-auth-filed",
+          "initiatingActor": { "type": "Hospital", "id": "HOS-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "filedBy": "Hospital", "documentId": "DOC-006-Q" },
+          "linkedSLAs": ["SLA-pre-auth-response", "SLA-pre-auth-approval"]
+        },
+        {
+          "id": "INT-005-PRE-AUTH-APPROVED",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-04-20T14:00:00.000Z",
+          "eventName": "pre-auth-approved",
+          "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "approvedAmount": 50000 },
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-006-DISCHARGED",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-04-25T12:00:00.000Z",
+          "eventName": "patient-discharged",
+          "initiatingActor": { "type": "Hospital", "id": "HOS-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "dischargeDate": "2026-04-25T12:00:00.000Z" },
+          "linkedSLAs": ["SLA-discharge-settlement"]
+        },
+        {
+          "id": "INT-007-CLAIM-SETTLED",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-04-29T10:00:00.000Z",
+          "eventName": "claim-settled",
+          "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "settledAmount": 48000 },
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-008-GRIEVANCE-FILED",
+          "claimRef": "CLM-FIXTURE-038",
+          "timestamp": "2026-05-02T10:00:00.000Z",
+          "eventName": "grievance-filed",
+          "initiatingActor": { "type": "Patient", "id": "PAT-1" },
+          "respondingActor": null,
+          "nature": "Grievance",
+          "payload": { "grievanceId": "GRV-008", "level": 2, "raisedAgainst": "TPA" },
+          "linkedSLAs": ["SLA-grievance-acknowledgement", "SLA-grievance-resolution"]
+        }
+      ]
+    }
+  },
+  "when": {
+    "event": "grievance-escalated",
+    "payload": {},
+    "at": "2026-05-20T10:00:00.000Z",
+    "actor": { "type": "TPA", "id": "TPA-1" }
+  },
+  "then": {
+    "claim": {
+      "status": "settled",
+      "currentStep": "3.4"
+    },
+    "interactions": [
+      {
+        "claimRef": "CLM-FIXTURE-038",
+        "timestamp": "2026-05-20T10:00:00.000Z",
+        "eventName": "grievance-escalated",
+        "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+        "respondingActor": null,
+        "nature": "Interaction",
+        "payload": {},
+        "linkedSLAs": []
+      }
+    ],
+    "slaStatuses": [
+      { "id": "SLA-pre-auth-submission", "state": "completed", "startedAt": "2026-04-20T10:00:00.000Z", "deadline": "2026-04-20T12:00:00Z", "endedAt": "2026-04-20T11:00:00.000Z" },
+      { "id": "SLA-pre-auth-response", "state": "completed", "startedAt": "2026-04-20T11:00:00.000Z", "deadline": "2026-04-20T23:00:00Z", "endedAt": "2026-04-20T14:00:00.000Z" },
+      { "id": "SLA-query-response-cashless", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-pre-auth-approval", "state": "completed", "startedAt": "2026-04-20T11:00:00.000Z", "deadline": "2026-04-21T11:00:00Z", "endedAt": "2026-04-20T14:00:00.000Z" },
+      { "id": "SLA-enhancement-response", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-discharge-settlement", "state": "completed", "startedAt": "2026-04-25T12:00:00.000Z", "deadline": "2026-05-02T12:00:00Z", "endedAt": "2026-04-29T10:00:00.000Z" },
+      { "id": "SLA-reimbursement-settlement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-query-response-reimbursement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-grievance-acknowledgement", "state": "breached", "startedAt": "2026-05-02T10:00:00.000Z", "deadline": "2026-05-04T10:00:00Z", "endedAt": null, "escalation": { "action": "auto-escalate", "target": "IRDAI" } },
+      { "id": "SLA-grievance-resolution", "state": "breached", "startedAt": "2026-05-02T10:00:00.000Z", "deadline": "2026-05-17T10:00:00Z", "endedAt": "2026-05-20T10:00:00.000Z", "escalation": { "action": "approach-ombudsman", "target": "Patient" } }
+    ]
+  }
+}

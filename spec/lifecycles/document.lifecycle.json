@@ -1,0 +1,20 @@
+{
+  "$schema": "../schemas/lifecycle.schema.json",
+  "object": "Document",
+  "initial": "expected",
+  "states": {
+    "expected": {
+      "on": {
+        "document-collected": "collected"
+      }
+    },
+    "collected": {
+      "on": {
+        "document-validated": "validated",
+        "document-rejected":  "rejected"
+      }
+    },
+    "validated": { "on": {} },
+    "rejected":  { "on": { "document-collected": "collected" } }
+  }
+}

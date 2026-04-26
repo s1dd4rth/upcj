@@ -1,0 +1,9 @@
+{
+  "A.1": ["SLA-pre-auth-submission"],
+  "A.2": ["SLA-query-response-cashless"],
+  "A.3": ["SLA-pre-auth-response", "SLA-pre-auth-approval"],
+  "A.5": ["SLA-enhancement-response"],
+  "B.5": ["SLA-query-response-reimbursement"],
+  "3.4": ["SLA-discharge-settlement", "SLA-reimbursement-settlement",
+          "SLA-grievance-acknowledgement", "SLA-grievance-resolution"]
+}

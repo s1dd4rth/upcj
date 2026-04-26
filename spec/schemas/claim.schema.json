@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/claim.schema.json",
+  "title": "Claim",
+  "type": "object",
+  "required": ["id", "specVersion", "status", "path", "admissionType", "patientId", "policyId"],
+  "properties": {
+    "id":          { "type": "string", "pattern": "^CLM-[A-Z0-9-]+$" },
+    "specVersion": { "const": "v1" },
+    "status": {
+      "enum": ["pre-admission", "intimated", "admission-advised",
+               "in-treatment-cashless", "in-treatment-reimbursement",
+               "pre-auth-pending", "discharged", "in-adjudication",
+               "in-query", "awaiting-patient-action",
+               "settled", "partially-settled",
+               "withdrawn", "closed-without-settlement", "rejected"]
+    },
+    "path":          { "enum": ["undecided", "cashless", "reimbursement"] },
+    "admissionType": { "enum": ["planned", "emergency"] },
+    "currentStep": {
+      "enum": ["1.1", "1.2", "1.3",
+               "A.1", "A.2", "A.3", "A.4", "A.5",
+               "B.1", "B.2", "B.3", "B.4", "B.5",
+               "3.1", "3.2", "3.3", "3.4"]
+    },
+    "intimationDate": { "type": "string", "format": "date-time" },
+    "admissionDate":  { "type": "string", "format": "date-time" },
+    "dischargeDate":  { "type": "string", "format": "date-time" },
+    "amounts": {
+      "type": "object",
+      "properties": {
+        "claimed":    { "type": "number", "minimum": 0 },
+        "approved":   { "type": "number", "minimum": 0 },
+        "settled":    { "type": "number", "minimum": 0 },
+        "deductions": { "type": "array", "items": { "$ref": "deduction.schema.json" } }
+      }
+    },
+    "patientId":  { "type": "string" },
+    "policyId":   { "type": "string" },
+    "hospitalId": { "type": "string" },
+    "doctorId":   { "type": "string" },
+    "tpaId":      { "type": "string" },
+    "insurerId":  { "type": "string" },
+    "documents":    { "type": "array", "items": { "$ref": "document-instance.schema.json" } },
+    "interactions": { "type": "array", "items": { "$ref": "interaction.schema.json" } },
+    "queries":      { "type": "array", "items": { "$ref": "query.schema.json" } },
+    "grievances":   { "type": "array", "items": { "$ref": "grievance.schema.json" } }
+  }
+}

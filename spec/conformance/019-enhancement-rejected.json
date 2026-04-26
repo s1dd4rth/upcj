@@ -1,0 +1,122 @@
+{
+  "name": "TPA rejects enhancement request (cashless)",
+  "tags": ["enhancement", "cashless"],
+  "given": {
+    "claim": {
+      "id": "CLM-FIXTURE-019",
+      "specVersion": "v1",
+      "status": "pre-auth-pending",
+      "path": "cashless",
+      "admissionType": "planned",
+      "patientId": "PAT-1",
+      "policyId": "POL-001",
+      "hospitalId": "HOS-1",
+      "tpaId": "TPA-1",
+      "insurerId": "INS-1",
+      "interactions": [
+        {
+          "id": "INT-001-INTIMATION",
+          "claimRef": "CLM-FIXTURE-019",
+          "timestamp": "2026-04-20T09:00:00.000Z",
+          "eventName": "intimate-hospitalisation",
+          "initiatingActor": { "type": "Patient", "id": "PAT-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "method": "phone", "tpaReferenceNumber": "TPA-REF-001" },
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-002-ADMISSION-ADVICE",
+          "claimRef": "CLM-FIXTURE-019",
+          "timestamp": "2026-04-20T10:00:00.000Z",
+          "eventName": "doctor-signs-admission-advice",
+          "initiatingActor": { "type": "Doctor", "id": "DOC-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "documentId": "DOC-005-A" },
+          "linkedSLAs": ["SLA-pre-auth-submission"]
+        },
+        {
+          "id": "INT-003-CASHLESS-CONFIRMED",
+          "claimRef": "CLM-FIXTURE-019",
+          "timestamp": "2026-04-20T10:30:00.000Z",
+          "eventName": "cashless-eligibility-confirmed",
+          "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": {},
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-004-PRE-AUTH-FILED",
+          "claimRef": "CLM-FIXTURE-019",
+          "timestamp": "2026-04-20T11:00:00.000Z",
+          "eventName": "pre-auth-filed",
+          "initiatingActor": { "type": "Hospital", "id": "HOS-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "filedBy": "Hospital", "documentId": "DOC-006-A" },
+          "linkedSLAs": ["SLA-pre-auth-response", "SLA-pre-auth-approval"]
+        },
+        {
+          "id": "INT-005-PRE-AUTH-APPROVED",
+          "claimRef": "CLM-FIXTURE-019",
+          "timestamp": "2026-04-20T14:00:00.000Z",
+          "eventName": "pre-auth-approved",
+          "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "approvedAmount": 100000 },
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-006-ENHANCEMENT-REQUESTED",
+          "claimRef": "CLM-FIXTURE-019",
+          "timestamp": "2026-04-22T10:00:00.000Z",
+          "eventName": "enhancement-requested",
+          "initiatingActor": { "type": "Hospital", "id": "HOS-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": {},
+          "linkedSLAs": ["SLA-enhancement-response"]
+        }
+      ]
+    }
+  },
+  "when": {
+    "event": "enhancement-rejected",
+    "payload": {},
+    "at": "2026-04-22T13:30:00.000Z",
+    "actor": { "type": "TPA", "id": "TPA-1" }
+  },
+  "then": {
+    "claim": {
+      "status": "in-treatment-cashless",
+      "currentStep": "A.4"
+    },
+    "interactions": [
+      {
+        "claimRef": "CLM-FIXTURE-019",
+        "timestamp": "2026-04-22T13:30:00.000Z",
+        "eventName": "enhancement-rejected",
+        "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+        "respondingActor": null,
+        "nature": "Interaction",
+        "payload": {},
+        "linkedSLAs": []
+      }
+    ],
+    "slaStatuses": [
+      { "id": "SLA-pre-auth-submission", "state": "completed", "startedAt": "2026-04-20T10:00:00.000Z", "deadline": "2026-04-20T12:00:00Z", "endedAt": "2026-04-20T11:00:00.000Z" },
+      { "id": "SLA-pre-auth-response", "state": "completed", "startedAt": "2026-04-20T11:00:00.000Z", "deadline": "2026-04-20T23:00:00Z", "endedAt": "2026-04-20T14:00:00.000Z" },
+      { "id": "SLA-query-response-cashless", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-pre-auth-approval", "state": "completed", "startedAt": "2026-04-20T11:00:00.000Z", "deadline": "2026-04-21T11:00:00Z", "endedAt": "2026-04-20T14:00:00.000Z" },
+      { "id": "SLA-enhancement-response", "state": "completed", "startedAt": "2026-04-22T10:00:00.000Z", "deadline": "2026-04-22T14:00:00Z", "endedAt": "2026-04-22T13:30:00.000Z" },
+      { "id": "SLA-discharge-settlement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-reimbursement-settlement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-query-response-reimbursement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-grievance-acknowledgement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-grievance-resolution", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null }
+    ]
+  }
+}

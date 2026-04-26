@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/deduction.schema.json",
+  "title": "Deduction",
+  "type": "object",
+  "required": ["amount", "reason"],
+  "properties": {
+    "amount": { "type": "number", "minimum": 0 },
+    "reason": { "type": "string", "minLength": 1 },
+    "category": { "enum": ["room-rent-cap", "sub-limit", "co-pay", "non-payable", "exclusion", "other"] }
+  }
+}
