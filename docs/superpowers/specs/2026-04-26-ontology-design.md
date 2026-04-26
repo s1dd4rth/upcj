@@ -78,6 +78,7 @@ spec/                           # Machine-canonical UPCJ spec (JSON, language-ne
 │   ├── sla.schema.json
 │   ├── interaction.schema.json
 │   ├── query.schema.json
+│   ├── grievance.schema.json    # Minimal v1 (id, claimRef, raisedAt, level, status, raisedAgainst)
 │   ├── lifecycle.schema.json    # Meta-schema for spec/lifecycles/*.json
 │   ├── events.schema.json       # Meta-schema for spec/registries/events.json
 │   └── coverage.schema.json     # Meta-schema for spec/conformance/coverage.json
@@ -100,10 +101,12 @@ engine/                         # Reference TypeScript implementation
 ├── src/
 │   ├── validate.ts              # validate(obj, schemaName) → ValidationResult
 │   ├── advance.ts               # advance(claim, event) → AdvanceResult
+│   ├── replay.ts                # replay(claim, events[]) → ReplayResult
 │   ├── sla.ts                   # evaluateSLAs(claim, {now}) → SLAStatus[]
 │   ├── lifecycle.ts             # Tiny interpreter for spec/lifecycles/*.json
 │   ├── duration.ts              # ISO 8601 duration parser + adder
 │   ├── registries.ts            # Loads spec/registries/* on import
+│   ├── spec-hash.ts             # Generated: exports SPEC_HASH constant
 │   ├── types.ts                 # Public type definitions
 │   └── index.ts                 # Public API surface
 ├── tests/
@@ -260,6 +263,8 @@ XState-style flat state machines. **No guards / no inline expressions.** Every b
 
 Why no guards: keeps the lifecycle pure data — any language interprets it identically. Conditional dispatch (was the patient eligible? was the document complete?) is the responsibility of the *event producer* (UI, API, integrator); the resolved outcome shows up as a distinct event name. The interpreter is ~50 lines in any language.
 
+The excerpt above is illustrative — the full `claim.lifecycle.json` shipped in v1 contains transitions to every status in `claim.schema.json`'s `currentStep` enum, including the terminal states `partially-settled`, `withdrawn`, and `closed-without-settlement` introduced in §6.1. The CI rule `lifecycle-meta-step-valid` (§8.3) enforces this; the rule `every-state-entered` enforces every state has at least one fixture entering it.
+
 ### 6.3 Registries
 
 #### `spec/registries/slas.json`
@@ -367,7 +372,18 @@ The contract every UPCJ-compliant engine must satisfy. Each fixture is an input 
       "intimationDate": "2026-04-25T08:00:00+05:30",
       "admissionDate":  "2026-04-25T11:30:00+05:30",
       "documents":    [{ "id": "DOC-005-A", "validated": true }],
-      "interactions": [],
+      "interactions": [
+        {
+          "id": "INT-CLM-2026-0001-0",
+          "claimRef": "CLM-2026-0001",
+          "timestamp": "2026-04-25T11:35:00+05:30",
+          "initiatingActor": { "type": "Doctor", "id": "DOC-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "documentId": "DOC-005-A" },
+          "linkedSLAs": ["SLA-pre-auth-submission"]
+        }
+      ],
       "queries": []
     }
   },
@@ -386,9 +402,27 @@ The contract every UPCJ-compliant engine must satisfy. Each fixture is an input 
       "linkedSLAs": ["SLA-pre-auth-response"]
     }],
     "slaStatuses": [
-      { "id": "SLA-pre-auth-submission",        "state": "completed", "endedAt": "2026-04-25T13:00:00+05:30" },
-      { "id": "SLA-pre-auth-response",          "state": "active",    "deadline": "2026-04-26T01:00:00+05:30" },
-      { "id": "SLA-reimbursement-settlement",   "state": "pending" }
+      {
+        "id": "SLA-pre-auth-submission",
+        "state": "completed",
+        "startedAt": "2026-04-25T11:35:00+05:30",
+        "deadline":  "2026-04-25T13:35:00+05:30",
+        "endedAt":   "2026-04-25T13:00:00+05:30"
+      },
+      {
+        "id": "SLA-pre-auth-response",
+        "state": "active",
+        "startedAt": "2026-04-25T13:00:00+05:30",
+        "deadline":  "2026-04-26T01:00:00+05:30",
+        "endedAt":   null
+      },
+      {
+        "id": "SLA-reimbursement-settlement",
+        "state": "pending",
+        "startedAt": null,
+        "deadline":  null,
+        "endedAt":   null
+      }
     ]
   }
 }
@@ -410,7 +444,7 @@ Engines read `given.claim`, apply `when.event` with `when.payload` at `when.at`,
 
 ### 7.1 Public surface (the entire export of `@upcj/engine`)
 
-Four functions plus one constant. Pure. No side effects. No global state. No system-clock reads.
+Five exports — four operational functions (`validate`, `advance`, `replay`, `evaluateSLAs`) and one hash accessor (`getSpecHash`). Pure. No side effects. No global state. No system-clock reads.
 
 ```ts
 import { validate, advance, replay, evaluateSLAs, getSpecHash } from "@upcj/engine";
