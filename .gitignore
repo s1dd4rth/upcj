@@ -4,3 +4,5 @@
 docs/superpowers/plans/
 starter-kit/node_modules/
 starter-kit/dist/
+engine/node_modules/
+engine/dist/

@@ -1,0 +1,29 @@
+{
+  "name": "@upcj/engine",
+  "version": "1.0.0-dev",
+  "private": true,
+  "description": "Reference implementation of the UPCJ core spec.",
+  "license": "CC-BY-SA-4.0",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./spec/*.json": "./dist/spec/*.json"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build":   "node scripts/bundle-spec.mjs && tsc",
+    "test":    "node --test tests/**/*.test.mjs",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "ajv": "^8.16.0",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.14.0"
+  }
+}
