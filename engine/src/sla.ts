@@ -1,13 +1,9 @@
 import { addDuration } from "./duration.js";
+import { SLAS } from "./registries.js";
 import type { Claim, Interaction, SLAStatus, AdmissionType } from "./types.js";
 import type { SLAEntry } from "./registries.js";
 
 export function evaluateSLAs(claim: Claim, options: { now: string }): SLAStatus[] {
-  // Lazy import so registries.js (which reads slas.json) is only loaded at call time,
-  // not at module load time. This lets unit tests import computeSLAStatus directly
-  // without requiring the spec/ files to exist.
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { SLAS } = require("./registries.js") as typeof import("./registries.js");
   return SLAS.map(sla => computeSLAStatus(sla, claim.interactions ?? [], options.now, claim.admissionType));
 }
 
