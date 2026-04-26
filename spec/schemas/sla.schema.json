@@ -43,8 +43,8 @@
           }
         },
         "oneOf": [
-          { "required": ["duration"] },
-          { "required": ["durationByAdmissionType"] }
+          { "required": ["duration"],                "properties": { "duration":                true } },
+          { "required": ["durationByAdmissionType"], "properties": { "durationByAdmissionType": true } }
         ]
       }
     }
