@@ -82,9 +82,24 @@
         "claim-closed-no-settlement": "closed-without-settlement"
       }
     },
-    "settled":                   { "meta": { "step": "3.4" }, "on": {} },
-    "partially-settled":         { "meta": { "step": "3.4" }, "on": {} },
-    "rejected":                  { "meta": { "step": "3.4" }, "on": {} },
+    "settled":                   { "meta": { "step": "3.4" }, "on": {
+      "grievance-filed":        "settled",
+      "grievance-acknowledged": "settled",
+      "grievance-resolved":     "settled",
+      "grievance-escalated":    "settled"
+    }},
+    "partially-settled":         { "meta": { "step": "3.4" }, "on": {
+      "grievance-filed":        "partially-settled",
+      "grievance-acknowledged": "partially-settled",
+      "grievance-resolved":     "partially-settled",
+      "grievance-escalated":    "partially-settled"
+    }},
+    "rejected":                  { "meta": { "step": "3.4" }, "on": {
+      "grievance-filed":        "rejected",
+      "grievance-acknowledged": "rejected",
+      "grievance-resolved":     "rejected",
+      "grievance-escalated":    "rejected"
+    }},
     "withdrawn":                 { "meta": { "step": "3.4" }, "on": {} },
     "closed-without-settlement": { "meta": { "step": "3.4" }, "on": {} }
   }

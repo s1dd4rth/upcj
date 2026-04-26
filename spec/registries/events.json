@@ -76,10 +76,7 @@
       },
       "produces": "Query"
     },
-    "query-responded": { "payload": { "type": "object" }, "produces": "Interaction" },
     "query-resolved":  { "payload": { "type": "object" }, "produces": "Interaction" },
-    "query-reopened":  { "payload": { "type": "object" }, "produces": "Interaction" },
-    "query-escalated": { "payload": { "type": "object" }, "produces": "Interaction" },
     "patient-action-needed": { "payload": { "type": "object" }, "produces": "Interaction" },
     "claim-settled": {
       "payload": {
@@ -107,9 +104,6 @@
     },
     "claim-withdrawn":            { "payload": { "type": "object" }, "produces": "Interaction" },
     "claim-closed-no-settlement": { "payload": { "type": "object" }, "produces": "Interaction" },
-    "document-collected": { "payload": { "type": "object" }, "produces": "Document" },
-    "document-validated": { "payload": { "type": "object" }, "produces": "Document" },
-    "document-rejected":  { "payload": { "type": "object" }, "produces": "Document" },
     "grievance-filed": {
       "payload": {
         "type": "object", "required": ["grievanceId", "level", "raisedAgainst"],

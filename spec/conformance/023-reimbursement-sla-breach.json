@@ -1,0 +1,111 @@
+{
+  "name": "Insurer settles reimbursement claim after 30-day SLA deadline (breach)",
+  "tags": ["sla-breach", "reimbursement"],
+  "given": {
+    "claim": {
+      "id": "CLM-FIXTURE-023",
+      "specVersion": "v1",
+      "status": "in-adjudication",
+      "path": "reimbursement",
+      "admissionType": "planned",
+      "patientId": "PAT-1",
+      "policyId": "POL-001",
+      "hospitalId": "HOS-1",
+      "tpaId": "TPA-1",
+      "insurerId": "INS-1",
+      "interactions": [
+        {
+          "id": "INT-001-INTIMATION",
+          "claimRef": "CLM-FIXTURE-023",
+          "timestamp": "2026-03-01T09:00:00.000Z",
+          "eventName": "intimate-hospitalisation",
+          "initiatingActor": { "type": "Patient", "id": "PAT-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "method": "phone", "tpaReferenceNumber": "TPA-REF-023" },
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-002-ADMISSION-ADVICE",
+          "claimRef": "CLM-FIXTURE-023",
+          "timestamp": "2026-03-01T10:00:00.000Z",
+          "eventName": "doctor-signs-admission-advice",
+          "initiatingActor": { "type": "Doctor", "id": "DOC-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "documentId": "DOC-005-D" },
+          "linkedSLAs": ["SLA-pre-auth-submission"]
+        },
+        {
+          "id": "INT-003-CASHLESS-DECLINED",
+          "claimRef": "CLM-FIXTURE-023",
+          "timestamp": "2026-03-01T10:30:00.000Z",
+          "eventName": "cashless-eligibility-declined",
+          "initiatingActor": { "type": "TPA", "id": "TPA-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": {},
+          "linkedSLAs": []
+        },
+        {
+          "id": "INT-004-DISCHARGED",
+          "claimRef": "CLM-FIXTURE-023",
+          "timestamp": "2026-03-07T12:00:00.000Z",
+          "eventName": "patient-discharged",
+          "initiatingActor": { "type": "Hospital", "id": "HOS-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "dischargeDate": "2026-03-07T12:00:00.000Z" },
+          "linkedSLAs": ["SLA-discharge-settlement"]
+        },
+        {
+          "id": "INT-005-CLAIM-FORM-SUBMITTED",
+          "claimRef": "CLM-FIXTURE-023",
+          "timestamp": "2026-03-10T10:00:00.000Z",
+          "eventName": "claim-form-submitted",
+          "initiatingActor": { "type": "Patient", "id": "PAT-1" },
+          "respondingActor": null,
+          "nature": "Interaction",
+          "payload": { "documentId": "DOC-013-B" },
+          "linkedSLAs": ["SLA-reimbursement-settlement"]
+        }
+      ]
+    }
+  },
+  "when": {
+    "event": "claim-settled",
+    "payload": { "settledAmount": 72000 },
+    "at": "2026-04-15T14:00:00.000Z",
+    "actor": { "type": "Insurer", "id": "INS-1" }
+  },
+  "then": {
+    "claim": {
+      "status": "settled",
+      "currentStep": "3.4"
+    },
+    "interactions": [
+      {
+        "claimRef": "CLM-FIXTURE-023",
+        "timestamp": "2026-04-15T14:00:00.000Z",
+        "eventName": "claim-settled",
+        "initiatingActor": { "type": "Insurer", "id": "INS-1" },
+        "respondingActor": null,
+        "nature": "Interaction",
+        "payload": { "settledAmount": 72000 },
+        "linkedSLAs": []
+      }
+    ],
+    "slaStatuses": [
+      { "id": "SLA-pre-auth-submission", "state": "breached", "startedAt": "2026-03-01T10:00:00.000Z", "deadline": "2026-03-01T12:00:00Z", "endedAt": null, "escalation": { "action": "patient-files-direct", "target": "TPA" } },
+      { "id": "SLA-pre-auth-response", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-query-response-cashless", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-pre-auth-approval", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-enhancement-response", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-discharge-settlement", "state": "breached", "startedAt": "2026-03-07T12:00:00.000Z", "deadline": "2026-03-14T12:00:00Z", "endedAt": null, "escalation": { "action": "interest-payable-to-hospital", "target": "Hospital" } },
+      { "id": "SLA-reimbursement-settlement", "state": "breached", "startedAt": "2026-03-10T10:00:00.000Z", "deadline": "2026-04-09T10:00:00Z", "endedAt": "2026-04-15T14:00:00.000Z", "escalation": { "action": "interest-payable-to-patient", "target": "Patient" } },
+      { "id": "SLA-query-response-reimbursement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-grievance-acknowledgement", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null },
+      { "id": "SLA-grievance-resolution", "state": "pending", "startedAt": null, "deadline": null, "endedAt": null }
+    ]
+  }
+}
