@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/events.schema.json",
+  "title": "EventsCatalog",
+  "type": "object",
+  "required": ["events"],
+  "properties": {
+    "events": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z][a-z0-9-]*$": {
+          "type": "object",
+          "required": ["payload", "produces"],
+          "properties": {
+            "payload":  { "type": "object" },
+            "produces": { "enum": ["Interaction", "Document", "Query", "Grievance"] }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
