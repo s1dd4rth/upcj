@@ -1,0 +1,22 @@
+{
+  "$schema": "../schemas/coverage.schema.json",
+  "requirements": [
+    { "rule": "every-event-covered",      "from": "registries/events.json",
+      "rationale": "Each declared event must appear in at least one fixture's when.event field." },
+    { "rule": "every-transition-exercised", "from": "lifecycles/",
+      "rationale": "Every (state, event) -> state edge must be exercised." },
+    { "rule": "every-state-entered",       "from": "lifecycles/",
+      "rationale": "Every non-initial state must be the resulting state of at least one fixture." },
+    { "rule": "every-sla-has-state",       "from": "registries/slas.json",
+      "states": ["completed", "breached"],
+      "rationale": "Every SLA must have at least one fixture proving completion and one proving breach." },
+    { "rule": "lifecycle-meta-step-valid", "from": "lifecycles/",
+      "rationale": "Every meta.step must be a valid value in claim.schema.json's currentStep enum." },
+    { "rule": "tag-min-count", "tag": "happy-path-cashless",       "minCount": 1 },
+    { "rule": "tag-min-count", "tag": "happy-path-reimbursement",  "minCount": 1 },
+    { "rule": "tag-min-count", "tag": "query-loop",                "minCount": 2 },
+    { "rule": "tag-min-count", "tag": "partial-settlement",        "minCount": 1 },
+    { "rule": "tag-min-count", "tag": "grievance",                 "minCount": 1 },
+    { "rule": "tag-min-count", "tag": "withdrawal",                "minCount": 1 }
+  ]
+}
