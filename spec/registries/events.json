@@ -1,0 +1,128 @@
+{
+  "$schema": "../schemas/events.schema.json",
+  "events": {
+    "intimate-hospitalisation": {
+      "payload": {
+        "type": "object", "required": ["method"],
+        "properties": {
+          "method": { "enum": ["phone", "online-portal", "hospital-desk"] },
+          "tpaReferenceNumber": { "type": "string" }
+        }
+      },
+      "produces": "Interaction"
+    },
+    "doctor-signs-admission-advice": {
+      "payload": {
+        "type": "object", "required": ["documentId"],
+        "properties": { "documentId": { "type": "string", "pattern": "^DOC-005-" } }
+      },
+      "produces": "Interaction"
+    },
+    "cashless-eligibility-confirmed":  { "payload": { "type": "object" }, "produces": "Interaction" },
+    "cashless-eligibility-declined":   { "payload": { "type": "object" }, "produces": "Interaction" },
+    "pre-auth-filed": {
+      "payload": {
+        "type": "object", "required": ["filedBy", "documentId"],
+        "properties": {
+          "filedBy":    { "enum": ["Hospital", "Patient"] },
+          "documentId": { "type": "string", "pattern": "^DOC-006-" }
+        }
+      },
+      "produces": "Interaction"
+    },
+    "pre-auth-approved": {
+      "payload": {
+        "type": "object", "required": ["approvedAmount"],
+        "properties": {
+          "approvedAmount": { "type": "number", "minimum": 0 },
+          "validityPeriod": { "type": "string" },
+          "subLimits":      { "type": "object" }
+        }
+      },
+      "produces": "Interaction"
+    },
+    "pre-auth-rejected": {
+      "payload": {
+        "type": "object", "required": ["reason"],
+        "properties": { "reason": { "type": "string" } }
+      },
+      "produces": "Interaction"
+    },
+    "enhancement-requested":  { "payload": { "type": "object" }, "produces": "Interaction" },
+    "enhancement-approved":   { "payload": { "type": "object" }, "produces": "Interaction" },
+    "enhancement-rejected":   { "payload": { "type": "object" }, "produces": "Interaction" },
+    "patient-discharged": {
+      "payload": {
+        "type": "object", "required": ["dischargeDate"],
+        "properties": { "dischargeDate": { "type": "string", "format": "date-time" } }
+      },
+      "produces": "Interaction"
+    },
+    "discharge-bill-finalised": { "payload": { "type": "object" }, "produces": "Interaction" },
+    "claim-form-submitted": {
+      "payload": {
+        "type": "object", "required": ["documentId"],
+        "properties": { "documentId": { "type": "string", "pattern": "^DOC-013-" } }
+      },
+      "produces": "Interaction"
+    },
+    "query-raised": {
+      "payload": {
+        "type": "object", "required": ["queryId", "directedTo"],
+        "properties": {
+          "queryId":    { "type": "string", "pattern": "^QRY-" },
+          "directedTo": { "enum": ["Hospital", "Patient"] }
+        }
+      },
+      "produces": "Query"
+    },
+    "query-responded": { "payload": { "type": "object" }, "produces": "Interaction" },
+    "query-resolved":  { "payload": { "type": "object" }, "produces": "Interaction" },
+    "query-reopened":  { "payload": { "type": "object" }, "produces": "Interaction" },
+    "query-escalated": { "payload": { "type": "object" }, "produces": "Interaction" },
+    "patient-action-needed": { "payload": { "type": "object" }, "produces": "Interaction" },
+    "claim-settled": {
+      "payload": {
+        "type": "object", "required": ["settledAmount"],
+        "properties": { "settledAmount": { "type": "number", "minimum": 0 } }
+      },
+      "produces": "Interaction"
+    },
+    "claim-partially-settled": {
+      "payload": {
+        "type": "object", "required": ["settledAmount", "deductions"],
+        "properties": {
+          "settledAmount": { "type": "number", "minimum": 0 },
+          "deductions":    { "type": "array" }
+        }
+      },
+      "produces": "Interaction"
+    },
+    "claim-rejected": {
+      "payload": {
+        "type": "object", "required": ["reason"],
+        "properties": { "reason": { "type": "string" } }
+      },
+      "produces": "Interaction"
+    },
+    "claim-withdrawn":            { "payload": { "type": "object" }, "produces": "Interaction" },
+    "claim-closed-no-settlement": { "payload": { "type": "object" }, "produces": "Interaction" },
+    "document-collected": { "payload": { "type": "object" }, "produces": "Document" },
+    "document-validated": { "payload": { "type": "object" }, "produces": "Document" },
+    "document-rejected":  { "payload": { "type": "object" }, "produces": "Document" },
+    "grievance-filed": {
+      "payload": {
+        "type": "object", "required": ["grievanceId", "level", "raisedAgainst"],
+        "properties": {
+          "grievanceId":   { "type": "string", "pattern": "^GRV-" },
+          "level":         { "enum": [1, 2, 3] },
+          "raisedAgainst": { "enum": ["Hospital", "TPA", "Insurer"] }
+        }
+      },
+      "produces": "Grievance"
+    },
+    "grievance-acknowledged": { "payload": { "type": "object" }, "produces": "Interaction" },
+    "grievance-resolved":     { "payload": { "type": "object" }, "produces": "Interaction" },
+    "grievance-escalated":    { "payload": { "type": "object" }, "produces": "Interaction" }
+  }
+}
