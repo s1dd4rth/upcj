@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/query.schema.json",
+  "title": "Query",
+  "type": "object",
+  "required": ["id", "claimRef", "raisedAt", "directedTo", "status"],
+  "properties": {
+    "id":         { "type": "string", "pattern": "^QRY-[A-Z0-9-]+$" },
+    "claimRef":   { "type": "string", "pattern": "^CLM-[A-Z0-9-]+$" },
+    "raisedAt":   { "type": "string", "format": "date-time" },
+    "directedTo": { "enum": ["Hospital", "Patient"] },
+    "pathContext":{ "enum": ["cashless", "reimbursement"] },
+    "description":{ "type": "string" },
+    "documentsRequested":  { "type": "array", "items": { "type": "string" } },
+    "respondedAt":         { "type": "string", "format": "date-time" },
+    "documentsSubmitted":  { "type": "array", "items": { "type": "string" } },
+    "status":     { "enum": ["open", "responded", "resolved", "escalated"] }
+  }
+}

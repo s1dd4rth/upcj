@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upcj.org/spec/v1/schemas/interaction.schema.json",
+  "title": "Interaction",
+  "type": "object",
+  "required": ["id", "claimRef", "timestamp", "initiatingActor", "nature", "eventName"],
+  "properties": {
+    "id":              { "type": "string", "pattern": "^INT-[A-Z0-9-]+$" },
+    "claimRef":        { "type": "string", "pattern": "^CLM-[A-Z0-9-]+$" },
+    "timestamp":       { "type": "string", "format": "date-time" },
+    "eventName":       { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "initiatingActor": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "enum": ["Patient", "Doctor", "Hospital", "ManagedCare", "TPA", "Insurer"] },
+        "id":   { "type": "string" }
+      }
+    },
+    "respondingActor": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["type", "id"],
+          "properties": {
+            "type": { "enum": ["Patient", "Doctor", "Hospital", "ManagedCare", "TPA", "Insurer"] },
+            "id":   { "type": "string" }
+          }
+        }
+      ]
+    },
+    "nature":     { "enum": ["Interaction", "Document", "Query", "Grievance"] },
+    "payload":    { "type": "object" },
+    "linkedSLAs": { "type": "array", "items": { "type": "string", "pattern": "^SLA-" } },
+    "outOfOrder": { "type": "boolean" }
+  }
+}
