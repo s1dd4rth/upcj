@@ -14,7 +14,7 @@
   "files": ["dist"],
   "scripts": {
     "build":   "node scripts/bundle-spec.mjs && tsc",
-    "test":    "node --test 'tests/unit/*.test.mjs' 'tests/*.test.mjs'",
+    "test":    "node --test tests/unit/duration.test.mjs tests/unit/canonical-json.test.mjs tests/unit/validate.test.mjs tests/unit/lifecycle.test.mjs tests/unit/sla.test.mjs tests/conformance.test.mjs tests/framework-conformance.test.mjs",
     "prepack": "npm run build"
   },
   "dependencies": {
