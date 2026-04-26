@@ -1,0 +1,91 @@
+{
+  "$schema": "../schemas/lifecycle.schema.json",
+  "object": "Claim",
+  "initial": "pre-admission",
+  "states": {
+    "pre-admission": {
+      "meta": { "step": "1.1" },
+      "on": {
+        "intimate-hospitalisation": "intimated",
+        "claim-withdrawn":          "withdrawn"
+      }
+    },
+    "intimated": {
+      "meta": { "step": "1.2" },
+      "on": {
+        "doctor-signs-admission-advice": "admission-advised",
+        "claim-withdrawn":               "withdrawn"
+      }
+    },
+    "admission-advised": {
+      "meta": { "step": "1.3" },
+      "on": {
+        "cashless-eligibility-confirmed": "in-treatment-cashless",
+        "cashless-eligibility-declined":  "in-treatment-reimbursement",
+        "claim-withdrawn":                "withdrawn"
+      }
+    },
+    "in-treatment-cashless": {
+      "meta": { "step": "A.4" },
+      "on": {
+        "pre-auth-filed":        "pre-auth-pending",
+        "enhancement-requested": "pre-auth-pending",
+        "patient-discharged":    "discharged",
+        "claim-withdrawn":       "withdrawn"
+      }
+    },
+    "in-treatment-reimbursement": {
+      "meta": { "step": "B.2" },
+      "on": {
+        "patient-discharged": "discharged",
+        "claim-withdrawn":    "withdrawn"
+      }
+    },
+    "pre-auth-pending": {
+      "meta": { "step": "A.3" },
+      "on": {
+        "pre-auth-approved":    "in-treatment-cashless",
+        "pre-auth-rejected":    "in-treatment-reimbursement",
+        "enhancement-approved": "in-treatment-cashless",
+        "enhancement-rejected": "in-treatment-cashless",
+        "query-raised":         "in-query"
+      }
+    },
+    "discharged": {
+      "meta": { "step": "3.1" },
+      "on": {
+        "claim-form-submitted":     "in-adjudication",
+        "discharge-bill-finalised": "in-adjudication"
+      }
+    },
+    "in-adjudication": {
+      "meta": { "step": "3.2" },
+      "on": {
+        "query-raised":               "in-query",
+        "claim-settled":              "settled",
+        "claim-partially-settled":    "partially-settled",
+        "claim-rejected":             "rejected",
+        "claim-closed-no-settlement": "closed-without-settlement"
+      }
+    },
+    "in-query": {
+      "meta": { "step": "B.5" },
+      "on": {
+        "query-resolved":        "in-adjudication",
+        "patient-action-needed": "awaiting-patient-action"
+      }
+    },
+    "awaiting-patient-action": {
+      "meta": { "step": "B.5" },
+      "on": {
+        "query-resolved":             "in-adjudication",
+        "claim-closed-no-settlement": "closed-without-settlement"
+      }
+    },
+    "settled":                   { "meta": { "step": "3.4" }, "on": {} },
+    "partially-settled":         { "meta": { "step": "3.4" }, "on": {} },
+    "rejected":                  { "meta": { "step": "3.4" }, "on": {} },
+    "withdrawn":                 { "meta": { "step": "3.4" }, "on": {} },
+    "closed-without-settlement": { "meta": { "step": "3.4" }, "on": {} }
+  }
+}
