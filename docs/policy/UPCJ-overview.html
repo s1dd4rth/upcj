@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>UPCJ — Unified Patient Claim Journey · Overview</title>
+<style>
+:root {
+  --black:#0b0c0c; --white:#ffffff; --link:#1d70b8; --red:#d4351c;
+  --light-grey:#f3f2f1; --mid-grey:#b1b4b6; --dark-grey:#505a5f;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@page { size: A4 portrait; margin: 18mm 18mm 16mm 18mm; }
+*, *::before, *::after { box-sizing: border-box; }
+html { font-family: var(--font); color: var(--black); font-variant-numeric: tabular-nums; }
+body { margin: 0; font-size: 10.5pt; line-height: 1.45; }
+h1 { font-size: 20pt; line-height: 1.15; margin: 0 0 4mm; font-weight: 700; }
+h2 { font-size: 12pt; line-height: 1.2; margin: 6mm 0 2mm; font-weight: 700;
+     border-bottom: 1pt solid var(--mid-grey); padding-bottom: 1mm; }
+.tagline {
+  font-size: 11pt; line-height: 1.35; color: var(--dark-grey);
+  border-left: 2pt solid var(--link); padding-left: 4mm; margin: 0 0 5mm;
+}
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm 5mm; padding: 0; }
+li { margin-bottom: 1mm; }
+strong { font-weight: 700; color: var(--black); }
+a { color: var(--link); text-decoration: none; }
+code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+       font-size: 9.5pt; background: var(--light-grey); padding: 0 1mm; }
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 9.5pt; }
+th, td { text-align: left; vertical-align: top; padding: 1.5mm 2mm;
+         border-bottom: 0.5pt solid var(--mid-grey); }
+th { background: var(--light-grey); font-weight: 700; border-bottom-width: 1pt; }
+.foot { font-size: 8.5pt; color: var(--dark-grey); margin-top: 6mm;
+        border-top: 0.5pt solid var(--mid-grey); padding-top: 2mm; }
+.foot a { color: var(--dark-grey); }
+hr { border: 0; border-top: 0.5pt solid var(--mid-grey); margin: 4mm 0; }
+.badge {
+  display: inline-block; font-size: 8.5pt; font-weight: 700; letter-spacing: 0.5px;
+  padding: 0.5mm 2mm; background: var(--black); color: var(--white);
+  text-transform: uppercase; margin-right: 2mm;
+}
+</style>
+</head>
+<body>
+
+<h1>
+  <span class="badge">v1.0</span>
+  UPCJ — Unified Patient Claim Journey
+</h1>
+
+<p class="tagline">
+  A patient-first open framework for the Indian health-insurance claim process. Comparable in intent to ONDC for commerce or UPI for payments — a shared, machine-readable specification that any hospital, TPA, insurer, or patient app can adopt without forking. Licensed CC BY-SA 4.0.
+</p>
+
+<h2>The problem</h2>
+<p>
+  Indian patients experience a fragmented, opaque claim process. Across hospitals, third-party administrators (TPAs), and insurers, the same activity has different names, different forms, different SLAs, and different escalation paths. The patient — the least-informed actor — bears the cost of that fragmentation:
+</p>
+<ul>
+  <li><strong>Pre-authorisation rejections</strong> in 12–18% of cashless claims, often due to missing or inconsistent documentation that no one explained upfront.</li>
+  <li><strong>Reimbursement claim cycles of 60–90 days</strong> versus IRDAI's 30-day target. No shared audit trail makes the breach auditable.</li>
+  <li><strong>Most grievances filed with IRDAI Bima Bharosa</strong> cite SLA breaches that no party can prove or disprove because no shared chronological record of the claim exists.</li>
+</ul>
+<p>
+  The gap is not a tech gap; it is a <strong>standards gap</strong>. There is no shared vocabulary for "what is a claim?", "what document is needed at step N?", "who owes whom what by when?". Every adopter reinvents.
+</p>
+
+<h2>What UPCJ provides</h2>
+<p>UPCJ formalises the claim journey as a public, machine-readable specification with five components:</p>
+<ol>
+  <li><strong>17-step journey map</strong> — the canonical sequence from OPD consultation to final settlement, covering both cashless and reimbursement paths.</li>
+  <li><strong>Document registry</strong> — 15 canonical documents (<code>DOC-001</code> … <code>DOC-015</code>) with critical-field schemas. Any provider can verify a document is "complete" against the same checklist.</li>
+  <li><strong>Ownership matrix</strong> — RACI across six actors (Patient, Doctor, Hospital, Managed Care, TPA, Insurer) per step. Eliminates "not my job" ambiguity at handoffs.</li>
+  <li><strong>SLA registry</strong> — 10 SLAs matching IRDAI's published deadlines, each with explicit escalation paths for breach.</li>
+  <li><strong>Claim Information Packet (CIP)</strong> — a structured, timestamped audit trail. Every event identified, every actor named, every breach evidenced.</li>
+</ol>
+<p>
+  Published as both human-readable documents and machine-readable JSON Schemas + state machines + a TypeScript reference implementation. <strong>Non-prescriptive</strong>: it standardises the model, not the systems. Hospitals keep their EMRs, TPAs keep their adjudication engines, insurers keep their core platforms — UPCJ is the lingua franca between them.
+</p>
+
+<h2>What is shipped (v1.0, April 2026)</h2>
+<table>
+  <thead>
+    <tr><th>Artifact</th><th>Audience</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Patient Starter Kit</strong> — 38-page printable A4 companion the patient receives at admission</td>
+      <td>Patients</td>
+      <td>v1.0.1 live, downloadable</td>
+    </tr>
+    <tr>
+      <td><strong><code>@upcj/engine</code></strong> — TypeScript reference implementation on npm</td>
+      <td>Hospital IT, TPA, insurer engineering teams</td>
+      <td>v1.0.0 published, OIDC-signed</td>
+    </tr>
+    <tr>
+      <td><strong>JSON spec</strong> — 12 schemas, 3 lifecycles, 3 registries</td>
+      <td>Adopters in any programming language</td>
+      <td>v1 published, raw GitHub URLs</td>
+    </tr>
+    <tr>
+      <td><strong>Conformance suite</strong> — 44 input/event/expected-output fixtures + 11 coverage rules</td>
+      <td>Cross-language interoperability</td>
+      <td>Required pass for any conformant implementation</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  <strong>Standards alignment:</strong> WCAG 2.1 AA, GIGW 3.0 (Government of India web guidelines), PDF/UA-1, ISO 8601, JSON Schema 2020-12, RFC 8785 (canonical JSON for deterministic IDs).
+</p>
+<p>
+  <strong>Governance lineage:</strong> UPCJ's governance model is explicitly modelled on ONDC's principles — protocol over platform, network over hierarchy, voluntary participation over mandate.
+</p>
+
+<h2>Why now</h2>
+<ul>
+  <li><strong>Bima Sugam</strong> is establishing the digital backbone for Indian insurance. UPCJ is a candidate protocol-layer specification for one specific surface — the claim journey — that complements Bima Sugam's marketplace layer.</li>
+  <li><strong>IRDAI's Cashless Everywhere directive</strong> mandates faster, more transparent pre-authorisation. UPCJ's SLA registry and CIP audit trail give regulators and patients the same evidence base.</li>
+  <li><strong>Patient outcomes:</strong> claim disputes erode trust in private health insurance and push patients toward catastrophic out-of-pocket expenditure. A shared, auditable framework reduces friction at every handoff and concentrates accountability where it belongs.</li>
+</ul>
+
+<h2>What we are asking for</h2>
+<p>Three forms of engagement, in increasing order of commitment:</p>
+<ol>
+  <li><strong>Review</strong> — a 30-minute walkthrough with policy or technical staff. We want feedback on alignment with IRDAI guidelines and (if applicable) Bima Sugam's protocol stack.</li>
+  <li><strong>Pilot signal</strong> — endorsement (formal or informal) that opens a pilot conversation with one or two hospitals or TPAs already in your network.</li>
+  <li><strong>Adoption pathway</strong> — guidance on how UPCJ might be referenced in IRDAI consultation papers, recommended for Cashless Everywhere participants, or integrated as a Bima Sugam protocol annex.</li>
+</ol>
+
+<h2>About</h2>
+<p>
+  UPCJ is an open-source project licensed under CC BY-SA 4.0. Repository: <a href="https://github.com/s1dd4rth/upcj">github.com/s1dd4rth/upcj</a>. The reference engine is published as <a href="https://www.npmjs.com/package/@upcj/engine"><code>@upcj/engine</code></a> on npm. Maintained by Siddarth Kengadaran and designed for community contribution.
+</p>
+<p>
+  <strong>Contact:</strong> <a href="mailto:s1dd4rth@gmail.com">s1dd4rth@gmail.com</a> · github.com/s1dd4rth/upcj
+</p>
+
+<div class="foot">
+  This 2-page overview is published at <a href="https://github.com/s1dd4rth/upcj/blob/main/docs/policy/UPCJ-overview.md">github.com/s1dd4rth/upcj/blob/main/docs/policy/UPCJ-overview.md</a>. For the full design spec, see <a href="https://github.com/s1dd4rth/upcj/blob/main/docs/superpowers/specs/2026-04-26-ontology-design.md">docs/superpowers/specs/2026-04-26-ontology-design.md</a>.
+</div>
+
+</body>
+</html>
