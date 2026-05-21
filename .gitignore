@@ -2,6 +2,8 @@
 .DS_Store
 .worktrees/
 docs/superpowers/plans/
+OUTREACH-LOG.md
+LAUNCH-KIT.md
 starter-kit/node_modules/
 starter-kit/dist/
 engine/node_modules/
