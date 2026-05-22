@@ -24,15 +24,15 @@ All values are filled in Task 0.3. The table below defines the token names and t
 
 | Token name | Purpose | Approximate OKLCH triplet |
 |---|---|---|
-| `--bg` | Page background | filled in Task 0.3 |
-| `--surface` | Raised surface (cards, panels) | filled in Task 0.3 |
-| `--ink` | Body text | filled in Task 0.3 |
-| `--ink-muted` | Secondary text, labels, captions | filled in Task 0.3 |
-| `--hairline` | Borders, dividers, separators | filled in Task 0.3 |
-| `--accent` | Single accent; used at <10% surface area | filled in Task 0.3 |
-| `--ok` | Positive states (approved, settled) | filled in Task 0.3 |
-| `--warn` | Breach callouts, deductions, queries | filled in Task 0.3 |
-| `--bad` | Rejected state; used sparingly | filled in Task 0.3 |
+| `--bg` | Page background | `oklch(0.985 0.006 85)` |
+| `--surface` | Raised surface (cards, panels) | `oklch(0.97 0.006 85)` |
+| `--ink` | Body text | `oklch(0.22 0.01 85)` |
+| `--ink-muted` | Secondary text, labels, captions | `oklch(0.45 0.01 85)` |
+| `--hairline` | Borders, dividers, separators | `oklch(0.88 0.006 85)` |
+| `--accent` | Single accent; used at <10% surface area | `oklch(0.55 0.13 235)` |
+| `--ok` | Positive states (approved, settled) | `oklch(0.6 0.12 150)` |
+| `--warn` | Breach callouts, deductions, queries | `oklch(0.7 0.13 75)` |
+| `--bad` | Rejected state; used sparingly | `oklch(0.55 0.16 25)` |
 
 ---
 
@@ -44,11 +44,11 @@ The owner-color system is used in three places: SLA chip labels (who owns the de
 
 | Token | i18n label key | Purpose |
 |---|---|---|
-| `--owner-patient` | `owners.patient` | filled in Task 0.3 |
-| `--owner-hospital` | `owners.hospital` | filled in Task 0.3 |
-| `--owner-tpa` | `owners.tpa` | filled in Task 0.3 |
-| `--owner-insurer` | `owners.insurer` | filled in Task 0.3 |
-| `--owner-regulator` | `owners.regulator` | filled in Task 0.3 |
+| `--owner-patient` | `owners.patient` | `oklch(0.6 0.10 250)` |
+| `--owner-hospital` | `owners.hospital` | `oklch(0.6 0.10 160)` |
+| `--owner-tpa` | `owners.tpa` | `oklch(0.62 0.10 300)` |
+| `--owner-insurer` | `owners.insurer` | `oklch(0.6 0.10 30)` |
+| `--owner-regulator` | `owners.regulator` | `oklch(0.55 0.08 100)` |
 
 Owner roles get a color, not an icon. The color is their identity across the entire app.
 
