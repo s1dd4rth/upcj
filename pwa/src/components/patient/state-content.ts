@@ -97,6 +97,13 @@ export const STATE_CONTENT: Partial<Record<ClaimStatus, StateContent>> = {
     explanationKey: "stateContent.partially-settled.explanation",
     tone: "mixed",
   },
-  // Phase 2 still fills: rejected, withdrawn, closed-without-settlement.
+  "rejected": {
+    archetype: "terminal",
+    terminalScreen: "rejected",
+    headlineKey: "stateContent.rejected.headline",
+    explanationKey: "stateContent.rejected.explanation",
+    tone: "heavy",
+  },
+  // Phase 2 still fills: withdrawn, closed-without-settlement.
   // The completeness test (it.skip) will be un-skipped in Task 2.4.
 };

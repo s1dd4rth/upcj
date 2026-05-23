@@ -16,6 +16,9 @@
     "claim-partially-settled": "The insurer settled part of your claim. Deductions have been applied.",
     "grievance-filed": "You filed a grievance against the insurer's decision.",
     "grievance-acknowledged": "The insurer acknowledged your grievance and is reviewing it.",
-    "grievance-resolved": "The insurer resolved your grievance."
+    "grievance-resolved": "The insurer resolved your grievance.",
+    "pre-auth-rejected": "The TPA rejected the pre-authorisation.",
+    "claim-rejected": "The claim was rejected after adjudication.",
+    "grievance-escalated": "The grievance was escalated to the next level."
   }
 }

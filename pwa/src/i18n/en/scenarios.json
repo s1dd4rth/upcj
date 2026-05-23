@@ -14,6 +14,11 @@
       "title": "Reimbursement · deduction · grievance",
       "summary": "Reimbursement claim with a partial settlement after deductions. The patient files a grievance, which is acknowledged and resolved.",
       "teaches": "How the engine handles the harder paths: the reimbursement flow, the awaiting-patient-action affordance, the partial-settlement statement that names every deduction, and the grievance route as a regulated remedy."
+    },
+    "cashlessRejectedSlaBreach": {
+      "title": "Cashless · pre-auth rejected · grievance escalation",
+      "summary": "The TPA missed the pre-authorisation response deadline, then rejected the claim. The patient files a grievance — when level 1 doesn't move it, they escalate.",
+      "teaches": "How an SLA breach is rendered — not as alarm-red but as 'the deadline passed → here is your recourse'. And how the grievance escalation ladder is part of the engine, not an afterthought."
     }
   },
   "stateContent": {
@@ -77,6 +82,11 @@
       "headline": "Your claim is partially settled",
       "explanation": "The insurer has paid part of what you claimed, with deductions itemised below. If you disagree with any deduction, you have a right to escalate through the grievance route. Each level has a regulated response window.",
       "tone": "mixed"
+    },
+    "rejected": {
+      "headline": "The insurer has rejected this claim",
+      "explanation": "The insurer says no, for the reason shown below. You have a right to appeal through the grievance process — there's a regulated escalation ladder, and many cases that look closed at this point are resolved through it.",
+      "tone": "heavy"
     }
   }
 }

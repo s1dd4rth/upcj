@@ -6,6 +6,7 @@ import { Waiting } from "./archetypes/Waiting";
 import { Active } from "./archetypes/Active";
 import { Settled } from "./terminal/Settled";
 import { PartiallySettled } from "./terminal/PartiallySettled";
+import { Rejected } from "./terminal/Rejected";
 
 interface StateScreenProps {
   status: ClaimStatus;
@@ -49,6 +50,14 @@ export function StateScreen({ status, claim, slaClocks }: StateScreenProps) {
       return (
         <div data-archetype="terminal" data-terminal-screen="partiallySettled">
           <PartiallySettled claim={claim} />
+        </div>
+      );
+    }
+
+    if (terminalScreen === "rejected") {
+      return (
+        <div data-archetype="terminal" data-terminal-screen="rejected">
+          <Rejected claim={claim} />
         </div>
       );
     }
