@@ -32,14 +32,20 @@ interface PresenterControlsProps {
   max: number;
   onNext: () => void;
   onBack: () => void;
+  mode?: "demo" | "product";
 }
 
-function PresenterControls({ cursor, max, onNext, onBack }: PresenterControlsProps) {
+function PresenterControls({ cursor, max, onNext, onBack, mode = "demo" }: PresenterControlsProps) {
   const { t } = useTranslation();
   return (
-    <div className="presenter-controls" data-presenter-controls>
+    <div
+      className="presenter-controls"
+      data-presenter-controls
+      data-mode={mode}
+    >
       <button
         type="button"
+        data-action="back"
         onClick={onBack}
         disabled={cursor === 0}
         aria-label={t("ui.actions.back")}
@@ -51,6 +57,7 @@ function PresenterControls({ cursor, max, onNext, onBack }: PresenterControlsPro
       </span>
       <button
         type="button"
+        data-action="next"
         onClick={onNext}
         disabled={cursor >= max}
         aria-label={t("ui.actions.next")}
@@ -165,10 +172,13 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
           mostUrgentSlaPhrase={
             vm.slaClocks[0]?.deadline ?? undefined
           }
-          scenarioTitle={t(scenario.titleKey)}
-          onOpenScenarioPicker={() => {
-            /* Task 4.2 */
-          }}
+          scenarioTitle={mode !== "product" ? t(scenario.titleKey) : undefined}
+          onOpenScenarioPicker={mode !== "product" ? () => { /* Task 4.2 */ } : undefined}
+          languageSwitcher={
+            mode === "product"
+              ? <div data-testid="language-switcher-slot" />
+              : undefined
+          }
         />
       }
       tabs={{
@@ -185,6 +195,7 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
               max={scenario.steps.length}
               onNext={() => dispatch({ type: "NEXT" })}
               onBack={() => dispatch({ type: "BACK" })}
+              mode={mode}
             />
           </>
         ),
