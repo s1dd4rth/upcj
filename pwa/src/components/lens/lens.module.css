@@ -111,3 +111,80 @@
   padding: 1px var(--s-1);
   border-radius: 3px;
 }
+
+/* ── Margin callouts (desktop / cockpit gutter) ─────────────────────── */
+
+.marginCallouts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+/**
+ * Individual callout card.
+ *
+ * The `::before` pseudo-element draws a short dashed hairline on the left,
+ * gesturing toward the primary content in the cockpit center column.
+ * This is a v1 "directional cue" — not a pixel-precise leader line.
+ *
+ * NO background-color change on the main content.
+ * NO dimming or opacity manipulation anywhere.
+ */
+.marginCallout {
+  position: relative;
+  padding: var(--s-2) var(--s-3) var(--s-2) var(--s-5);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+/* Dashed leader-line cue pointing left */
+.marginCallout::before {
+  content: "";
+  position: absolute;
+  left: var(--s-2);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 0;
+  border-top: 1.5px dashed var(--accent);
+}
+
+/* Extra visual emphasis when the callout has a known DOM target */
+.marginCallout[data-has-target="true"]::before {
+  border-top-style: solid;
+}
+
+.calloutHeader {
+  margin-bottom: var(--s-1);
+}
+
+.calloutIndex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.calloutText {
+  margin: 0 0 var(--s-1) 0;
+  font-size: var(--t-xs);
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.calloutPrinciple {
+  display: inline-block;
+  font-size: 0.6rem;
+  color: var(--ink-muted);
+  background: var(--hairline);
+  padding: 1px var(--s-1);
+  border-radius: 3px;
+}

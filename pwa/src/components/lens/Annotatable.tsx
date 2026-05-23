@@ -1,6 +1,7 @@
 import { useDesignLensSafe } from "./DesignLensProvider";
 import { useLensIndex } from "./LensIndexContext";
 import { AnnotationBadge } from "./AnnotationBadge";
+import { useIsWide } from "../../hooks/useIsWide";
 import styles from "./lens.module.css";
 
 export interface AnnotatableProps {
@@ -33,6 +34,7 @@ export function Annotatable({
 }: AnnotatableProps): React.ReactElement {
   const { enabled } = useDesignLensSafe();
   const { indexFor } = useLensIndex();
+  const isWide = useIsWide();
 
   // Transparent passthrough when lens is disabled
   if (!enabled) {
@@ -41,6 +43,9 @@ export function Annotatable({
   }
 
   const index = indexFor(id);
+  // At wide viewports the badge is suppressed; the margin callouts take its place.
+  // The wrapper still renders so the annotation list / callout list can locate the target via data-annotatable.
+  const showBadge = index !== undefined && !isWide;
 
   return (
     <span
@@ -49,7 +54,7 @@ export function Annotatable({
       style={{ position: "relative", display: "inline-block" }}
     >
       {children}
-      {index !== undefined && <AnnotationBadge number={index} />}
+      {showBadge && <AnnotationBadge number={index} />}
     </span>
   );
 }

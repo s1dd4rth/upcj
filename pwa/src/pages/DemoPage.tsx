@@ -26,6 +26,7 @@ import { DocChecklist } from "../components/system/DocChecklist";
 import { EngineTrace } from "../components/system/EngineTrace";
 import { DesignLensProvider } from "../components/lens/DesignLensProvider";
 import { AnnotationList } from "../components/lens/AnnotationList";
+import { MarginCallouts } from "../components/lens/MarginCallouts";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -236,6 +237,15 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
             cursorByStatus={cursorByStatus}
             onJumpToCursor={(cursor) => dispatch({ type: "JUMP", cursor })}
           />
+        }
+        marginCallouts={
+          mode === "demo" && lensEnabled
+            ? <MarginCallouts
+                state={vm.claim.status}
+                scenarioId={state.scenarioId}
+                cursor={state.cursor}
+              />
+            : undefined
         }
       />
       {mode !== "product" && (

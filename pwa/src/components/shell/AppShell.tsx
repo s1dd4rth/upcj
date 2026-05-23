@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
 import { MobileTabs } from "./MobileTabs";
+import { useIsWide } from "../../hooks/useIsWide";
 import styles from "./shell.module.css";
+import { useState } from "react";
 
 export type ShellMode = "product" | "demo" | "dev";
 export type ShellTab = "status" | "activity" | "docs";
@@ -16,29 +17,14 @@ export interface AppShellProps {
   engineTrace?: React.ReactNode;
   /** Content for the left rail column in the cockpit (wide) layout. */
   cockpitRailLeft?: React.ReactNode;
+  /**
+   * Margin callouts for the design lens at wide viewports.
+   * Rendered inside the right rail when the cockpit layout is active.
+   * At narrow viewports AppShell ignores this prop; the mobile lens takes over.
+   */
+  marginCallouts?: React.ReactNode;
   activeTab?: ShellTab;
   onTabChange?: (tab: ShellTab) => void;
-}
-
-const COCKPIT_QUERY = "(min-width: 900px)";
-
-function useIsWide(): boolean {
-  const [isWide, setIsWide] = useState<boolean>(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-      return false;
-    }
-    return window.matchMedia(COCKPIT_QUERY).matches;
-  });
-  useEffect(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-      return;
-    }
-    const mql = window.matchMedia(COCKPIT_QUERY);
-    const onChange = (e: MediaQueryListEvent) => setIsWide(e.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-  return isWide;
 }
 
 export function AppShell({
@@ -47,6 +33,7 @@ export function AppShell({
   tabs,
   engineTrace,
   cockpitRailLeft,
+  marginCallouts,
   activeTab: controlledTab,
   onTabChange,
 }: AppShellProps): React.ReactElement {
@@ -84,6 +71,7 @@ export function AppShell({
             )}
           </div>
           <div className={styles.cockpitRailRight} data-cockpit-rail-right>
+            {marginCallouts && <div data-cockpit-margin-callouts>{marginCallouts}</div>}
             <div>{tabs.activity}</div>
             <div>{tabs.docs}</div>
           </div>
