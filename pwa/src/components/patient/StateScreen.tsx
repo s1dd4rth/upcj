@@ -3,7 +3,9 @@ import type { SlaClockVM } from "../../state/selectors";
 import { STATE_CONTENT } from "./state-content";
 import { Neutral } from "./archetypes/Neutral";
 import { Waiting } from "./archetypes/Waiting";
+import { Active } from "./archetypes/Active";
 import { Settled } from "./terminal/Settled";
+import { PartiallySettled } from "./terminal/PartiallySettled";
 
 interface StateScreenProps {
   status: ClaimStatus;
@@ -43,6 +45,14 @@ export function StateScreen({ status, claim, slaClocks }: StateScreenProps) {
       );
     }
 
+    if (terminalScreen === "partiallySettled") {
+      return (
+        <div data-archetype="terminal" data-terminal-screen="partiallySettled">
+          <PartiallySettled claim={claim} />
+        </div>
+      );
+    }
+
     // Other terminal screens — Phase 2 fallback
     return (
       <div data-archetype="terminal" data-terminal-screen={terminalScreen ?? "unknown"}>
@@ -67,6 +77,12 @@ export function StateScreen({ status, claim, slaClocks }: StateScreenProps) {
     );
   }
 
-  // active or any unknown archetype — Phase 2 fallback
+  if (entry.archetype === "active") {
+    return (
+      <Active entry={entry} />
+    );
+  }
+
+  // unknown archetype — Phase 2 fallback
   return <Phase2Fallback />;
 }

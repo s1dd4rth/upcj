@@ -9,6 +9,11 @@
       "title": "Cashless · emergency · TPA query → resolved",
       "summary": "Emergency admission. The TPA had a question about the case — the hospital answered, and the claim continued to settlement.",
       "teaches": "How the in-query state works: a regulated pause, a clearly-owned response window, and how the claim re-enters the main flow when resolved."
+    },
+    "reimbursementDeductionGrievance": {
+      "title": "Reimbursement · deduction · grievance",
+      "summary": "Reimbursement claim with a partial settlement after deductions. The patient files a grievance, which is acknowledged and resolved.",
+      "teaches": "How the engine handles the harder paths: the reimbursement flow, the awaiting-patient-action affordance, the partial-settlement statement that names every deduction, and the grievance route as a regulated remedy."
     }
   },
   "stateContent": {
@@ -56,6 +61,22 @@
       "headline": "Your claim is settled",
       "explanation": "The TPA has paid the hospital directly under your cashless arrangement. There is nothing left for you to do.",
       "tone": "positive"
+    },
+    "in-treatment-reimbursement": {
+      "headline": "You are being treated. You'll claim reimbursement after discharge.",
+      "explanation": "Your insurer didn't pre-approve cashless treatment for this admission, so you'll pay the hospital and submit a reimbursement claim later. Keep every receipt and discharge summary.",
+      "tone": "calm"
+    },
+    "awaiting-patient-action": {
+      "headline": "The TPA needs information from you",
+      "explanation": "There's a specific question from the TPA. The claim is paused until you respond. You can take your time — the regulated window for responses to insurer/TPA queries is generous — but the sooner you reply, the sooner this moves.",
+      "actionLabel": "Provide the requested information",
+      "tone": "urgent"
+    },
+    "partially-settled": {
+      "headline": "Your claim is partially settled",
+      "explanation": "The insurer has paid part of what you claimed, with deductions itemised below. If you disagree with any deduction, you have a right to escalate through the grievance route. Each level has a regulated response window.",
+      "tone": "mixed"
     }
   }
 }

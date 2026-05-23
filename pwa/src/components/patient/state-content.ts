@@ -77,7 +77,26 @@ export const STATE_CONTENT: Partial<Record<ClaimStatus, StateContent>> = {
     explanationKey: "stateContent.settled.explanation",
     tone: "positive",
   },
-  // Phase 2 fills: in-treatment-reimbursement, awaiting-patient-action,
-  // partially-settled, rejected, withdrawn, closed-without-settlement.
+  "in-treatment-reimbursement": {
+    archetype: "neutral",
+    headlineKey: "stateContent.in-treatment-reimbursement.headline",
+    explanationKey: "stateContent.in-treatment-reimbursement.explanation",
+    tone: "calm",
+  },
+  "awaiting-patient-action": {
+    archetype: "active",
+    headlineKey: "stateContent.awaiting-patient-action.headline",
+    explanationKey: "stateContent.awaiting-patient-action.explanation",
+    action: { labelKey: "stateContent.awaiting-patient-action.actionLabel", kind: "primary" },
+    tone: "urgent",
+  },
+  "partially-settled": {
+    archetype: "terminal",
+    terminalScreen: "partiallySettled",
+    headlineKey: "stateContent.partially-settled.headline",
+    explanationKey: "stateContent.partially-settled.explanation",
+    tone: "mixed",
+  },
+  // Phase 2 still fills: rejected, withdrawn, closed-without-settlement.
   // The completeness test (it.skip) will be un-skipped in Task 2.4.
 };
