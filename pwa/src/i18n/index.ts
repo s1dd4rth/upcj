@@ -6,6 +6,7 @@ import enScenarios from "./en/scenarios.json";
 import enOwners from "./en/owners.json";
 import enLens from "./en/lens.json";
 import enActivity from "./en/activity.json";
+import enDesign from "./en/design.json";
 
 const en = {
   ...enUi,
@@ -13,6 +14,7 @@ const en = {
   ...enOwners,
   ...enLens,
   ...enActivity,
+  ...enDesign,
 };
 
 void i18n.use(initReactI18next).init({

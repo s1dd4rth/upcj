@@ -1,0 +1,76 @@
+{
+  "design": {
+    "title": "What this demo is trying to demonstrate",
+    "intro": "UPCJ is a framework for India's health-insurance claim journey. This app is the click-through artifact: every decision you see is a deliberate answer to a design principle. Below: what those principles are, and where to see each one in action.",
+    "showDemo": "Show me the demo",
+    "seeInDemo": "See in /demo",
+    "sections": {
+      "error-prevention": {
+        "heading": "Error prevention",
+        "intro": "Better to prevent an error than to surface and recover from one. The biggest source of error in this domain is uncertainty: not knowing whose turn it is, not knowing what's needed, not knowing what 'pending' actually means. Every preventable error is preventable by making the state of the system explicit and ownable."
+      },
+      "clarity": {
+        "heading": "Clarity & plain language",
+        "intro": "The patient is not a developer, an insurer, or a regulator. The headlines are written for someone who hasn't slept, whose phone is at 8% battery, who needs to know what to do right now."
+      },
+      "system-design": {
+        "heading": "System-design choices",
+        "intro": "The route-based modes (/product / /demo / /dev) are the same components reading the same state, presented differently for different audiences. The engine is pure functions; the adapter is the only seam; replay is the source of truth. None of these are abstractions for their own sake — they each pay a specific design dividend."
+      },
+      "data-modeling": {
+        "heading": "Data-modeling decisions",
+        "intro": "The engine models events, not statuses. SLAs are anchored to events with regulatory deadlines, not free-floating timers. Interaction IDs are deterministic functions of the event payload — the audit trail is reproducible from the events alone."
+      },
+      "heuristics": {
+        "heading": "The 10 usability heuristics",
+        "intro": "Nielsen's 10 heuristics, applied honestly. Each one names a specific decision the app makes."
+      },
+      "tryIt": {
+        "heading": "Try it",
+        "intro": "Open any scenario with the design lens on. The lens adds inline callouts wherever a design decision is visible."
+      }
+    },
+    "heuristics": {
+      "1": {
+        "name": "Visibility of system status",
+        "honors": "Extended: visibility of system status WITH OWNERSHIP and a REMEDY. Every regulated deadline names who owes the response and what your recourse is if they miss it."
+      },
+      "2": {
+        "name": "Match between system and real world",
+        "honors": "₹1,23,456 is the Indian grouping, not the American one. 'Tomorrow ~2pm' is how a person says it; '2026-04-23T14:00:00Z' is how a machine says it. The app uses the human form."
+      },
+      "3": {
+        "name": "User control and freedom",
+        "honors": "Withdrawal is a first-class lifecycle state — patients can change their minds without penalty. The grievance route is rendered as recourse, not buried in fine print."
+      },
+      "4": {
+        "name": "Consistency and standards",
+        "honors": "The owner-color system is a cross-component motif. The same five hues mean the same five parties everywhere — header, SLA chip, doc checklist, activity feed. Once you learn it, you read every screen faster."
+      },
+      "5": {
+        "name": "Error prevention",
+        "honors": "Bounded SLA phrases (\"Tomorrow ~2pm\") over precise ticking countdowns — they prevent the anxious refresh-and-check pattern. The framework makes 'nothing for you to do right now' the explicit, visible answer."
+      },
+      "6": {
+        "name": "Recognition rather than recall",
+        "honors": "The Status pill in the header shows where you are at all times. The journey bar/rail shows the 6 phases visually. You never have to remember; you can recognise."
+      },
+      "7": {
+        "name": "Flexibility and efficiency of use",
+        "honors": "Three routes: /product for stakeholders (zero chrome), /demo for guided walkthroughs (presenter controls), /dev for engineers (engine internals). Same components — re-arranged."
+      },
+      "8": {
+        "name": "Aesthetic and minimalist design",
+        "honors": "When something needs your attention, the Active archetype recedes everything else and shows one prominent CTA. Quiet warmth elsewhere — no decorative chrome."
+      },
+      "9": {
+        "name": "Help users recognise, diagnose, and recover from errors",
+        "honors": "A breach reads as 'the deadline passed → here is your remedy', not as a red alarm. The remedy is the recovery path, named inline."
+      },
+      "10": {
+        "name": "Help and documentation",
+        "honors": "Every state, every SLA, every doc has a plain-language explanation a click away — no jargon, no insurer terms-of-art."
+      }
+    }
+  }
+}
