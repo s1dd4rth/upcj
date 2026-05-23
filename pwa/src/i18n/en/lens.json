@@ -1,1 +1,25 @@
-{ "lens": {} }
+{
+  "lens": {
+    "annotations": {
+      "plain-language-status": "The headline tells you what's happening in your words, not the insurer's.",
+      "no-jargon-headlines": "Intimation is a system word; the screen reads 'Claim registered' instead.",
+      "sla-with-owner-and-remedy": "Every regulated deadline names who owes the response, and what your recourse is if they miss it.",
+      "bounded-not-precise": "The time estimate says 'within 1 hour' — a bound the system can honour, not a countdown it will miss.",
+      "no-progress-without-data": "The status bar only advances when an event is recorded; progress is earned, not animated.",
+      "nothing-to-do-is-a-design-choice": "When the system is working, the explicit 'nothing required' affirmation prevents anxious checking.",
+      "waiting-with-ownership": "The query screen names who asked, when they asked, and who must respond — not just 'under review'.",
+      "active-archetype-recedes-everything-else": "When action is needed, the call-to-action is the only high-contrast element on screen.",
+      "statement-not-hero-metric": "A settlement is a statement — claimed, approved, paid, deducted — not a single celebratory number.",
+      "indian-numerals-and-dates": "Amounts use Indian lakh/crore grouping and dates use DD MMM YYYY, matching how patients read them.",
+      "grievance-as-recourse": "The grievance route is rendered as the path forward, not as fine print after the fact.",
+      "deductions-itemised-not-summarised": "Each deduction line names the rule that triggered it so the patient can dispute a specific item.",
+      "rejection-without-alarm-red": "A rejection is rendered in neutral tones with next steps visible before the reason for rejection.",
+      "breach-is-clay-not-red": "Breached deadlines read in clay/amber, not alarm-red. They're a recourse-trigger, not a disaster.",
+      "withdrawal-is-first-class": "Withdrawal has its own terminal state and timeline entry — it isn't just a missing settlement.",
+      "replay-as-source-of-truth": "The state you're looking at is computed from the event log, not stored. Every UI change is reproducible from the events.",
+      "events-not-guards": "Transitions fire on explicit events, not on condition checks — so every state change has a named cause.",
+      "deterministic-interaction-ids": "Each interaction ID is derived from its event sequence, so replays produce identical IDs without a database.",
+      "owner-colors-as-cross-component-motif": "The same owner palette appears on the chip, the SLA bar, and the activity feed — one visual vocabulary."
+    }
+  }
+}
