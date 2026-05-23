@@ -1,0 +1,62 @@
+import { useTranslation } from "react-i18next";
+import type { ShellMode } from "./AppShell";
+import styles from "./shell.module.css";
+
+export interface HeaderProps {
+  mode: ShellMode;
+  statusLabel: string;
+  mostUrgentSlaPhrase?: string;
+  scenarioTitle?: string;
+  onOpenScenarioPicker?: () => void;
+  lensEnabled?: boolean;
+  onToggleLens?: () => void;
+  languageSwitcher?: React.ReactNode;
+}
+
+export function Header({
+  mode,
+  statusLabel,
+  mostUrgentSlaPhrase,
+  scenarioTitle,
+  onOpenScenarioPicker,
+  lensEnabled,
+  onToggleLens,
+  languageSwitcher,
+}: HeaderProps): React.ReactElement {
+  const { t } = useTranslation();
+
+  return (
+    <header className={styles.headerBand} data-shell-header>
+      <span className={styles.appName}>{t("ui.header.appName")}</span>
+      <span className={styles.statusPill}>{statusLabel}</span>
+      {mostUrgentSlaPhrase && (
+        <span className={styles.slaPhrase}>{mostUrgentSlaPhrase}</span>
+      )}
+
+      {mode === "product" && languageSwitcher && languageSwitcher}
+
+      {(mode === "demo" || mode === "dev") && (
+        <div className={styles.demoChromeRow} data-demo-chrome>
+          {scenarioTitle && (
+            <button
+              className={styles.scenarioBtn}
+              onClick={onOpenScenarioPicker}
+              aria-label={scenarioTitle}
+            >
+              {scenarioTitle}
+            </button>
+          )}
+          {mode === "demo" && (
+            <button
+              className={styles.lensBtn}
+              data-active={lensEnabled ? "true" : "false"}
+              onClick={onToggleLens}
+            >
+              {lensEnabled ? "Lens on" : "Lens off"}
+            </button>
+          )}
+        </div>
+      )}
+    </header>
+  );
+}

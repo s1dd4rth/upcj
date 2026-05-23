@@ -1,0 +1,150 @@
+/* AppShell root — mobile-first, three-row grid */
+.shell {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Header band */
+.headerBand {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--s-3) var(--s-4);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.appName {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--ink);
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusPill {
+  display: inline-block;
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+  background: var(--bg);
+  border: 1px solid var(--hairline);
+  border-radius: 99px;
+  padding: 0.15em 0.6em;
+  white-space: nowrap;
+}
+
+.slaPhrase {
+  font-size: var(--t-xs);
+  color: var(--warn);
+  white-space: nowrap;
+}
+
+.demoChromeRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.scenarioBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--t-sm);
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.lensBtn {
+  background: none;
+  border: 1px solid var(--hairline);
+  border-radius: var(--s-2);
+  padding: var(--s-1) var(--s-3);
+  cursor: pointer;
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+  min-height: 44px;
+}
+
+.lensBtn[data-active="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Main content area */
+.main {
+  overflow-y: auto;
+  padding: var(--s-4);
+}
+
+/* Engine trace disclosure (inline, bottom of status panel) */
+.engineTrace {
+  margin-top: var(--s-6);
+  border-top: 1px solid var(--hairline);
+  padding-top: var(--s-3);
+}
+
+.engineTrace summary {
+  cursor: pointer;
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+  user-select: none;
+  list-style: none;
+}
+
+.engineTrace summary::-webkit-details-marker {
+  display: none;
+}
+
+.engineTrace summary::before {
+  content: "▸ ";
+  font-size: 0.7em;
+}
+
+.engineTrace[open] summary::before {
+  content: "▾ ";
+}
+
+/* Bottom tabs nav */
+.bottomNav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--hairline);
+  background: var(--surface);
+}
+
+.tabBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  min-width: 44px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+  gap: var(--s-1);
+  padding: var(--s-2);
+}
+
+.tabBtn[data-active="true"] {
+  color: var(--accent);
+  font-weight: 600;
+}
