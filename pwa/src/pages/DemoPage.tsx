@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useMemo } from "react";
+import { useReducer, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -11,11 +11,13 @@ import {
   selectEngineTrace,
   selectCurrentState,
 } from "../state/selectors";
-import { getScenario, DEFAULT_SCENARIO_ID } from "../scenarios";
+import { getScenario, DEFAULT_SCENARIO_ID, SCENARIOS } from "../scenarios";
 import type { ClaimStatus } from "../engine-adapter";
 
 import { AppShell } from "../components/shell/AppShell";
 import { Header } from "../components/shell/Header";
+import { ScenarioPicker } from "../components/shell/ScenarioPicker";
+import { PresenterControls } from "../components/shell/PresenterControls";
 import { StateScreen } from "../components/patient/StateScreen";
 import { JourneyBar } from "../components/system/JourneyBar";
 import { JourneyRail } from "../components/system/JourneyRail";
@@ -24,49 +26,10 @@ import { DocChecklist } from "../components/system/DocChecklist";
 import { EngineTrace } from "../components/system/EngineTrace";
 
 // ---------------------------------------------------------------------------
-// PresenterControls — small inline component for manual step navigation
+// Constants
 // ---------------------------------------------------------------------------
 
-interface PresenterControlsProps {
-  cursor: number;
-  max: number;
-  onNext: () => void;
-  onBack: () => void;
-  mode?: "demo" | "product";
-}
-
-function PresenterControls({ cursor, max, onNext, onBack, mode = "demo" }: PresenterControlsProps) {
-  const { t } = useTranslation();
-  return (
-    <div
-      className="presenter-controls"
-      data-presenter-controls
-      data-mode={mode}
-    >
-      <button
-        type="button"
-        data-action="back"
-        onClick={onBack}
-        disabled={cursor === 0}
-        aria-label={t("ui.actions.back")}
-      >
-        {t("ui.actions.back")}
-      </button>
-      <span className="presenter-step-indicator" aria-live="polite">
-        {cursor} / {max}
-      </span>
-      <button
-        type="button"
-        data-action="next"
-        onClick={onNext}
-        disabled={cursor >= max}
-        aria-label={t("ui.actions.next")}
-      >
-        {t("ui.actions.next")}
-      </button>
-    </div>
-  );
-}
+const BASE_INTERVAL = 2500; // ms per step at speed 1x (normal motion)
 
 // ---------------------------------------------------------------------------
 // clamp helper
@@ -85,19 +48,29 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialScenarioId = searchParams.get("scenario") || DEFAULT_SCENARIO_ID;
-  const lens = searchParams.get("lens") === "on";
+
+  // lens is a URL flag only — Task 5 will consume it. For now we just persist
+  // the flag and expose a toggle that flips it in the URL.
+  const lensFromUrl = searchParams.get("lens") === "on";
+  const [lensEnabled, setLensEnabled] = useState(lensFromUrl);
 
   const initialCursor = clamp(
     parseInt(searchParams.get("step") ?? "0", 10) || 0,
     getScenario(initialScenarioId).steps.length
   );
 
+  // /demo defaults to auto; /product defaults to manual
+  const initialPlaybackMode = mode === "demo" ? "auto" : "manual";
+
   const [state, dispatch] = useReducer(playbackReducer, undefined, () => ({
     scenarioId: initialScenarioId,
     cursor: initialCursor,
-    mode: "manual" as const,
+    mode: initialPlaybackMode as "manual" | "auto",
     speed: 1,
   }));
+
+  // Picker open state
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   // Sync state back to URL
   useEffect(() => {
@@ -105,16 +78,39 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
       {
         scenario: state.scenarioId,
         step: String(state.cursor),
-        ...(lens ? { lens: "on" } : {}),
+        ...(lensEnabled ? { lens: "on" } : {}),
       },
       { replace: true }
     );
-  }, [state.scenarioId, state.cursor, lens, setSearchParams]);
+  }, [state.scenarioId, state.cursor, lensEnabled, setSearchParams]);
 
   const scenario = getScenario(state.scenarioId);
 
+  // Auto-play timer — fires on each step when mode === "auto"
+  useEffect(() => {
+    if (state.mode !== "auto") return;
+    if (state.cursor >= scenario.steps.length) return;
+
+    const reduced =
+      typeof window !== "undefined" && typeof window.matchMedia === "function"
+        ? (window.matchMedia("(prefers-reduced-motion: reduce)").matches ?? false)
+        : false;
+    const base = reduced ? BASE_INTERVAL * 3 : BASE_INTERVAL;
+    const ms = base / state.speed;
+
+    const timer = window.setTimeout(() => dispatch({ type: "NEXT" }), ms);
+    return () => window.clearTimeout(timer);
+  }, [state.mode, state.cursor, state.speed, scenario.steps.length]);
+
+  // When reaching the end in auto mode, flip to manual so the demo doesn't
+  // sit "playing" indefinitely.
+  useEffect(() => {
+    if (state.mode === "auto" && state.cursor >= scenario.steps.length) {
+      dispatch({ type: "SET_MODE", mode: "manual" });
+    }
+  }, [state.mode, state.cursor, scenario.steps.length]);
+
   // Compute earliest cursor for each status seen in this scenario.
-  // This is used by JourneyRail to enable click→jump for visited states.
   const cursorByStatus = useMemo(() => {
     const map: Partial<Record<ClaimStatus, number>> = {};
     for (let c = 0; c <= scenario.steps.length; c++) {
@@ -126,7 +122,7 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
     return map;
   }, [scenario]);
 
-  // Build view model — wrap in try/catch so replay failures render an error state
+  // Build view model
   let viewModel:
     | {
         claim: ReturnType<typeof selectClaimAt>;
@@ -163,53 +159,84 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
   const vm = viewModel;
 
   return (
-    <AppShell
-      mode={mode}
-      header={
-        <Header
-          mode={mode}
-          statusLabel={t(`journey.states.${vm.claim.status}`)}
-          mostUrgentSlaPhrase={
-            vm.slaClocks[0]?.deadline ?? undefined
-          }
-          scenarioTitle={mode !== "product" ? t(scenario.titleKey) : undefined}
-          onOpenScenarioPicker={mode !== "product" ? () => { /* Task 4.2 */ } : undefined}
-          languageSwitcher={
-            mode === "product"
-              ? <div data-testid="language-switcher-slot" />
-              : undefined
-          }
+    <>
+      <AppShell
+        mode={mode}
+        header={
+          <Header
+            mode={mode}
+            statusLabel={t(`journey.states.${vm.claim.status}`)}
+            mostUrgentSlaPhrase={
+              vm.slaClocks[0]?.deadline ?? undefined
+            }
+            scenarioTitle={mode !== "product" ? t(scenario.titleKey) : undefined}
+            onOpenScenarioPicker={
+              mode !== "product" ? () => setPickerOpen(true) : undefined
+            }
+            lensEnabled={mode === "demo" ? lensEnabled : undefined}
+            onToggleLens={
+              mode === "demo"
+                ? () => setLensEnabled((prev) => !prev)
+                : undefined
+            }
+            languageSwitcher={
+              mode === "product"
+                ? <div data-testid="language-switcher-slot" />
+                : undefined
+            }
+          />
+        }
+        tabs={{
+          status: (
+            <>
+              <StateScreen
+                status={vm.claim.status}
+                claim={vm.claim}
+                slaClocks={vm.slaClocks}
+              />
+              <JourneyBar status={vm.claim.status} />
+              <PresenterControls
+                mode={mode}
+                cursor={state.cursor}
+                max={scenario.steps.length}
+                playbackMode={state.mode}
+                speed={state.speed}
+                onNext={() => dispatch({ type: "NEXT" })}
+                onBack={() => dispatch({ type: "BACK" })}
+                onTogglePlayback={() =>
+                  dispatch({
+                    type: "SET_MODE",
+                    mode: state.mode === "auto" ? "manual" : "auto",
+                  })
+                }
+                onSetSpeed={(speed) => dispatch({ type: "SET_SPEED", speed })}
+              />
+            </>
+          ),
+          activity: <ActivityFeed entries={vm.activityFeed} />,
+          docs: <DocChecklist docs={vm.docChecklist} />,
+        }}
+        engineTrace={mode === "demo" ? <EngineTrace vm={vm.engineTrace} /> : undefined}
+        cockpitRailLeft={
+          <JourneyRail
+            status={vm.claim.status}
+            cursorByStatus={cursorByStatus}
+            onJumpToCursor={(cursor) => dispatch({ type: "JUMP", cursor })}
+          />
+        }
+      />
+      {mode !== "product" && (
+        <ScenarioPicker
+          open={pickerOpen}
+          onClose={() => setPickerOpen(false)}
+          scenarios={SCENARIOS}
+          currentScenarioId={state.scenarioId}
+          onChoose={(scenarioId) => {
+            dispatch({ type: "LOAD_SCENARIO", scenarioId });
+            setPickerOpen(false);
+          }}
         />
-      }
-      tabs={{
-        status: (
-          <>
-            <StateScreen
-              status={vm.claim.status}
-              claim={vm.claim}
-              slaClocks={vm.slaClocks}
-            />
-            <JourneyBar status={vm.claim.status} />
-            <PresenterControls
-              cursor={state.cursor}
-              max={scenario.steps.length}
-              onNext={() => dispatch({ type: "NEXT" })}
-              onBack={() => dispatch({ type: "BACK" })}
-              mode={mode}
-            />
-          </>
-        ),
-        activity: <ActivityFeed entries={vm.activityFeed} />,
-        docs: <DocChecklist docs={vm.docChecklist} />,
-      }}
-      engineTrace={mode === "demo" ? <EngineTrace vm={vm.engineTrace} /> : undefined}
-      cockpitRailLeft={
-        <JourneyRail
-          status={vm.claim.status}
-          cursorByStatus={cursorByStatus}
-          onJumpToCursor={(cursor) => dispatch({ type: "JUMP", cursor })}
-        />
-      }
-    />
+      )}
+    </>
   );
 }

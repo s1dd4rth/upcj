@@ -52,6 +52,12 @@
     },
     "errors": {
       "replayFailed": "Something went wrong replaying this claim. This shouldn't happen with the seeded scenarios — please report it."
+    },
+    "scenarioPicker": {
+      "title": "Choose a scenario",
+      "close": "Close picker",
+      "current": "Currently playing",
+      "teaches": "What this teaches"
     }
   },
   "journey": {
