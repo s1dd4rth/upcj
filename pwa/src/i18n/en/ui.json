@@ -35,7 +35,20 @@
         "verified": "Verified",
         "rejected": "Rejected"
       },
-      "relevantAt": "Relevant at: {{step}}"
+      "relevantAt": "Relevant at: {{step}}",
+      "whyNeeded": "Why is this needed?",
+      "empty": "No documents required at this point.",
+      "phases": {
+        "beforeAdmission": "Before admission",
+        "atHospital": "At the hospital",
+        "dischargeSettlement": "Discharge & settlement",
+        "cashless": "Cashless flow",
+        "reimbursement": "Reimbursement flow",
+        "other": "Other"
+      }
+    },
+    "activity": {
+      "empty": "Nothing has happened yet."
     },
     "errors": {
       "replayFailed": "Something went wrong replaying this claim. This shouldn't happen with the seeded scenarios — please report it."
