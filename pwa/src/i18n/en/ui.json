@@ -1,0 +1,44 @@
+{
+  "ui": {
+    "tabs": {
+      "status": "Status",
+      "activity": "Activity",
+      "docs": "Documents"
+    },
+    "actions": {
+      "next": "Next event",
+      "back": "Previous event",
+      "playAuto": "Play",
+      "pause": "Pause",
+      "openScenarios": "Choose another scenario"
+    },
+    "header": {
+      "appName": "UPCJ — Patient Claim Journey",
+      "mostUrgentSla": "Most urgent: {{phrase}}"
+    },
+    "engineTrace": {
+      "summary": "What just changed?",
+      "eventApplied": "Event applied",
+      "statusTransition": "Status moved from {{before}} to {{after}}",
+      "newInteractionId": "New interaction: {{id}}"
+    },
+    "sla": {
+      "comfortable": "{{owner}} has time — deadline {{when}}",
+      "approaching": "{{owner}} should be acting now — deadline {{when}}",
+      "dueSoon": "{{owner}} is running out of time — deadline {{when}}",
+      "breached": "The {{owner}}'s deadline passed on {{when}}. That's a breach — {{remedy}}."
+    },
+    "doc": {
+      "status": {
+        "required": "Needed",
+        "provided": "Submitted",
+        "verified": "Verified",
+        "rejected": "Rejected"
+      },
+      "relevantAt": "Relevant at: {{step}}"
+    },
+    "errors": {
+      "replayFailed": "Something went wrong replaying this claim. This shouldn't happen with the seeded scenarios — please report it."
+    }
+  }
+}

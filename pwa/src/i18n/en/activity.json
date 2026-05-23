@@ -1,0 +1,12 @@
+{
+  "activity": {
+    "intimate-hospitalisation": "You intimated the TPA that you would be hospitalised.",
+    "doctor-signs-admission-advice": "The doctor signed the admission advice.",
+    "cashless-eligibility-confirmed": "The TPA confirmed you are eligible for cashless treatment.",
+    "pre-auth-filed": "The hospital filed the pre-authorisation request with the TPA.",
+    "pre-auth-approved": "The TPA approved the pre-authorisation.",
+    "patient-discharged": "You were discharged from the hospital.",
+    "discharge-bill-finalised": "The hospital finalised the discharge bill.",
+    "claim-settled": "The TPA settled the claim with the hospital."
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "scenarios": {
+    "cashlessPlannedHappy": {
+      "title": "Cashless · planned admission · happy path",
+      "summary": "Planned surgery at a network hospital. Cashless eligibility confirmed, pre-auth approved on the same day, claim settled in full a week after discharge.",
+      "teaches": "The clean baseline: every party meets its SLA, every document is in order, every state transition takes the obvious path. Watch how the engine tracks who's responsible at each step."
+    }
+  },
+  "stateContent": {
+    "pre-admission": {
+      "headline": "You've decided to seek treatment",
+      "explanation": "Nothing has been filed yet. This is the moment before your hospital insurance journey begins.",
+      "tone": "quiet"
+    },
+    "intimated": {
+      "headline": "Your hospitalisation has been intimated to the TPA",
+      "explanation": "You (or someone on your behalf) told the Third-Party Administrator that you're going to be admitted. The TPA will now wait for the hospital to confirm.",
+      "tone": "calm"
+    },
+    "admission-advised": {
+      "headline": "The doctor has signed your admission advice",
+      "explanation": "Your treating doctor has formally said you need to be admitted. The hospital can now check whether your insurance will cover the stay without you paying up front.",
+      "tone": "calm"
+    },
+    "pre-auth-pending": {
+      "headline": "The hospital has filed the pre-authorisation request",
+      "explanation": "The hospital sent your case to the TPA, asking them to approve treatment up to a budget. The TPA must respond — this is a regulated deadline.",
+      "tone": "calm"
+    },
+    "in-treatment-cashless": {
+      "headline": "Cashless treatment is approved — focus on getting better",
+      "explanation": "Pre-authorisation is in place. The hospital can treat you and bill the TPA directly. You should not be asked to pay for covered care during this stay.",
+      "tone": "positive"
+    },
+    "discharged": {
+      "headline": "You've been discharged. The hospital is finalising the bill.",
+      "explanation": "Your treatment is complete. The hospital now totals the bill and sends it to the TPA. There is a regulated deadline for the TPA to settle.",
+      "tone": "calm"
+    },
+    "in-adjudication": {
+      "headline": "The TPA is reviewing the final bill",
+      "explanation": "The discharge bill is with the TPA. They check it against policy terms — what's covered, what isn't — and decide what they will pay.",
+      "tone": "calm"
+    },
+    "settled": {
+      "headline": "Your claim is settled",
+      "explanation": "The TPA has paid the hospital directly under your cashless arrangement. There is nothing left for you to do.",
+      "tone": "positive"
+    }
+  }
+}
