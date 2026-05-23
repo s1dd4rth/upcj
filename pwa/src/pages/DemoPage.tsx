@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -12,11 +12,13 @@ import {
   selectCurrentState,
 } from "../state/selectors";
 import { getScenario, DEFAULT_SCENARIO_ID } from "../scenarios";
+import type { ClaimStatus } from "../engine-adapter";
 
 import { AppShell } from "../components/shell/AppShell";
 import { Header } from "../components/shell/Header";
 import { StateScreen } from "../components/patient/StateScreen";
 import { JourneyBar } from "../components/system/JourneyBar";
+import { JourneyRail } from "../components/system/JourneyRail";
 import { ActivityFeed } from "../components/system/ActivityFeed";
 import { DocChecklist } from "../components/system/DocChecklist";
 import { EngineTrace } from "../components/system/EngineTrace";
@@ -104,6 +106,19 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
 
   const scenario = getScenario(state.scenarioId);
 
+  // Compute earliest cursor for each status seen in this scenario.
+  // This is used by JourneyRail to enable click→jump for visited states.
+  const cursorByStatus = useMemo(() => {
+    const map: Partial<Record<ClaimStatus, number>> = {};
+    for (let c = 0; c <= scenario.steps.length; c++) {
+      try {
+        const s = selectClaimAt(scenario, c).status;
+        if (map[s] === undefined) map[s] = c;
+      } catch { /* ignore replay errors */ }
+    }
+    return map;
+  }, [scenario]);
+
   // Build view model — wrap in try/catch so replay failures render an error state
   let viewModel:
     | {
@@ -177,6 +192,13 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
         docs: <DocChecklist docs={vm.docChecklist} />,
       }}
       engineTrace={mode === "demo" ? <EngineTrace vm={vm.engineTrace} /> : undefined}
+      cockpitRailLeft={
+        <JourneyRail
+          status={vm.claim.status}
+          cursorByStatus={cursorByStatus}
+          onJumpToCursor={(cursor) => dispatch({ type: "JUMP", cursor })}
+        />
+      }
     />
   );
 }

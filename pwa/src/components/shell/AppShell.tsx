@@ -14,6 +14,8 @@ export interface AppShellProps {
     docs: React.ReactNode;
   };
   engineTrace?: React.ReactNode;
+  /** Content for the left rail column in the cockpit (wide) layout. */
+  cockpitRailLeft?: React.ReactNode;
   activeTab?: ShellTab;
   onTabChange?: (tab: ShellTab) => void;
 }
@@ -44,6 +46,7 @@ export function AppShell({
   header,
   tabs,
   engineTrace,
+  cockpitRailLeft,
   activeTab: controlledTab,
   onTabChange,
 }: AppShellProps): React.ReactElement {
@@ -68,8 +71,9 @@ export function AppShell({
           <div
             className={styles.cockpitRailLeft}
             data-cockpit-rail-left
-            aria-label="Journey rail (Task 3.2)"
-          />
+          >
+            {cockpitRailLeft}
+          </div>
           <div className={styles.cockpitCenter} data-cockpit-center>
             {tabs.status}
             {engineTrace && (

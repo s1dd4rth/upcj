@@ -56,6 +56,9 @@
   },
   "journey": {
     "showAll": "Show all 15 states",
+    "rail": {
+      "label": "Journey"
+    },
     "phases": {
       "intake": "Intake",
       "admission": "Admission",
