@@ -19,6 +19,11 @@
       "title": "Cashless · pre-auth rejected · grievance escalation",
       "summary": "The TPA missed the pre-authorisation response deadline, then rejected the claim. The patient files a grievance — when level 1 doesn't move it, they escalate.",
       "teaches": "How an SLA breach is rendered — not as alarm-red but as 'the deadline passed → here is your recourse'. And how the grievance escalation ladder is part of the engine, not an afterthought."
+    },
+    "claimWithdrawn": {
+      "title": "Claim withdrawn before admission",
+      "summary": "A planned surgery is intimated and the doctor signs the advice. Plans change; the patient withdraws the claim before admission.",
+      "teaches": "Withdrawal is a first-class lifecycle state. The framework supports the patient changing their mind — no penalty, no friction, no insurer side keeping a hidden flag against them."
     }
   },
   "stateContent": {
@@ -87,6 +92,14 @@
       "headline": "The insurer has rejected this claim",
       "explanation": "The insurer says no, for the reason shown below. You have a right to appeal through the grievance process — there's a regulated escalation ladder, and many cases that look closed at this point are resolved through it.",
       "tone": "heavy"
+    },
+    "withdrawn": {
+      "headline": "This claim has been withdrawn",
+      "explanation": "You chose not to proceed. There's nothing left to do, and nothing in this file affects future claims."
+    },
+    "closed-without-settlement": {
+      "headline": "This claim was closed without a settlement",
+      "explanation": "The insurer closed the file without paying out. You can challenge this through the grievance route."
     }
   }
 }

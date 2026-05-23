@@ -19,6 +19,8 @@
     "grievance-resolved": "The insurer resolved your grievance.",
     "pre-auth-rejected": "The TPA rejected the pre-authorisation.",
     "claim-rejected": "The claim was rejected after adjudication.",
-    "grievance-escalated": "The grievance was escalated to the next level."
+    "grievance-escalated": "The grievance was escalated to the next level.",
+    "claim-withdrawn": "The claim was withdrawn.",
+    "claim-closed-no-settlement": "The insurer closed the file without settlement."
   }
 }

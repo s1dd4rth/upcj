@@ -7,6 +7,7 @@ import { Active } from "./archetypes/Active";
 import { Settled } from "./terminal/Settled";
 import { PartiallySettled } from "./terminal/PartiallySettled";
 import { Rejected } from "./terminal/Rejected";
+import { Closed } from "./terminal/Closed";
 
 interface StateScreenProps {
   status: ClaimStatus;
@@ -58,6 +59,14 @@ export function StateScreen({ status, claim, slaClocks }: StateScreenProps) {
       return (
         <div data-archetype="terminal" data-terminal-screen="rejected">
           <Rejected claim={claim} />
+        </div>
+      );
+    }
+
+    if (terminalScreen === "closed") {
+      return (
+        <div data-archetype="terminal" data-terminal-screen="closed">
+          <Closed entry={entry} claim={claim} />
         </div>
       );
     }

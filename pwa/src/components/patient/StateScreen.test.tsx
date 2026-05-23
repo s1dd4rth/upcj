@@ -39,7 +39,7 @@ describe("StateScreen", () => {
     expect(screen.getByText(/₹95,000/)).toBeInTheDocument();
   });
 
-  it.skip("STATE_CONTENT covers every ClaimStatus — un-skipped in Task 2.4", () => {
+  it("STATE_CONTENT covers every ClaimStatus", () => {
     const all: ClaimStatus[] = [
       "pre-admission","intimated","admission-advised","in-treatment-cashless",
       "in-treatment-reimbursement","pre-auth-pending","discharged","in-adjudication",
