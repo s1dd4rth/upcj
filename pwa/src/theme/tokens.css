@@ -14,6 +14,11 @@
   --warn:      oklch(0.7   0.13  75);     /* breached-SLA "clay/amber", not alarm-red */
   --bad:       oklch(0.55  0.16  25);
 
+  /* archetype tints — "your turn" surface; distinct from --warn (breach) */
+  --active-tint:    oklch(0.65 0.12 60);  /* warm yellow-orange, calmly urgent */
+  --active-surface: oklch(0.96 0.03 70);  /* faint warm wash for the panel background */
+  --on-active:      oklch(0.22 0.02 60);  /* high-contrast ink for text on --active-tint */
+
   /* owner-color system — labels for the five parties; moderate chroma so they read as labels not alarms */
   --owner-patient:   oklch(0.6  0.10 250);
   --owner-hospital:  oklch(0.6  0.10 160);

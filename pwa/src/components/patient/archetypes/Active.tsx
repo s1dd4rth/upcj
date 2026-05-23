@@ -18,8 +18,8 @@ export function Active({ entry }: ActiveProps) {
       data-archetype="active"
       data-tone={entry.tone}
       style={{
-        background: "var(--surface-tinted, color-mix(in srgb, var(--surface, #f5f5f5) 85%, #c8a000 15%))",
-        borderLeft: "4px solid var(--color-urgent, #c8a000)",
+        background: "var(--active-surface)",
+        borderLeft: "4px solid var(--active-tint)",
         padding: "1.5rem",
         borderRadius: "0.5rem",
       }}
@@ -36,8 +36,8 @@ export function Active({ entry }: ActiveProps) {
           display: "inline-block",
           marginTop: "1rem",
           padding: "0.75rem 1.5rem",
-          background: "var(--color-urgent, #c8a000)",
-          color: "#fff",
+          background: "var(--active-tint)",
+          color: "var(--on-active)",
           border: "none",
           borderRadius: "0.375rem",
           fontWeight: 600,
