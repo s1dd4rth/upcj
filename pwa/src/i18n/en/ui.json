@@ -60,6 +60,22 @@
       "teaches": "What this teaches"
     }
   },
+  "dev": {
+    "specHash": "Spec hash",
+    "engineVersion": "Engine version",
+    "eventApplied": "Event applied",
+    "noEventYet": "No event applied yet",
+    "validateOk": "Claim validates",
+    "validateFailed": "Validate errors",
+    "transition": "claim.status",
+    "newInteraction": "New interaction id",
+    "slasAll": "All SLAs (precise)",
+    "verifyReplay": "Verify replay determinism",
+    "verifyOk": "Deterministic — stepped claim equals full replay",
+    "verifyFailed": "Replay drift detected",
+    "linksRepo": "Source on GitHub",
+    "linksSpec": "Design spec"
+  },
   "journey": {
     "showAll": "Show all 15 states",
     "rail": {

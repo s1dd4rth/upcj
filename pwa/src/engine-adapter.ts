@@ -17,6 +17,12 @@ import type {
 // NOTE: this is the ONLY module in the app that imports @upcj/engine.
 // Everything else must go through `adapter`.
 
+// Engine version — hardcoded to match @upcj/engine@1.0.0.
+// Should be read from @upcj/engine/package.json; hardcoded here because
+// JSON imports from node_modules paths require "resolveJsonModule" + extra
+// bundler config that isn't set up for this workspace.
+export const ENGINE_VERSION = "1.0.0";
+
 function makeExampleSeedClaim(): Claim {
   // Minimal valid Claim shape — mirrors spec/conformance/001-intimation.json
   return {
@@ -49,6 +55,7 @@ export type {
   ClaimStatus,
   Event,
   ValidationResult,
+  ValidationError,
   AdvanceResult,
   ReplayResult,
   SLAStatus,
