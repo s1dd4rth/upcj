@@ -10,7 +10,7 @@ export function Active({ entry }: ActiveProps) {
 
   const actionLabel = entry.action
     ? t(entry.action.labelKey)
-    : t("ui.archetype.active.defaultActionLabel", "Submit the requested information");
+    : t("ui.archetype.active.defaultActionLabel");
 
   return (
     <div

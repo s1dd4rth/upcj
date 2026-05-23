@@ -37,10 +37,10 @@ export function Rejected({ claim }: RejectedProps) {
       : 1;
 
   function grievanceStatusLabel(): string {
-    if (grievanceResolved) return t("ui.terminal.rejected.grievance.resolved", "Grievance resolved.");
-    if (grievanceEscalated) return t("ui.terminal.rejected.grievance.escalated", "Grievance escalated to level {{level}} — awaiting response.", { level: grievanceLevel + 1 });
-    if (grievanceAcknowledged) return t("ui.terminal.rejected.grievance.acknowledged", "Grievance acknowledged — awaiting resolution.");
-    if (grievanceFiled) return t("ui.terminal.rejected.grievance.filed", "Grievance filed — awaiting acknowledgement.");
+    if (grievanceResolved) return t("ui.terminal.rejected.grievance.resolved");
+    if (grievanceEscalated) return t("ui.terminal.rejected.grievance.escalated", { level: grievanceLevel + 1 });
+    if (grievanceAcknowledged) return t("ui.terminal.rejected.grievance.acknowledged");
+    if (grievanceFiled) return t("ui.terminal.rejected.grievance.filed");
     return "";
   }
 
@@ -54,10 +54,10 @@ export function Rejected({ claim }: RejectedProps) {
       <header className="rejected-header">
         <h2
           className="rejected-badge"
-          aria-label="Rejected"
+          aria-label={t("ui.terminal.rejected.badge")}
           style={{ color: "var(--warn)" }}
         >
-          {t("ui.terminal.rejected.badge", "Decision: not approved")}
+          {t("ui.terminal.rejected.badge")}
         </h2>
         <p className="rejected-explanation">
           {t("stateContent.rejected.explanation")}
@@ -65,24 +65,21 @@ export function Rejected({ claim }: RejectedProps) {
       </header>
 
       {rejectionReason && (
-        <section className="rejected-reason" aria-label="Reason given">
-          <h3>{t("ui.terminal.rejected.reasonTitle", "Reason given by the insurer")}</h3>
+        <section className="rejected-reason" aria-label={t("ui.terminal.rejected.reasonTitle")}>
+          <h3>{t("ui.terminal.rejected.reasonTitle")}</h3>
           <p className="rejected-reason-text">{rejectionReason}</p>
         </section>
       )}
 
-      <section className="rejected-remedy" aria-label="What you can do">
-        <h3>{t("ui.terminal.rejected.remedyTitle", "What you can do")}</h3>
+      <section className="rejected-remedy" aria-label={t("ui.terminal.rejected.remedyTitle")}>
+        <h3>{t("ui.terminal.rejected.remedyTitle")}</h3>
         {grievanceFiled ? (
-          <p className="rejected-grievance-status" aria-label="Grievance status">
+          <p className="rejected-grievance-status" aria-live="polite">
             {grievanceStatusLabel()}
           </p>
         ) : (
           <p className="rejected-remedy-body">
-            {t(
-              "ui.terminal.rejected.remedyBody",
-              "You can file a grievance — there is a regulated escalation ladder. Many cases that look closed at this point are resolved through it."
-            )}
+            {t("ui.terminal.rejected.remedyBody")}
           </p>
         )}
       </section>

@@ -1,0 +1,9 @@
+{
+  "owners": {
+    "patient": "आप",
+    "hospital": "अस्पताल",
+    "tpa": "TPA",
+    "insurer": "बीमा कंपनी",
+    "regulator": "नियामक (Ombudsman)"
+  }
+}

@@ -14,7 +14,9 @@
     },
     "header": {
       "appName": "UPCJ — Patient Claim Journey",
-      "mostUrgentSla": "Most urgent: {{phrase}}"
+      "mostUrgentSla": "Most urgent: {{phrase}}",
+      "lensOn": "Lens on",
+      "lensOff": "Lens off"
     },
     "engineTrace": {
       "summary": "What just changed?",
@@ -58,6 +60,67 @@
       "close": "Close picker",
       "current": "Currently playing",
       "teaches": "What this teaches"
+    },
+    "archetype": {
+      "neutral": {
+        "affirmation": "Nothing to do right now."
+      },
+      "waiting": {
+        "title": "Who we're waiting on"
+      },
+      "active": {
+        "defaultActionLabel": "Submit the requested information"
+      }
+    },
+    "terminal": {
+      "settled": {
+        "badge": "Settled",
+        "claimed": "Claimed",
+        "approved": "Approved",
+        "paid": "Paid",
+        "deduction": "Deduction",
+        "paidOn": "Paid on"
+      },
+      "partiallySettled": {
+        "badge": "Partially settled",
+        "claimed": "Claimed",
+        "paid": "Paid",
+        "deductions": "Deductions",
+        "totalDeducted": "Total deducted",
+        "paidOn": "Paid on",
+        "remedyTitle": "What you can do",
+        "remedyBody": "If you disagree with the deduction, you can file a grievance. Each level has a regulated response window.",
+        "grievance": {
+          "filed": "Grievance filed — awaiting acknowledgement from the insurer.",
+          "acknowledged": "Grievance acknowledged by the insurer — awaiting resolution.",
+          "resolved": "Grievance resolved."
+        }
+      },
+      "rejected": {
+        "badge": "Decision: not approved",
+        "reasonTitle": "Reason given by the insurer",
+        "remedyTitle": "What you can do",
+        "remedyBody": "You can file a grievance — there is a regulated escalation ladder. Many cases that look closed at this point are resolved through it.",
+        "grievance": {
+          "filed": "Grievance filed — awaiting acknowledgement.",
+          "acknowledged": "Grievance acknowledged — awaiting resolution.",
+          "escalated": "Grievance escalated to level {{level}} — awaiting response.",
+          "resolved": "Grievance resolved."
+        }
+      },
+      "closed": {
+        "badge": "Closed",
+        "reasonTitle": "Reason",
+        "nextTitle": "What this means",
+        "reason": {
+          "withdrawn": "Withdrawn by patient",
+          "closedNoSettlement": "Closed without settlement"
+        },
+        "next": {
+          "withdrawn": "If circumstances change, you can intimate a new claim. The framework retains nothing that prevents that.",
+          "closedNoSettlement": "The insurer has closed this file without settlement. If you believe this was incorrect, you can file a grievance — there are regulated routes."
+        }
+      }
     }
   },
   "dev": {

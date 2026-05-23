@@ -13,7 +13,7 @@ export function Neutral({ entry }: NeutralProps) {
       <h2 className="neutral-headline">{t(entry.headlineKey)}</h2>
       <p className="neutral-explanation">{t(entry.explanationKey)}</p>
       <p className="neutral-affirmation" aria-label="status affirmation">
-        {t("ui.archetype.neutral.affirmation", "Nothing to do right now.")}
+        {t("ui.archetype.neutral.affirmation")}
       </p>
     </div>
   );

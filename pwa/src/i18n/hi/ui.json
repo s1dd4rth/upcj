@@ -1,0 +1,173 @@
+{
+  "ui": {
+    "tabs": {
+      "status": "स्थिति",
+      "activity": "गतिविधि",
+      "docs": "दस्तावेज़"
+    },
+    "actions": {
+      "next": "अगली घटना",
+      "back": "पिछली घटना",
+      "playAuto": "चलाएँ",
+      "pause": "रोकें",
+      "openScenarios": "कोई और परिदृश्य चुनें"
+    },
+    "header": {
+      "appName": "UPCJ — मरीज़ क्लेम यात्रा",
+      "mostUrgentSla": "सबसे ज़रूरी: {{phrase}}",
+      "lensOn": "लेंस चालू",
+      "lensOff": "लेंस बंद"
+    },
+    "engineTrace": {
+      "summary": "अभी क्या बदला?",
+      "eventApplied": "घटना लागू हुई",
+      "statusTransition": "स्थिति {{before}} से {{after}} हुई",
+      "newInteractionId": "नई इंटरैक्शन: {{id}}"
+    },
+    "sla": {
+      "comfortable": "{{owner}} के पास वक़्त है — डेडलाइन {{when}}",
+      "approaching": "{{owner}} को अब एक्शन लेना चाहिए — डेडलाइन {{when}}",
+      "dueSoon": "{{owner}} का वक़्त कम हो रहा है — डेडलाइन {{when}}",
+      "breached": "{{owner}} की डेडलाइन {{when}} को निकल गई। ये ब्रीच है — {{remedy}}।"
+    },
+    "doc": {
+      "status": {
+        "required": "ज़रूरी",
+        "provided": "जमा हुआ",
+        "verified": "सत्यापित",
+        "rejected": "रिजेक्ट हुआ"
+      },
+      "relevantAt": "यहाँ लागू: {{step}}",
+      "whyNeeded": "यह क्यों चाहिए?",
+      "empty": "अभी कोई दस्तावेज़ नहीं चाहिए।",
+      "phases": {
+        "beforeAdmission": "भर्ती से पहले",
+        "atHospital": "अस्पताल में",
+        "dischargeSettlement": "डिस्चार्ज और सेटलमेंट",
+        "cashless": "कैशलेस फ़्लो",
+        "reimbursement": "रीइम्बर्समेंट फ़्लो",
+        "other": "अन्य"
+      }
+    },
+    "activity": {
+      "empty": "अभी तक कुछ नहीं हुआ।"
+    },
+    "errors": {
+      "replayFailed": "इस क्लेम को दोबारा चलाने में कुछ गड़बड़ हो गई। तय किए गए परिदृश्यों के साथ ऐसा नहीं होना चाहिए — कृपया रिपोर्ट करें।"
+    },
+    "scenarioPicker": {
+      "title": "परिदृश्य चुनें",
+      "close": "बंद करें",
+      "current": "अभी चल रहा है",
+      "teaches": "यह क्या सिखाता है"
+    },
+    "archetype": {
+      "neutral": {
+        "affirmation": "अभी कुछ नहीं करना।"
+      },
+      "waiting": {
+        "title": "किसका इंतज़ार है"
+      },
+      "active": {
+        "defaultActionLabel": "माँगी गई जानकारी जमा करें"
+      }
+    },
+    "terminal": {
+      "settled": {
+        "badge": "सेटल्ड",
+        "claimed": "क्लेम किया",
+        "approved": "अप्रूव्ड",
+        "paid": "भुगतान हुआ",
+        "deduction": "कटौती",
+        "paidOn": "भुगतान की तारीख"
+      },
+      "partiallySettled": {
+        "badge": "आंशिक सेटलमेंट",
+        "claimed": "क्लेम किया",
+        "paid": "भुगतान हुआ",
+        "deductions": "कटौतियाँ",
+        "totalDeducted": "कुल कटौती",
+        "paidOn": "भुगतान की तारीख",
+        "remedyTitle": "आप क्या कर सकते हैं",
+        "remedyBody": "अगर कटौती गलत लगे, तो शिकायत दर्ज कर सकते हैं। हर स्तर की एक रेगुलेटेड जवाब विंडो है।",
+        "grievance": {
+          "filed": "शिकायत दर्ज हो गई — बीमा कंपनी की तरफ़ से पावती का इंतज़ार।",
+          "acknowledged": "बीमा कंपनी ने शिकायत मानी — हल होने का इंतज़ार।",
+          "resolved": "शिकायत हल हो गई।"
+        }
+      },
+      "rejected": {
+        "badge": "फ़ैसला: मंज़ूर नहीं",
+        "reasonTitle": "बीमा कंपनी की वजह",
+        "remedyTitle": "आप क्या कर सकते हैं",
+        "remedyBody": "शिकायत दर्ज कर सकते हैं — एक रेगुलेटेड एस्केलेशन सीढ़ी है। इस स्टेज पर बंद दिखने वाले कई केस उससे हल होते हैं।",
+        "grievance": {
+          "filed": "शिकायत दर्ज हो गई — पावती का इंतज़ार।",
+          "acknowledged": "शिकायत मानी गई — हल होने का इंतज़ार।",
+          "escalated": "शिकायत लेवल {{level}} पर भेजी गई — जवाब का इंतज़ार।",
+          "resolved": "शिकायत हल हो गई।"
+        }
+      },
+      "closed": {
+        "badge": "बंद",
+        "reasonTitle": "वजह",
+        "nextTitle": "इसका मतलब क्या है",
+        "reason": {
+          "withdrawn": "मरीज़ ने वापस लिया",
+          "closedNoSettlement": "बिना सेटलमेंट के बंद"
+        },
+        "next": {
+          "withdrawn": "अगर हालात बदलें, तो नया क्लेम इंटिमेट कर सकते हैं। फ्रेमवर्क में कोई ऐसी चीज़ नहीं जो रोके।",
+          "closedNoSettlement": "बीमा कंपनी ने बिना सेटलमेंट के फ़ाइल बंद की है। अगर यह गलत लगे, तो शिकायत के रेगुलेटेड रास्ते हैं।"
+        }
+      }
+    }
+  },
+  "dev": {
+    "specHash": "Spec hash",
+    "engineVersion": "Engine version",
+    "eventApplied": "घटना लागू हुई",
+    "noEventYet": "अभी कोई घटना नहीं",
+    "validateOk": "क्लेम वैलिड है",
+    "validateFailed": "वैलिडेशन एरर",
+    "transition": "claim.status",
+    "newInteraction": "नई interaction id",
+    "slasAll": "सभी SLAs (precise)",
+    "verifyReplay": "Replay determinism जाँचें",
+    "verifyOk": "Deterministic — stepped claim full replay जैसा",
+    "verifyFailed": "Replay drift मिला",
+    "linksRepo": "GitHub पर सोर्स",
+    "linksSpec": "Design spec"
+  },
+  "journey": {
+    "showAll": "सभी 15 स्टेट्स देखें",
+    "rail": {
+      "label": "यात्रा"
+    },
+    "phases": {
+      "intake": "इंटेक",
+      "admission": "भर्ती",
+      "treatment": "इलाज",
+      "discharge": "डिस्चार्ज",
+      "dialogue": "सवाल-जवाब",
+      "closeout": "समापन"
+    },
+    "states": {
+      "pre-admission": "भर्ती से पहले",
+      "intimated": "इंटिमेट हुआ",
+      "admission-advised": "भर्ती की सलाह",
+      "pre-auth-pending": "प्री-ऑथ बाकी",
+      "in-treatment-cashless": "इलाज जारी (कैशलेस)",
+      "in-treatment-reimbursement": "इलाज जारी (रीइम्बर्समेंट)",
+      "discharged": "डिस्चार्ज",
+      "in-adjudication": "एडजुडिकेशन",
+      "in-query": "सवाल में",
+      "awaiting-patient-action": "आपकी प्रतीक्षा",
+      "settled": "सेटल्ड",
+      "partially-settled": "आंशिक सेटलमेंट",
+      "rejected": "रिजेक्टेड",
+      "withdrawn": "वापस लिया",
+      "closed-without-settlement": "बिना सेटलमेंट बंद"
+    }
+  }
+}

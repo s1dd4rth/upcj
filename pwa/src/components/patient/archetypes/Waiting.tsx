@@ -17,8 +17,8 @@ export function Waiting({ entry, slaClocks }: WaitingProps) {
       <p className="waiting-explanation">{t(entry.explanationKey)}</p>
 
       {slaClocks.length > 0 && (
-        <section className="waiting-sla-block" aria-label="Who we're waiting on">
-          <h3 className="waiting-sla-block-title">{t("ui.archetype.waiting.title", "Who we're waiting on")}</h3>
+        <section className="waiting-sla-block" aria-label={t("ui.archetype.waiting.title")}>
+          <h3 className="waiting-sla-block-title">{t("ui.archetype.waiting.title")}</h3>
           <ul className="waiting-sla-list" style={{ listStyle: "none", padding: 0 }}>
             {slaClocks.map((vm) => (
               <li

@@ -52,7 +52,7 @@ export function Header({
               data-active={lensEnabled ? "true" : "false"}
               onClick={onToggleLens}
             >
-              {lensEnabled ? "Lens on" : "Lens off"}
+              {lensEnabled ? t("ui.header.lensOn") : t("ui.header.lensOff")}
             </button>
           )}
         </div>

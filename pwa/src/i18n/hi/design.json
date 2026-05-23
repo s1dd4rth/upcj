@@ -1,0 +1,76 @@
+{
+  "design": {
+    "title": "यह डेमो क्या दिखाने की कोशिश कर रहा है",
+    "intro": "UPCJ भारत के हेल्थ-इंश्योरेंस क्लेम की यात्रा का एक फ्रेमवर्क है। यह app उस click-through artifact है: जो भी फ़ैसला आप देखते हैं वो एक design principle का जानबूझकर दिया गया जवाब है। नीचे: वो principles क्या हैं, और हर एक कहाँ दिखता है।",
+    "showDemo": "डेमो देखें",
+    "seeInDemo": "/demo में देखें",
+    "sections": {
+      "error-prevention": {
+        "heading": "गलतियाँ रोकना",
+        "intro": "गलती सुधारने से बेहतर है गलती होने ही न दें। इस domain में सबसे बड़ी गलती है अनिश्चितता: पता नहीं किसकी बारी है, क्या चाहिए, 'pending' का मतलब क्या है। हर रोकी जा सकने वाली गलती सिस्टम की स्थिति को साफ़ और जवाबदेह बनाकर रोकी जा सकती है।"
+      },
+      "clarity": {
+        "heading": "स्पष्टता और सरल भाषा",
+        "intro": "मरीज़ न developer है, न बीमा कंपनी, न नियामक। हेडलाइन उस इंसान के लिए लिखी है जिसने सोया नहीं है, जिसका फ़ोन 8% पर है, जिसे अभी जानना है कि क्या करना है।"
+      },
+      "system-design": {
+        "heading": "System-design के फ़ैसले",
+        "intro": "Route-based modes (/product / /demo / /dev) एक ही components हैं जो एक ही state पढ़ते हैं, अलग-अलग दर्शकों के लिए अलग तरह से पेश किए गए। इंजन pure functions है; adapter एकमात्र seam है; replay ही truth का source है। ये abstractions अपनी खातिर नहीं हैं — हर एक एक खास design dividend देता है।"
+      },
+      "data-modeling": {
+        "heading": "Data-modeling के फ़ैसले",
+        "intro": "इंजन statuses नहीं, events model करता है। SLAs regulatory deadlines के साथ events से जुड़े हैं, free-floating timers नहीं। Interaction IDs event payload के deterministic functions हैं — audit trail सिर्फ़ events से reproduce हो सकती है।"
+      },
+      "heuristics": {
+        "heading": "10 usability heuristics",
+        "intro": "Nielsen के 10 heuristics, ईमानदारी से लागू। हर एक app का एक खास फ़ैसला बताता है।"
+      },
+      "tryIt": {
+        "heading": "आज़माएँ",
+        "intro": "कोई भी scenario design lens के साथ खोलें। Lens स्क्रीन पर inline callouts जोड़ता है जहाँ भी कोई design decision दिखता है।"
+      }
+    },
+    "heuristics": {
+      "1": {
+        "name": "सिस्टम की स्थिति दिखना",
+        "honors": "विस्तारित: OWNERSHIP और REMEDY के साथ सिस्टम की स्थिति। हर regulated deadline बताती है कि जवाब किसे देना है और चूकने पर आपका क्या रास्ता है।"
+      },
+      "2": {
+        "name": "सिस्टम और असली दुनिया का मेल",
+        "honors": "₹1,23,456 Indian grouping है, American नहीं। 'कल ~2 बजे' वो तरीका है जिसमें इंसान कहता है; '2026-04-23T14:00:00Z' मशीन का तरीका है। App इंसान वाला form इस्तेमाल करता है।"
+      },
+      "3": {
+        "name": "user का नियंत्रण और आज़ादी",
+        "honors": "Withdrawal एक first-class lifecycle state है — मरीज़ बिना पेनल्टी मन बदल सकते हैं। शिकायत का रास्ता recourse के रूप में दिखता है, छोटे अक्षरों में छुपा नहीं।"
+      },
+      "4": {
+        "name": "consistency और standards",
+        "honors": "Owner-color system एक cross-component motif है। वही पाँच रंग हर जगह वही पाँच parties हैं — header, SLA chip, doc checklist, activity feed। एक बार सीखो, हर स्क्रीन तेज़ पढ़ो।"
+      },
+      "5": {
+        "name": "गलतियाँ रोकना",
+        "honors": "Precise ticking countdowns की जगह bounded SLA phrases (\"कल ~2 बजे\") — बेवजह refresh-and-check का pattern रोकते हैं। Framework 'अभी आपके लिए कुछ नहीं' को साफ़, दिखता हुआ जवाब बनाता है।"
+      },
+      "6": {
+        "name": "याद करने की जगह पहचानना",
+        "honors": "Header में Status pill हर वक़्त बताती है आप कहाँ हैं। Journey bar/rail 6 phases विज़ुअली दिखाता है। याद नहीं करना — बस पहचानना है।"
+      },
+      "7": {
+        "name": "flexibility और efficiency",
+        "honors": "तीन routes: /product stakeholders के लिए (zero chrome), /demo guided walkthroughs के लिए (presenter controls), /dev engineers के लिए (engine internals)। वही components — अलग arrangement।"
+      },
+      "8": {
+        "name": "aesthetic और minimalist design",
+        "honors": "जब ध्यान देने की ज़रूरत हो, Active archetype बाकी सब घटा देता है और एक prominent CTA दिखाता है। बाकी जगह quiet warmth — कोई decorative chrome नहीं।"
+      },
+      "9": {
+        "name": "errors पहचानने, समझने और ठीक करने में मदद",
+        "honors": "Breach पढ़ता है 'deadline निकल गई → यह आपका उपाय है', न कि लाल अलार्म। उपाय ही recovery path है, inline नाम के साथ।"
+      },
+      "10": {
+        "name": "मदद और documentation",
+        "honors": "हर state, हर SLA, हर doc की एक click में plain-language explanation है — कोई jargon नहीं, बीमा कंपनी के शब्द नहीं।"
+      }
+    }
+  }
+}

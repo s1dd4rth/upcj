@@ -52,9 +52,9 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
   const grievanceResolved = interactions.find((i) => i.eventName === "grievance-resolved");
 
   function grievanceStatusLabel(): string {
-    if (grievanceResolved) return t("ui.terminal.partiallySettled.grievance.resolved", "Grievance resolved.");
-    if (grievanceAcknowledged) return t("ui.terminal.partiallySettled.grievance.acknowledged", "Grievance acknowledged by the insurer — awaiting resolution.");
-    if (grievanceFiled) return t("ui.terminal.partiallySettled.grievance.filed", "Grievance filed — awaiting acknowledgement from the insurer.");
+    if (grievanceResolved) return t("ui.terminal.partiallySettled.grievance.resolved");
+    if (grievanceAcknowledged) return t("ui.terminal.partiallySettled.grievance.acknowledged");
+    if (grievanceFiled) return t("ui.terminal.partiallySettled.grievance.filed");
     return "";
   }
 
@@ -66,8 +66,8 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
       aria-label={t("stateContent.partially-settled.headline")}
     >
       <header className="partially-settled-header">
-        <h2 className="partially-settled-badge" aria-label="Partially settled">
-          {t("ui.terminal.partiallySettled.badge", "Partially settled")}
+        <h2 className="partially-settled-badge" aria-label={t("ui.terminal.partiallySettled.badge")}>
+          {t("ui.terminal.partiallySettled.badge")}
         </h2>
         <p className="partially-settled-explanation">
           {t("stateContent.partially-settled.explanation")}
@@ -77,21 +77,21 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
       <dl className="partially-settled-statement">
         {claimedAmount !== null && (
           <div className="partially-settled-statement-row">
-            <dt>{t("ui.terminal.partiallySettled.claimed", "Claimed")}</dt>
+            <dt>{t("ui.terminal.partiallySettled.claimed")}</dt>
             <dd>{formatINR(claimedAmount)}</dd>
           </div>
         )}
 
         {settledAmount !== null && (
           <div className="partially-settled-statement-row">
-            <dt>{t("ui.terminal.partiallySettled.paid", "Paid")}</dt>
+            <dt>{t("ui.terminal.partiallySettled.paid")}</dt>
             <dd>{formatINR(settledAmount)}</dd>
           </div>
         )}
 
         {deductions.length > 0 && (
           <div className="partially-settled-statement-row partially-settled-deductions">
-            <dt>{t("ui.terminal.partiallySettled.deductions", "Deductions")}</dt>
+            <dt>{t("ui.terminal.partiallySettled.deductions")}</dt>
             <dd>
               <ul
                 className="partially-settled-deduction-list"
@@ -111,14 +111,14 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
 
         {totalDeducted > 0 && (
           <div className="partially-settled-statement-row partially-settled-total-deducted">
-            <dt>{t("ui.terminal.partiallySettled.totalDeducted", "Total deducted")}</dt>
+            <dt>{t("ui.terminal.partiallySettled.totalDeducted")}</dt>
             <dd>{formatINR(totalDeducted)}</dd>
           </div>
         )}
 
         {settledAt !== null && (
           <div className="partially-settled-statement-row">
-            <dt>{t("ui.terminal.partiallySettled.paidOn", "Paid on")}</dt>
+            <dt>{t("ui.terminal.partiallySettled.paidOn")}</dt>
             <dd>
               <time dateTime={settledAt}>
                 {new Date(settledAt).toLocaleDateString("en-IN", {
@@ -132,18 +132,15 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
         )}
       </dl>
 
-      <section className="partially-settled-remedy" aria-label="What you can do">
-        <h3>{t("ui.terminal.partiallySettled.remedyTitle", "What you can do")}</h3>
+      <section className="partially-settled-remedy" aria-label={t("ui.terminal.partiallySettled.remedyTitle")}>
+        <h3>{t("ui.terminal.partiallySettled.remedyTitle")}</h3>
         {grievanceFiled ? (
-          <p className="partially-settled-grievance-status" aria-label="Grievance status">
+          <p className="partially-settled-grievance-status" aria-live="polite">
             {grievanceStatusLabel()}
           </p>
         ) : (
           <p className="partially-settled-remedy-body">
-            {t(
-              "ui.terminal.partiallySettled.remedyBody",
-              "If you disagree with the deduction, you can file a grievance. Each level has a regulated response window."
-            )}
+            {t("ui.terminal.partiallySettled.remedyBody")}
           </p>
         )}
       </section>

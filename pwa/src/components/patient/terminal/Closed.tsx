@@ -20,35 +20,29 @@ export function Closed({ entry, claim }: ClosedProps) {
       aria-label={t(entry.headlineKey)}
     >
       <header className="closed-header">
-        <h2 className="closed-badge" aria-label="Closed">
-          {t("ui.terminal.closed.badge", "Closed")}
+        <h2 className="closed-badge" aria-label={t("ui.terminal.closed.badge")}>
+          {t("ui.terminal.closed.badge")}
         </h2>
         <p className="closed-explanation">{t(entry.explanationKey)}</p>
       </header>
 
-      <section className="closed-reason" aria-label="Reason">
-        <h3>{t("ui.terminal.closed.reasonTitle", "Reason")}</h3>
+      <section className="closed-reason" aria-label={t("ui.terminal.closed.reasonTitle")}>
+        <h3>{t("ui.terminal.closed.reasonTitle")}</h3>
         <p className="closed-reason-text">
           {isWithdrawn
-            ? t("ui.terminal.closed.reason.withdrawn", "Withdrawn by patient")
-            : t("ui.terminal.closed.reason.closedNoSettlement", "Closed without settlement")}
+            ? t("ui.terminal.closed.reason.withdrawn")
+            : t("ui.terminal.closed.reason.closedNoSettlement")}
         </p>
       </section>
 
-      <section className="closed-next" aria-label="What this means">
+      <section className="closed-next" aria-label={t("ui.terminal.closed.nextTitle")}>
         {isWithdrawn ? (
           <p className="closed-next-body">
-            {t(
-              "ui.terminal.closed.next.withdrawn",
-              "If circumstances change, you can intimate a new claim. The framework retains nothing that prevents that."
-            )}
+            {t("ui.terminal.closed.next.withdrawn")}
           </p>
         ) : (
           <p className="closed-next-body">
-            {t(
-              "ui.terminal.closed.next.closedNoSettlement",
-              "The insurer has closed this file without settlement. If you believe this was incorrect, you can file a grievance — there are regulated routes."
-            )}
+            {t("ui.terminal.closed.next.closedNoSettlement")}
           </p>
         )}
       </section>

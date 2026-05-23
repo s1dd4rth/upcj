@@ -46,8 +46,8 @@ export function Settled({ claim }: SettledProps) {
       aria-label={t("stateContent.settled.headline")}
     >
       <header className="settled-header">
-        <h2 className="settled-badge" aria-label="Settled">
-          {t("ui.terminal.settled.badge", "Settled")}
+        <h2 className="settled-badge" aria-label={t("ui.terminal.settled.badge")}>
+          {t("ui.terminal.settled.badge")}
         </h2>
         <p className="settled-explanation">{t("stateContent.settled.explanation")}</p>
       </header>
@@ -56,11 +56,11 @@ export function Settled({ claim }: SettledProps) {
         {claimedAmount !== null && (
           <>
             <div className="settled-statement-row">
-              <dt>{t("ui.terminal.settled.claimed", "Claimed")}</dt>
+              <dt>{t("ui.terminal.settled.claimed")}</dt>
               <dd>{formatINR(claimedAmount)}</dd>
             </div>
             <div className="settled-statement-row">
-              <dt>{t("ui.terminal.settled.approved", "Approved")}</dt>
+              <dt>{t("ui.terminal.settled.approved")}</dt>
               <dd>{formatINR(claimedAmount)}</dd>
             </div>
           </>
@@ -68,21 +68,21 @@ export function Settled({ claim }: SettledProps) {
 
         {settledAmount !== null && (
           <div className="settled-statement-row">
-            <dt>{t("ui.terminal.settled.paid", "Paid")}</dt>
+            <dt>{t("ui.terminal.settled.paid")}</dt>
             <dd>{formatINR(settledAmount)}</dd>
           </div>
         )}
 
         {deduction !== null && deduction > 0 && (
           <div className="settled-statement-row settled-statement-deduction">
-            <dt>{t("ui.terminal.settled.deduction", "Deduction")}</dt>
+            <dt>{t("ui.terminal.settled.deduction")}</dt>
             <dd>{formatINR(deduction)}</dd>
           </div>
         )}
 
         {settledAt !== null && (
           <div className="settled-statement-row">
-            <dt>{t("ui.terminal.settled.paidOn", "Paid on")}</dt>
+            <dt>{t("ui.terminal.settled.paidOn")}</dt>
             <dd>
               <time dateTime={settledAt}>
                 {new Date(settledAt).toLocaleDateString("en-IN", {

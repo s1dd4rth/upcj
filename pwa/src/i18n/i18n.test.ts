@@ -1,5 +1,24 @@
 import { describe, it, expect } from "vitest";
 import { i18n } from "./index";
+import enUi from "./en/ui.json";
+import hiUi from "./hi/ui.json";
+import enScenarios from "./en/scenarios.json";
+import hiScenarios from "./hi/scenarios.json";
+import enOwners from "./en/owners.json";
+import hiOwners from "./hi/owners.json";
+import enActivity from "./en/activity.json";
+import hiActivity from "./hi/activity.json";
+import enLens from "./en/lens.json";
+import hiLens from "./hi/lens.json";
+import enDesign from "./en/design.json";
+import hiDesign from "./hi/design.json";
+
+function flatKeys(obj: unknown, prefix = ""): string[] {
+  if (typeof obj !== "object" || obj === null) return [prefix];
+  return Object.entries(obj as Record<string, unknown>).flatMap(([k, v]) =>
+    flatKeys(v, prefix ? `${prefix}.${k}` : k)
+  );
+}
 
 describe("i18n en catalog", () => {
   it("loads", () => {
@@ -53,5 +72,46 @@ describe("i18n en catalog", () => {
     expect(out).toContain("TPA");
     expect(out).toContain("breach");
     expect(out).toContain("auto-escalate to the Insurer");
+  });
+});
+
+describe("i18n hi catalog completeness", () => {
+  const pairs = [
+    ["ui", enUi, hiUi],
+    ["scenarios", enScenarios, hiScenarios],
+    ["owners", enOwners, hiOwners],
+    ["activity", enActivity, hiActivity],
+    ["lens", enLens, hiLens],
+    ["design", enDesign, hiDesign],
+  ] as const;
+
+  for (const [name, en, hi] of pairs) {
+    it(`hi/${name}.json covers every key from en/${name}.json`, () => {
+      const enKeys = flatKeys(en).sort();
+      const hiKeys = flatKeys(hi).sort();
+      const missing = enKeys.filter((k) => !hiKeys.includes(k));
+      expect(missing).toEqual([]);
+    });
+  }
+
+  it("can switch to Hindi and back", async () => {
+    await i18n.changeLanguage("hi");
+    expect(i18n.language).toBe("hi");
+    expect(i18n.t("owners.hospital")).not.toBe("Hospital");
+
+    await i18n.changeLanguage("en");
+    expect(i18n.t("owners.hospital")).toBe("Hospital");
+  });
+
+  it("scenarios.cashlessPlannedHappy.title resolves in both languages", async () => {
+    await i18n.changeLanguage("en");
+    const en = i18n.t("scenarios.cashlessPlannedHappy.title");
+    await i18n.changeLanguage("hi");
+    const hi = i18n.t("scenarios.cashlessPlannedHappy.title");
+    expect(en).not.toBe(hi);
+    expect(en.length).toBeGreaterThan(0);
+    expect(hi.length).toBeGreaterThan(0);
+    // reset for other tests
+    await i18n.changeLanguage("en");
   });
 });

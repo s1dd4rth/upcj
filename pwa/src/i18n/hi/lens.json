@@ -1,0 +1,28 @@
+{
+  "lens": {
+    "list": {
+      "heading": "इस स्क्रीन पर"
+    },
+    "annotations": {
+      "plain-language-status": "हेडलाइन आपको आपकी भाषा में बताती है क्या हो रहा है — बीमा कंपनी की भाषा में नहीं।",
+      "no-jargon-headlines": "Intimation एक सिस्टम का शब्द है; स्क्रीन पर लिखा है 'क्लेम दर्ज हो गया'।",
+      "sla-with-owner-and-remedy": "हर रेगुलेटेड डेडलाइन बताती है — किसे जवाब देना है, और चूकने पर आपका क्या रास्ता है।",
+      "bounded-not-precise": "वक़्त का अनुमान '1 घंटे के अंदर' कहता है — एक ऐसी सीमा जिसे सिस्टम निभा सकता है, न कि एक काउंटडाउन जो मिस हो जाए।",
+      "no-progress-without-data": "स्टेटस बार तभी आगे बढ़ता है जब कोई घटना दर्ज हो; प्रगति earned है, animated नहीं।",
+      "nothing-to-do-is-a-design-choice": "जब सिस्टम काम कर रहा हो, 'अभी कुछ नहीं करना' का साफ़ जवाब बेवजह चेक करने से रोकता है।",
+      "waiting-with-ownership": "query स्क्रीन बताती है — किसने पूछा, कब पूछा, किसे जवाब देना है — सिर्फ़ 'समीक्षाधीन' नहीं।",
+      "active-archetype-recedes-everything-else": "जब एक्शन ज़रूरी हो, call-to-action ही एकमात्र हाई-कॉन्ट्रास्ट चीज़ होती है।",
+      "statement-not-hero-metric": "सेटलमेंट एक स्टेटमेंट है — क्लेम किया, अप्रूव हुआ, मिला, काटा — एक जश्न का नंबर नहीं।",
+      "indian-numerals-and-dates": "रकम Indian lakh/crore grouping में और तारीखें DD MMM YYYY में — जैसा मरीज़ पढ़ते हैं।",
+      "grievance-as-recourse": "शिकायत का रास्ता आगे बढ़ने का रास्ता है — छोटे अक्षरों में छुपी बात नहीं।",
+      "deductions-itemised-not-summarised": "हर कटौती लाइन वो नियम बताती है जिसने उसे ट्रिगर किया, ताकि मरीज़ किसी एक चीज़ पर सवाल उठा सके।",
+      "rejection-without-alarm-red": "रिजेक्शन न्यूट्रल टोन में दिखता है, रिजेक्शन की वजह से पहले अगला कदम दिखता है।",
+      "breach-is-clay-not-red": "ब्रीच हुई डेडलाइन clay/amber में दिखती है, अलार्म-रेड में नहीं। यह रिकोर्स का संकेत है, आफ़त नहीं।",
+      "withdrawal-is-first-class": "Withdrawal का अपना terminal state और timeline entry है — यह बस एक गुम सेटलमेंट नहीं है।",
+      "replay-as-source-of-truth": "आप जो देख रहे हैं वह event log से compute हुआ है, stored नहीं। हर UI बदलाव events से reproduce हो सकता है।",
+      "events-not-guards": "ट्रांज़िशन explicit events पर होते हैं, condition checks पर नहीं — इसलिए हर state change का एक नाम होता है।",
+      "deterministic-interaction-ids": "हर interaction ID अपने event sequence से derive होती है, इसलिए replays बिना database के identical IDs बनाते हैं।",
+      "owner-colors-as-cross-component-motif": "वही owner palette chip, SLA bar, और activity feed पर दिखती है — एक visual vocabulary।"
+    }
+  }
+}
