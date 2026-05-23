@@ -1,5 +1,8 @@
 {
   "lens": {
+    "list": {
+      "heading": "On this screen"
+    },
     "annotations": {
       "plain-language-status": "The headline tells you what's happening in your words, not the insurer's.",
       "no-jargon-headlines": "Intimation is a system word; the screen reads 'Claim registered' instead.",

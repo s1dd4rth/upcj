@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { SlaClockVM } from "../../state/selectors";
 import { ownerHue, ownerLabelKey } from "../../theme/owners";
+import { Annotatable } from "../lens/Annotatable";
 
 export interface SlaClockProps {
   vm: SlaClockVM;
@@ -102,13 +103,15 @@ export function SlaClock({ vm, precise = false }: SlaClockProps): React.ReactEle
 
   return (
     <div data-bucket={vm.status} className="sla-clock">
-      <span
-        className="sla-owner-chip"
-        data-owner={vm.owner}
-        style={{ background: ownerHue(vm.owner) }}
-      >
-        {ownerLabel}
-      </span>
+      <Annotatable id="owner-chip">
+        <span
+          className="sla-owner-chip"
+          data-owner={vm.owner}
+          style={{ background: ownerHue(vm.owner) }}
+        >
+          {ownerLabel}
+        </span>
+      </Annotatable>
       <span className="sla-phrase">{phrase}</span>
       {barWidth !== null && (
         <div

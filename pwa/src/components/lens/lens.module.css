@@ -1,0 +1,113 @@
+/* DesignLens — badges + list styles
+   NO dimming, NO backdrop, NO opacity manipulation.
+   The lens is purely ADDITIVE. */
+
+/* ── Badge ─────────────────────────────────────────────────── */
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+  /* crisp outline so it reads on any background */
+  outline: 1.5px solid var(--bg);
+}
+
+/* ── Annotatable highlight ring (tap-to-locate) ─────────────── */
+.highlighted {
+  outline: 1px solid var(--accent) !important;
+  outline-offset: 2px;
+}
+
+/* ── Annotation list (bottom sheet, no scrim) ───────────────── */
+.annotationList {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* sit above mobile tab bar (≈48px) */
+  padding: var(--s-4) var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface);
+  border-top: 1px solid var(--hairline);
+  z-index: 20;
+  max-height: 50vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.listHeading {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 var(--s-2) 0;
+}
+
+.annotationOl {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.annotationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  cursor: pointer;
+  /* subtle hover so the item feels interactive */
+  border-radius: 4px;
+  padding: var(--s-1) var(--s-2);
+  transition: background 0.15s;
+}
+
+.annotationItem:hover {
+  background: var(--hairline);
+}
+
+.itemIndex {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+
+.itemBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemText {
+  font-size: var(--t-sm);
+  color: var(--ink);
+  line-height: 1.4;
+  display: block;
+}
+
+.itemPrinciple {
+  display: inline-block;
+  margin-top: var(--s-1);
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+  background: var(--hairline);
+  padding: 1px var(--s-1);
+  border-radius: 3px;
+}

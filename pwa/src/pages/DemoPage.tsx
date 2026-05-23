@@ -24,6 +24,8 @@ import { JourneyRail } from "../components/system/JourneyRail";
 import { ActivityFeed } from "../components/system/ActivityFeed";
 import { DocChecklist } from "../components/system/DocChecklist";
 import { EngineTrace } from "../components/system/EngineTrace";
+import { DesignLensProvider } from "../components/lens/DesignLensProvider";
+import { AnnotationList } from "../components/lens/AnnotationList";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -49,10 +51,16 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
 
   const initialScenarioId = searchParams.get("scenario") || DEFAULT_SCENARIO_ID;
 
-  // lens is a URL flag only — Task 5 will consume it. For now we just persist
-  // the flag and expose a toggle that flips it in the URL.
-  const lensFromUrl = searchParams.get("lens") === "on";
-  const [lensEnabled, setLensEnabled] = useState(lensFromUrl);
+  // Lens is driven entirely by the URL param so deep-links work.
+  const lensEnabled = searchParams.get("lens") === "on";
+
+  const onToggleLens = () => {
+    const next = !lensEnabled;
+    const params = new URLSearchParams(searchParams);
+    if (next) params.set("lens", "on");
+    else params.delete("lens");
+    setSearchParams(params, { replace: true });
+  };
 
   const initialCursor = clamp(
     parseInt(searchParams.get("step") ?? "0", 10) || 0,
@@ -72,17 +80,18 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
   // Picker open state
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  // Sync state back to URL
+  // Sync playback state back to URL (preserves lens param if present)
   useEffect(() => {
     setSearchParams(
-      {
-        scenario: state.scenarioId,
-        step: String(state.cursor),
-        ...(lensEnabled ? { lens: "on" } : {}),
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("scenario", state.scenarioId);
+        next.set("step", String(state.cursor));
+        return next;
       },
       { replace: true }
     );
-  }, [state.scenarioId, state.cursor, lensEnabled, setSearchParams]);
+  }, [state.scenarioId, state.cursor, setSearchParams]);
 
   const scenario = getScenario(state.scenarioId);
 
@@ -159,7 +168,8 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
   const vm = viewModel;
 
   return (
-    <>
+    <DesignLensProvider enabled={mode === "demo" && lensEnabled}>
+      <>
       <AppShell
         mode={mode}
         header={
@@ -174,11 +184,7 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
               mode !== "product" ? () => setPickerOpen(true) : undefined
             }
             lensEnabled={mode === "demo" ? lensEnabled : undefined}
-            onToggleLens={
-              mode === "demo"
-                ? () => setLensEnabled((prev) => !prev)
-                : undefined
-            }
+            onToggleLens={mode === "demo" ? onToggleLens : undefined}
             languageSwitcher={
               mode === "product"
                 ? <div data-testid="language-switcher-slot" />
@@ -211,6 +217,13 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
                 }
                 onSetSpeed={(speed) => dispatch({ type: "SET_SPEED", speed })}
               />
+              {mode === "demo" && lensEnabled && (
+                <AnnotationList
+                  state={vm.claim.status}
+                  scenarioId={state.scenarioId}
+                  cursor={state.cursor}
+                />
+              )}
             </>
           ),
           activity: <ActivityFeed entries={vm.activityFeed} />,
@@ -238,5 +251,6 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
         />
       )}
     </>
+    </DesignLensProvider>
   );
 }

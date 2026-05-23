@@ -60,3 +60,14 @@ export function useDesignLens(): DesignLensContext {
   if (!ctx) throw new Error("useDesignLens must be used inside DesignLensProvider");
   return ctx;
 }
+
+/** Safe variant — returns a disabled no-op context when no provider is present.
+ *  Use in leaf components (Annotatable, SlaClock, EngineTrace) that may be
+ *  rendered in tests or stories without a DesignLensProvider in the tree. */
+export function useDesignLensSafe(): DesignLensContext {
+  const ctx = useContext(Ctx);
+  if (!ctx) {
+    return { enabled: false, annotationsFor: () => [] };
+  }
+  return ctx;
+}
