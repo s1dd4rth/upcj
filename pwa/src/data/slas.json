@@ -1,0 +1,75 @@
+{
+  "$schema": "../schemas/sla.schema.json",
+  "slas": [
+    {
+      "id": "SLA-pre-auth-submission", "step": "A.1", "actor": "Hospital",
+      "duration": "PT2H",
+      "startsOn": ["doctor-signs-admission-advice"],
+      "endsOn":   ["pre-auth-filed"],
+      "escalation": { "action": "patient-files-direct", "target": "TPA" }
+    },
+    {
+      "id": "SLA-pre-auth-response", "step": "A.3", "actor": "TPA",
+      "durationByAdmissionType": { "emergency": "PT4H", "planned": "PT12H" },
+      "startsOn": ["pre-auth-filed"],
+      "endsOn":   ["pre-auth-approved", "pre-auth-rejected"],
+      "escalation": { "action": "auto-escalate", "target": "Insurer" }
+    },
+    {
+      "id": "SLA-query-response-cashless", "step": "A.2", "actor": "Hospital",
+      "duration": "PT24H",
+      "startsOn": ["query-raised"],
+      "endsOn":   ["query-resolved", "query-responded"],
+      "escalation": { "action": "process-with-available-info", "target": "TPA" }
+    },
+    {
+      "id": "SLA-pre-auth-approval", "step": "A.3", "actor": "TPA",
+      "duration": "PT24H",
+      "startsOn": ["pre-auth-filed"],
+      "endsOn":   ["pre-auth-approved"],
+      "escalation": { "action": "auto-escalate", "target": "Insurer" }
+    },
+    {
+      "id": "SLA-enhancement-response", "step": "A.5", "actor": "TPA",
+      "duration": "PT4H",
+      "startsOn": ["enhancement-requested"],
+      "endsOn":   ["enhancement-approved", "enhancement-rejected"],
+      "escalation": { "action": "auto-escalate", "target": "Insurer" }
+    },
+    {
+      "id": "SLA-discharge-settlement", "step": "3.4", "actor": "TPA",
+      "duration": "P7D",
+      "startsOn": ["patient-discharged"],
+      "endsOn":   ["claim-settled", "claim-partially-settled"],
+      "escalation": { "action": "interest-payable-to-hospital", "target": "Hospital" }
+    },
+    {
+      "id": "SLA-reimbursement-settlement", "step": "3.4", "actor": "Insurer",
+      "duration": "P30D",
+      "startsOn": ["claim-form-submitted"],
+      "endsOn":   ["claim-settled", "claim-partially-settled", "claim-rejected"],
+      "escalation": { "action": "interest-payable-to-patient", "target": "Patient" }
+    },
+    {
+      "id": "SLA-query-response-reimbursement", "step": "B.5", "actor": "Patient",
+      "duration": "P15D",
+      "startsOn": ["query-raised"],
+      "endsOn":   ["query-responded", "query-resolved"],
+      "escalation": { "action": "process-with-available-documents", "target": "TPA" }
+    },
+    {
+      "id": "SLA-grievance-acknowledgement", "step": "3.4", "actor": "TPA",
+      "duration": "PT48H",
+      "startsOn": ["grievance-filed"],
+      "endsOn":   ["grievance-acknowledged"],
+      "escalation": { "action": "auto-escalate", "target": "IRDAI" }
+    },
+    {
+      "id": "SLA-grievance-resolution", "step": "3.4", "actor": "TPA",
+      "duration": "P15D",
+      "startsOn": ["grievance-filed"],
+      "endsOn":   ["grievance-resolved", "grievance-escalated"],
+      "escalation": { "action": "approach-ombudsman", "target": "Patient" }
+    }
+  ]
+}
