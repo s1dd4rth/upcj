@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MobileTabs } from "./MobileTabs";
 import styles from "./shell.module.css";
 
@@ -18,6 +18,27 @@ export interface AppShellProps {
   onTabChange?: (tab: ShellTab) => void;
 }
 
+const COCKPIT_QUERY = "(min-width: 900px)";
+
+function useIsWide(): boolean {
+  const [isWide, setIsWide] = useState<boolean>(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return false;
+    }
+    return window.matchMedia(COCKPIT_QUERY).matches;
+  });
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return;
+    }
+    const mql = window.matchMedia(COCKPIT_QUERY);
+    const onChange = (e: MediaQueryListEvent) => setIsWide(e.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return isWide;
+}
+
 export function AppShell({
   mode,
   header,
@@ -27,6 +48,7 @@ export function AppShell({
   onTabChange,
 }: AppShellProps): React.ReactElement {
   const [internalTab, setInternalTab] = useState<ShellTab>("status");
+  const isWide = useIsWide();
 
   const isControlled = controlledTab !== undefined;
   const activeTab = isControlled ? controlledTab : internalTab;
@@ -38,8 +60,36 @@ export function AppShell({
     onTabChange?.(tab);
   }
 
+  if (isWide) {
+    return (
+      <div className={styles.shell} data-mode={mode} data-layout="cockpit">
+        {header}
+        <main className={styles.mainCockpit}>
+          <div
+            className={styles.cockpitRailLeft}
+            data-cockpit-rail-left
+            aria-label="Journey rail (Task 3.2)"
+          />
+          <div className={styles.cockpitCenter} data-cockpit-center>
+            {tabs.status}
+            {engineTrace && (
+              <details className={styles.engineTrace}>
+                <summary>What just changed?</summary>
+                <div>{engineTrace}</div>
+              </details>
+            )}
+          </div>
+          <div className={styles.cockpitRailRight} data-cockpit-rail-right>
+            <div>{tabs.activity}</div>
+            <div>{tabs.docs}</div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.shell} data-mode={mode}>
+    <div className={styles.shell} data-mode={mode} data-layout="mobile">
       {header}
       <main className={styles.main}>
         {activeTab === "status" && (

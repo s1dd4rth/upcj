@@ -86,10 +86,40 @@
   color: var(--accent);
 }
 
-/* Main content area */
+/* Main content area — mobile (single column) */
 .main {
   overflow-y: auto;
   padding: var(--s-4);
+}
+
+/* Cockpit layout — wide viewport (JS-driven via useIsWide) */
+.mainCockpit {
+  display: grid;
+  grid-template-columns: 220px 1fr 320px;
+  gap: var(--s-4);
+  align-items: start;
+  padding: var(--s-4);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cockpitRailLeft {
+  /* Placeholder for JourneyRail (Task 3.2). Empty for Task 3.1. */
+  overflow-y: auto;
+  height: 100%;
+}
+
+.cockpitCenter {
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.cockpitRailRight {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
 }
 
 /* Engine trace disclosure (inline, bottom of status panel) */
