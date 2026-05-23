@@ -63,6 +63,13 @@ export const STATE_CONTENT: Partial<Record<ClaimStatus, StateContent>> = {
     surfaceSlaIds: ["SLA-discharge-settlement"],
     tone: "calm",
   },
+  "in-query": {
+    archetype: "waiting",
+    headlineKey: "stateContent.in-query.headline",
+    explanationKey: "stateContent.in-query.explanation",
+    surfaceSlaIds: ["SLA-query-response-cashless"],
+    tone: "calm",
+  },
   "settled": {
     archetype: "terminal",
     terminalScreen: "settled",
@@ -70,7 +77,7 @@ export const STATE_CONTENT: Partial<Record<ClaimStatus, StateContent>> = {
     explanationKey: "stateContent.settled.explanation",
     tone: "positive",
   },
-  // Phase 2 fills: in-treatment-reimbursement, in-query, awaiting-patient-action,
+  // Phase 2 fills: in-treatment-reimbursement, awaiting-patient-action,
   // partially-settled, rejected, withdrawn, closed-without-settlement.
   // The completeness test (it.skip) will be un-skipped in Task 2.4.
 };

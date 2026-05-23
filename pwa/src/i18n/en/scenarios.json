@@ -4,6 +4,11 @@
       "title": "Cashless · planned admission · happy path",
       "summary": "Planned surgery at a network hospital. Cashless eligibility confirmed, pre-auth approved on the same day, claim settled in full a week after discharge.",
       "teaches": "The clean baseline: every party meets its SLA, every document is in order, every state transition takes the obvious path. Watch how the engine tracks who's responsible at each step."
+    },
+    "cashlessEmergencyQuery": {
+      "title": "Cashless · emergency · TPA query → resolved",
+      "summary": "Emergency admission. The TPA had a question about the case — the hospital answered, and the claim continued to settlement.",
+      "teaches": "How the in-query state works: a regulated pause, a clearly-owned response window, and how the claim re-enters the main flow when resolved."
     }
   },
   "stateContent": {
@@ -40,6 +45,11 @@
     "in-adjudication": {
       "headline": "The TPA is reviewing the final bill",
       "explanation": "The discharge bill is with the TPA. They check it against policy terms — what's covered, what isn't — and decide what they will pay.",
+      "tone": "calm"
+    },
+    "in-query": {
+      "headline": "The TPA has raised a question",
+      "explanation": "The TPA needs clarification before they can decide on pre-authorisation. The hospital has been asked to respond — there is a regulated deadline. You don't need to do anything; you can focus on getting better.",
       "tone": "calm"
     },
     "settled": {

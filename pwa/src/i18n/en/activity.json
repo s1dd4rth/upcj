@@ -7,6 +7,8 @@
     "pre-auth-approved": "The TPA approved the pre-authorisation.",
     "patient-discharged": "You were discharged from the hospital.",
     "discharge-bill-finalised": "The hospital finalised the discharge bill.",
-    "claim-settled": "The TPA settled the claim with the hospital."
+    "claim-settled": "The TPA settled the claim with the hospital.",
+    "query-raised": "The TPA raised a query and asked the hospital to clarify.",
+    "query-resolved": "The hospital answered the TPA's query."
   }
 }
