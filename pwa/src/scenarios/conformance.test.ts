@@ -9,7 +9,7 @@ describe("scenario conformance", () => {
       expect(r.ok, !r.ok ? JSON.stringify((r as { error: unknown }).error) : "").toBe(true);
       if (r.ok) {
         expect(r.claim.status).toBe(s.expectedTerminalStatus);
-        expect(r.claim.interactions.length).toBe(s.expectedInteractionCount);
+        expect((r.claim.interactions ?? []).length).toBe(s.expectedInteractionCount);
       }
     });
 

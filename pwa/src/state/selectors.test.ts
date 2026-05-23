@@ -7,7 +7,6 @@ import {
   selectDocChecklist,
   selectActivityFeed,
   selectEngineTrace,
-  type SlaClockVM,
   type DocVM,
   type ActivityEntryVM,
   type EngineTraceVM,

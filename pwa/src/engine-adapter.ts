@@ -46,6 +46,7 @@ export const adapter = {
 
 export type {
   Claim,
+  ClaimStatus,
   Event,
   ValidationResult,
   AdvanceResult,
