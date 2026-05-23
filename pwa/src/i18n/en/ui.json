@@ -40,5 +40,33 @@
     "errors": {
       "replayFailed": "Something went wrong replaying this claim. This shouldn't happen with the seeded scenarios — please report it."
     }
+  },
+  "journey": {
+    "showAll": "Show all 15 states",
+    "phases": {
+      "intake": "Intake",
+      "admission": "Admission",
+      "treatment": "Treatment",
+      "discharge": "Discharge",
+      "dialogue": "Queries",
+      "closeout": "Closeout"
+    },
+    "states": {
+      "pre-admission": "Pre-admission",
+      "intimated": "Intimated",
+      "admission-advised": "Admission advised",
+      "pre-auth-pending": "Pre-auth pending",
+      "in-treatment-cashless": "In treatment (cashless)",
+      "in-treatment-reimbursement": "In treatment (reimbursement)",
+      "discharged": "Discharged",
+      "in-adjudication": "In adjudication",
+      "in-query": "In query",
+      "awaiting-patient-action": "Awaiting patient action",
+      "settled": "Settled",
+      "partially-settled": "Partially settled",
+      "rejected": "Rejected",
+      "withdrawn": "Withdrawn",
+      "closed-without-settlement": "Closed without settlement"
+    }
   }
 }
