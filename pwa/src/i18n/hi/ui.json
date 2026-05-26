@@ -61,6 +61,11 @@
       "current": "अभी चल रहा है",
       "teaches": "यह क्या सिखाता है"
     },
+    "languageSwitcher": {
+      "label": "भाषा",
+      "en": "English",
+      "hi": "हिन्दी"
+    },
     "archetype": {
       "neutral": {
         "affirmation": "अभी कुछ नहीं करना।"

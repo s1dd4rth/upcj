@@ -33,7 +33,8 @@ export function Header({
         <span className={styles.slaPhrase}>{mostUrgentSlaPhrase}</span>
       )}
 
-      {mode === "product" && languageSwitcher && languageSwitcher}
+      {/* Render language switcher in all modes — in demo/dev it sits after the status pill */}
+      {languageSwitcher}
 
       {(mode === "demo" || mode === "dev") && (
         <div className={styles.demoChromeRow} data-demo-chrome>

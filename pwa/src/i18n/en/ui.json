@@ -61,6 +61,11 @@
       "current": "Currently playing",
       "teaches": "What this teaches"
     },
+    "languageSwitcher": {
+      "label": "Language",
+      "en": "English",
+      "hi": "हिन्दी"
+    },
     "archetype": {
       "neutral": {
         "affirmation": "Nothing to do right now."

@@ -25,10 +25,10 @@ describe("/product zero-chrome", () => {
     expect(document.querySelector("[data-engine-trace]")).toBeNull();
   });
 
-  it("renders the language-switcher slot", () => {
+  it("renders the language switcher", () => {
     renderProduct();
     expect(
-      document.querySelector('[data-testid="language-switcher-slot"]')
+      document.querySelector("[data-language-switcher]")
     ).toBeInTheDocument();
   });
 

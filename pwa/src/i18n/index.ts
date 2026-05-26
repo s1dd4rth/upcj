@@ -33,13 +33,30 @@ const hi = {
   ...hiDesign,
 };
 
+// Read persisted language preference; default to "en"
+// Guard against environments where localStorage exists but is not fully functional
+// (e.g. some jsdom workers during test setup)
+function _readSavedLang(): string {
+  try {
+    return (typeof localStorage !== "undefined" && localStorage.getItem("upcj.lang")) || "en";
+  } catch {
+    return "en";
+  }
+}
+const startLang: "en" | "hi" = _readSavedLang() === "hi" ? "hi" : "en";
+
 void i18n.use(initReactI18next).init({
   resources: { en: { translation: en }, hi: { translation: hi } },
-  lng: "en",
+  lng: startLang,
   fallbackLng: "en",
   interpolation: { escapeValue: false },
   returnEmptyString: false,
 });
+
+// Reflect initial language on <html lang> so assistive tech and CSS :lang() are correct
+if (typeof document !== "undefined") {
+  document.documentElement.setAttribute("lang", startLang);
+}
 
 export { i18n };
 export default i18n;

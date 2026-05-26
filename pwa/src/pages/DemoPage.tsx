@@ -27,6 +27,7 @@ import { EngineTrace } from "../components/system/EngineTrace";
 import { DesignLensProvider } from "../components/lens/DesignLensProvider";
 import { AnnotationList } from "../components/lens/AnnotationList";
 import { MarginCallouts } from "../components/lens/MarginCallouts";
+import { LanguageSwitcher } from "../components/shell/LanguageSwitcher";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -186,11 +187,7 @@ export default function DemoPage({ mode = "demo" }: { mode?: "demo" | "product" 
             }
             lensEnabled={mode === "demo" ? lensEnabled : undefined}
             onToggleLens={mode === "demo" ? onToggleLens : undefined}
-            languageSwitcher={
-              mode === "product"
-                ? <div data-testid="language-switcher-slot" />
-                : undefined
-            }
+            languageSwitcher={<LanguageSwitcher />}
           />
         }
         tabs={{
