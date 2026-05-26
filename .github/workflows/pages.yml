@@ -1,0 +1,93 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# pages.yml — unified GitHub Pages deploy
+#
+# This is the single source of truth for what gets served at
+# https://s1dd4rth.github.io/upcj/. It bundles:
+#
+#   _site/
+#     index.html              ← landing page (committed to main)
+#     preview.html            ← starter-kit HTML preview gallery
+#     assets/                 ← PDFs + starter-kit preview PNGs (committed to main)
+#     pwa/                    ← built PWA (Vite dist, base /upcj/pwa/)
+#
+# Repo Settings → Pages → Source must be set to "GitHub Actions" for this to
+# take effect. Re-uploading the artifact replaces the whole deploy each run,
+# so anything not in _site/ here will 404 on the live site — keep this
+# workflow in sync with every new top-level static asset.
+#
+# Concurrency group "pages" serialises deploys; runs from this workflow don't
+# clobber each other, and the deploy-pages action itself enforces one active
+# deployment.
+# ─────────────────────────────────────────────────────────────────────────────
+name: pages
+
+on:
+  push:
+    branches: [main]
+    # No path filter: a change to index.html, assets/, or pwa/** all need to
+    # trigger a re-bundle so the deploy stays complete.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: |
+            pwa/package-lock.json
+            engine/package-lock.json
+
+      # Engine is consumed by pwa via file:../engine; its dist/ must exist
+      # before `cd pwa && npm ci` resolves the file: dep.
+      - name: Build engine
+        working-directory: engine
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build PWA
+        working-directory: pwa
+        run: |
+          npm ci
+          npm run build
+
+      # Assemble the artifact. Keep this section flat and obvious — every
+      # path that's served live should be visible here.
+      - name: Assemble _site
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp preview.html _site/
+          cp -R assets _site/
+          mkdir -p _site/pwa
+          cp -R pwa/dist/. _site/pwa/
+          echo "── _site/ ──"
+          ls -la _site/
+          echo "── _site/pwa/ ──"
+          ls -la _site/pwa/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

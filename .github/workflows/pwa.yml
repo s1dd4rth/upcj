@@ -1,26 +1,14 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # pwa.yml — CI for the UPCJ demo PWA
 #
-# DEPLOY NOTE (Pages source)
-# ──────────────────────────
-# The `deploy` job below is a stub for v1. It downloads the built artifact and
-# prints instructions.  To activate full GitHub Pages deployment:
+# This workflow is the PR gate for changes under pwa/: it builds the engine
+# (required because pwa consumes it via file:../engine), installs the PWA,
+# runs the vitest suite, and verifies the Vite build still produces a clean
+# dist/.
 #
-#   1. Go to repo Settings → Pages → Source → change from "Deploy from a branch"
-#      to "GitHub Actions".
-#   2. Uncomment the `actions/configure-pages`, `actions/upload-pages-artifact`,
-#      and `actions/deploy-pages` steps in the `deploy` job.
-#   3. Remove the TODO stub step.
-#
-# The Vite base is "/upcj/pwa/" — once Pages source is "GitHub Actions", the
-# deploy job uploads the dist as a sub-path artifact and the PWA is live at:
-#   https://s1dd4rth.github.io/upcj/pwa/
-#
-# The existing starter-kit PDF (assets/) is committed to the main branch and
-# served via the "Deploy from a branch" mode. Switching to "GitHub Actions"
-# source means you MUST also update the starter-kit workflow to publish those
-# files via actions/upload-pages-artifact, or they will disappear from the
-# live site. See docs/specs/pwa-spec.md Task 7.4 for the migration plan.
+# DEPLOY is owned by .github/workflows/pages.yml, which runs on every push
+# to main and bundles the built PWA together with the landing page + assets
+# into a single GitHub Pages artifact.
 # ─────────────────────────────────────────────────────────────────────────────
 name: pwa
 
@@ -43,11 +31,6 @@ on:
       - ".github/workflows/pwa.yml"
 
 jobs:
-  # ───────────────────────────────────────────────────────────────────────────
-  # test
-  # Builds the engine (required before pwa npm ci resolves the file: dep) then
-  # runs the PWA's vitest suite.
-  # ───────────────────────────────────────────────────────────────────────────
   test:
     runs-on: ubuntu-latest
     steps:
@@ -57,13 +40,11 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          # Cache keyed on pwa lockfile; engine lockfile included so a dep
-          # change in either invalidates the cache.
           cache-dependency-path: |
             pwa/package-lock.json
             engine/package-lock.json
 
-      # The pwa package.json has "@upcj/engine": "file:../engine".
+      # pwa's package.json has "@upcj/engine": "file:../engine".
       # npm ci copies the file: dep into node_modules, so the engine's dist/
       # must already exist before `cd pwa && npm ci` runs.
       - name: Build engine
@@ -78,11 +59,6 @@ jobs:
         working-directory: pwa
         run: npm test
 
-  # ───────────────────────────────────────────────────────────────────────────
-  # build
-  # Produces the Vite dist with base "/upcj/pwa/" and uploads it as an
-  # artifact for the deploy job.
-  # ───────────────────────────────────────────────────────────────────────────
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -108,72 +84,3 @@ jobs:
       - name: Vite build
         working-directory: pwa
         run: npm run build
-
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pwa-dist
-          path: pwa/dist
-          if-no-files-found: error
-
-  # ───────────────────────────────────────────────────────────────────────────
-  # deploy (STUB — v1)
-  # Activates on pushes to main and on pwa-v* release tags.
-  # Currently just downloads the artifact and prints next-steps.
-  # See the header comment above for how to activate full Pages deployment.
-  #
-  # TODO(Task 7.4): replace the stub step with:
-  #   - actions/configure-pages@v4
-  #   - actions/upload-pages-artifact@v3  (path: pwa/dist)
-  #   - actions/deploy-pages@v4
-  # Requires repo Settings → Pages → Source = "GitHub Actions".
-  # ───────────────────────────────────────────────────────────────────────────
-  deploy:
-    needs: build
-    if: >
-      github.ref == 'refs/heads/main' ||
-      startsWith(github.ref, 'refs/tags/pwa-v')
-    runs-on: ubuntu-latest
-    # Permissions required by actions/deploy-pages (harmless while stubbed).
-    permissions:
-      pages: write
-      id-token: write
-      contents: read
-    steps:
-      - name: Download dist artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: pwa-dist
-          path: pwa-dist
-
-      # ── STUB ──────────────────────────────────────────────────────────────
-      # Replace this step with configure-pages + upload-pages-artifact +
-      # deploy-pages once Pages source is switched to "GitHub Actions".
-      - name: Deploy stub (Pages source not yet switched to Actions)
-        run: |
-          echo "=========================================================="
-          echo "  PWA dist built successfully."
-          echo ""
-          echo "  To publish to https://s1dd4rth.github.io/upcj/pwa/ :"
-          echo "    1. Repo Settings → Pages → Source → GitHub Actions"
-          echo "    2. Uncomment the deploy steps in .github/workflows/pwa.yml"
-          echo "       (see Task 7.4 / header comment in that file)"
-          echo ""
-          echo "  Artifact contents:"
-          ls -lh pwa-dist/
-          echo "=========================================================="
-
-      # TODO(Task 7.4): uncomment when Pages source = "GitHub Actions":
-      # - name: Configure Pages
-      #   uses: actions/configure-pages@v4
-      # - name: Upload Pages artifact
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: pwa-dist
-      # - name: Deploy to GitHub Pages
-      #   id: deployment
-      #   uses: actions/deploy-pages@v4
-
-  # TODO(Task 7.x): add Lighthouse CI job after deploy
-  #   uses: treosh/lighthouse-ci-action or lhci/github-action
-  #   runs after deploy on pwa-v* tags only
