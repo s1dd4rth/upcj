@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { render } from "@testing-library/react";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import "../../i18n";
 import { DesignLensProvider } from "./DesignLensProvider";
 import { MarginCallouts } from "./MarginCallouts";
