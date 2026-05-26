@@ -1,0 +1,105 @@
+{
+  "scenarios": {
+    "cashlessPlannedHappy": {
+      "title": "Cashless · planned admission · happy path",
+      "summary": "Planned surgery at a network hospital. Cashless eligibility confirmed, pre-auth approved on the same day, claim settled in full a week after discharge.",
+      "teaches": "The clean baseline: every party meets its SLA, every document is in order, every state transition takes the obvious path. Watch how the engine tracks who's responsible at each step."
+    },
+    "cashlessEmergencyQuery": {
+      "title": "Cashless · emergency · TPA query → resolved",
+      "summary": "Emergency admission. The TPA had a question about the case — the hospital answered, and the claim continued to settlement.",
+      "teaches": "How the in-query state works: a regulated pause, a clearly-owned response window, and how the claim re-enters the main flow when resolved."
+    },
+    "reimbursementDeductionGrievance": {
+      "title": "Reimbursement · deduction · grievance",
+      "summary": "Reimbursement claim with a partial settlement after deductions. The patient files a grievance, which is acknowledged and resolved.",
+      "teaches": "How the engine handles the harder paths: the reimbursement flow, the awaiting-patient-action affordance, the partial-settlement statement that names every deduction, and the grievance route as a regulated remedy."
+    },
+    "cashlessRejectedSlaBreach": {
+      "title": "Cashless · pre-auth rejected · grievance escalation",
+      "summary": "The TPA missed the pre-authorisation response deadline, then rejected the claim. The patient files a grievance — when level 1 doesn't move it, they escalate.",
+      "teaches": "How an SLA breach is rendered — not as alarm-red but as 'the deadline passed → here is your recourse'. And how the grievance escalation ladder is part of the engine, not an afterthought."
+    },
+    "claimWithdrawn": {
+      "title": "Claim withdrawn before admission",
+      "summary": "A planned surgery is intimated and the doctor signs the advice. Plans change; the patient withdraws the claim before admission.",
+      "teaches": "Withdrawal is a first-class lifecycle state. The framework supports the patient changing their mind — no penalty, no friction, no insurer side keeping a hidden flag against them."
+    }
+  },
+  "stateContent": {
+    "pre-admission": {
+      "headline": "You've decided to seek treatment",
+      "explanation": "Nothing has been filed yet. This is the moment before your hospital insurance journey begins.",
+      "tone": "quiet"
+    },
+    "intimated": {
+      "headline": "Your hospitalisation has been intimated to the TPA",
+      "explanation": "You (or someone on your behalf) told the Third-Party Administrator that you're going to be admitted. The TPA will now wait for the hospital to confirm.",
+      "tone": "calm"
+    },
+    "admission-advised": {
+      "headline": "The doctor has signed your admission advice",
+      "explanation": "Your treating doctor has formally said you need to be admitted. The hospital can now check whether your insurance will cover the stay without you paying up front.",
+      "tone": "calm"
+    },
+    "pre-auth-pending": {
+      "headline": "The hospital has filed the pre-authorisation request",
+      "explanation": "The hospital sent your case to the TPA, asking them to approve treatment up to a budget. The TPA must respond — this is a regulated deadline.",
+      "tone": "calm"
+    },
+    "in-treatment-cashless": {
+      "headline": "Cashless treatment is approved — focus on getting better",
+      "explanation": "Pre-authorisation is in place. The hospital can treat you and bill the TPA directly. You should not be asked to pay for covered care during this stay.",
+      "tone": "positive"
+    },
+    "discharged": {
+      "headline": "You've been discharged. The hospital is finalising the bill.",
+      "explanation": "Your treatment is complete. The hospital now totals the bill and sends it to the TPA. There is a regulated deadline for the TPA to settle.",
+      "tone": "calm"
+    },
+    "in-adjudication": {
+      "headline": "The TPA is reviewing the final bill",
+      "explanation": "The discharge bill is with the TPA. They check it against policy terms — what's covered, what isn't — and decide what they will pay.",
+      "tone": "calm"
+    },
+    "in-query": {
+      "headline": "The TPA has raised a question",
+      "explanation": "The TPA needs clarification before they can decide on pre-authorisation. The hospital has been asked to respond — there is a regulated deadline. You don't need to do anything; you can focus on getting better.",
+      "tone": "calm"
+    },
+    "settled": {
+      "headline": "Your claim is settled",
+      "explanation": "The TPA has paid the hospital directly under your cashless arrangement. There is nothing left for you to do.",
+      "tone": "positive"
+    },
+    "in-treatment-reimbursement": {
+      "headline": "You are being treated. You'll claim reimbursement after discharge.",
+      "explanation": "Your insurer didn't pre-approve cashless treatment for this admission, so you'll pay the hospital and submit a reimbursement claim later. Keep every receipt and discharge summary.",
+      "tone": "calm"
+    },
+    "awaiting-patient-action": {
+      "headline": "The TPA needs information from you",
+      "explanation": "There's a specific question from the TPA. The claim is paused until you respond. You can take your time — the regulated window for responses to insurer/TPA queries is generous — but the sooner you reply, the sooner this moves.",
+      "actionLabel": "Provide the requested information",
+      "tone": "urgent"
+    },
+    "partially-settled": {
+      "headline": "Your claim is partially settled",
+      "explanation": "The insurer has paid part of what you claimed, with deductions itemised below. If you disagree with any deduction, you have a right to escalate through the grievance route. Each level has a regulated response window.",
+      "tone": "mixed"
+    },
+    "rejected": {
+      "headline": "The insurer has rejected this claim",
+      "explanation": "The insurer says no, for the reason shown below. You have a right to appeal through the grievance process — there's a regulated escalation ladder, and many cases that look closed at this point are resolved through it.",
+      "tone": "heavy"
+    },
+    "withdrawn": {
+      "headline": "This claim has been withdrawn",
+      "explanation": "You chose not to proceed. There's nothing left to do, and nothing in this file affects future claims."
+    },
+    "closed-without-settlement": {
+      "headline": "This claim was closed without a settlement",
+      "explanation": "The insurer closed the file without paying out. You can challenge this through the grievance route."
+    }
+  }
+}

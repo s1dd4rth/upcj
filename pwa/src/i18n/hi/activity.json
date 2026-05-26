@@ -1,0 +1,26 @@
+{
+  "activity": {
+    "intimate-hospitalisation": "आपने TPA को बताया कि आपको अस्पताल में भर्ती होना है।",
+    "doctor-signs-admission-advice": "डॉक्टर ने एडमिशन की सलाह पर दस्तखत कर दिए।",
+    "cashless-eligibility-confirmed": "TPA ने कैशलेस ट्रीटमेंट की पात्रता कन्फ़र्म कर दी।",
+    "pre-auth-filed": "अस्पताल ने TPA के पास प्री-ऑथराइज़ेशन रिक्वेस्ट दाखिल की।",
+    "pre-auth-approved": "TPA ने प्री-ऑथराइज़ेशन अप्रूव कर दी।",
+    "patient-discharged": "आपको अस्पताल से डिस्चार्ज कर दिया गया।",
+    "discharge-bill-finalised": "अस्पताल ने डिस्चार्ज का बिल तैयार कर दिया।",
+    "claim-settled": "TPA ने अस्पताल के साथ क्लेम सेटल कर दिया।",
+    "query-raised": "TPA ने अस्पताल से एक सवाल पूछा है।",
+    "query-resolved": "अस्पताल ने TPA का सवाल हल कर दिया।",
+    "cashless-eligibility-declined": "TPA ने कैशलेस की पात्रता नहीं दी — डिस्चार्ज के बाद आपको रीइम्बर्समेंट क्लेम करना होगा।",
+    "claim-form-submitted": "आपने ज़रूरी दस्तावेज़ों के साथ क्लेम फ़ॉर्म जमा कर दिया।",
+    "patient-action-needed": "TPA ने बताया कि क्लेम आगे बढ़ाने के लिए आपसे जवाब चाहिए।",
+    "claim-partially-settled": "बीमा कंपनी ने क्लेम का कुछ हिस्सा सेटल किया। कुछ कटौतियाँ हुई हैं।",
+    "grievance-filed": "आपने बीमा कंपनी के फ़ैसले के खिलाफ़ शिकायत दर्ज की।",
+    "grievance-acknowledged": "बीमा कंपनी ने आपकी शिकायत मानी और उस पर विचार कर रही है।",
+    "grievance-resolved": "बीमा कंपनी ने आपकी शिकायत हल कर दी।",
+    "pre-auth-rejected": "TPA ने प्री-ऑथराइज़ेशन रिजेक्ट कर दी।",
+    "claim-rejected": "एडजुडिकेशन के बाद क्लेम रिजेक्ट हो गया।",
+    "grievance-escalated": "शिकायत अगले स्तर पर भेज दी गई।",
+    "claim-withdrawn": "क्लेम वापस ले लिया गया।",
+    "claim-closed-no-settlement": "बीमा कंपनी ने बिना सेटलमेंट के फ़ाइल बंद कर दी।"
+  }
+}

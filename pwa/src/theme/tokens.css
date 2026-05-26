@@ -1,0 +1,46 @@
+:root {
+  /* warm-tinted neutrals (no #000, no #fff; chroma ~0.006, warm hue ~85) */
+  --bg:        oklch(0.985 0.006 85);
+  --surface:   oklch(0.97  0.006 85);
+  --ink:       oklch(0.22  0.01  85);
+  --ink-muted: oklch(0.45  0.01  85);
+  --hairline:  oklch(0.88  0.006 85);
+
+  /* one accent (use sparingly — <=10% of any surface) */
+  --accent:    oklch(0.55  0.13  235);
+
+  /* state semantics (deliberately NOT owner colors) */
+  --ok:        oklch(0.6   0.12  150);
+  --warn:      oklch(0.7   0.13  75);     /* breached-SLA "clay/amber", not alarm-red */
+  --bad:       oklch(0.55  0.16  25);
+
+  /* archetype tints — "your turn" surface; distinct from --warn (breach) */
+  --active-tint:    oklch(0.65 0.12 60);  /* warm yellow-orange, calmly urgent */
+  --active-surface: oklch(0.96 0.03 70);  /* faint warm wash for the panel background */
+  --on-active:      oklch(0.22 0.02 60);  /* high-contrast ink for text on --active-tint */
+
+  /* owner-color system — labels for the five parties; moderate chroma so they read as labels not alarms */
+  --owner-patient:   oklch(0.6  0.10 250);
+  --owner-hospital:  oklch(0.6  0.10 160);
+  --owner-tpa:       oklch(0.62 0.10 300);
+  --owner-insurer:   oklch(0.6  0.10 30);
+  --owner-regulator: oklch(0.55 0.08 100);
+
+  /* type scale (ratio 1.25, base 1rem) */
+  --t-xs:   0.8rem;
+  --t-sm:   0.9rem;
+  --t-base: 1rem;
+  --t-md:   1.25rem;
+  --t-lg:   1.563rem;
+  --t-xl:   1.953rem;
+  --t-2xl:  2.441rem;
+
+  /* spacing — varied rhythm, not a uniform 4px grid */
+  --s-1:  0.25rem;
+  --s-2:  0.5rem;
+  --s-3:  0.75rem;
+  --s-4:  1rem;
+  --s-6:  1.5rem;
+  --s-8:  2.5rem;
+  --s-12: 4rem;
+}

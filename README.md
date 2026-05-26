@@ -154,6 +154,7 @@ upcj/
 - [x] v1.1 — ONDC-inspired governance model, document registry
 - [x] **Patient Starter Kit v1.0** — printable 38-page A4 companion ([npm/Releases](https://github.com/s1dd4rth/upcj/releases/latest/download/upcj-starter-kit.pdf))
 - [x] **Core ontology + reference engine v1.0** — JSON spec at `spec/` + [`@upcj/engine`](https://www.npmjs.com/package/@upcj/engine) on npm
+- [x] **Interactive demo PWA v1.0** — [click-through showcase](https://s1dd4rth.github.io/upcj/pwa/) of the engine: 5 seeded scenarios, English + Hindi, three route modes (/product /demo /dev), design lens
 - [ ] v1.2 — Hindi and Tamil translations
 - [ ] v1.3 — Printable A3 poster for hospital display
 - [ ] v1.4 — WhatsApp bot template
@@ -191,6 +192,20 @@ import { validate, advance, replay, evaluateSLAs, getSpecHash } from "@upcj/engi
 - **[Spec files](spec/)** — schemas, lifecycles, registries, 44 conformance fixtures (the cross-language contract)
 
 Non-JS adopters skip the npm package and read the spec from raw GitHub URLs (`raw.githubusercontent.com/s1dd4rth/upcj/main/spec/...`). The 44 conformance fixtures define the contract every conformant implementation must pass — port the engine in any language and prove correctness against the same JSON triples.
+
+## Interactive demo (PWA)
+
+The `pwa/` directory is a static React + Vite single-page app that walks a visitor through a patient's claim, event by event, driven live by `@upcj/engine`. Five seeded scenarios, English + हिन्दी, three route-based modes, and an inline "Design lens" that surfaces the design decisions in place.
+
+- **[Try the interactive demo →](https://s1dd4rth.github.io/upcj/pwa/)** — opens at `/pwa/`. Routes:
+  - `/product` — zero chrome ("imagine this were real")
+  - `/demo` — auto-plays scenarios with a picker, presenter controls, optional design lens
+  - `/dev` — engine internals (validate / replay / SLA evaluation / spec hash)
+  - `/design` — catalog of design principles with deep links into the demo where each is visible
+- **[PWA README](pwa/README.md)** — quick start, scenarios, dev workflow
+- **[Demo design spec](docs/superpowers/specs/2026-05-13-upcj-demo-pwa-design.md)** — what every visible decision is the answer to
+
+The PWA is the third published UPCJ artifact (alongside the starter kit and the engine). Built with React 18 + Vite 5 + TypeScript 5 + Vitest; deployed to GitHub Pages on every push to `main` that touches `pwa/`.
 
 ## Contributing
 

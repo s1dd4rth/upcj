@@ -478,6 +478,7 @@
             <li><a href="#principles">Design principles</a></li>
             <li><a href="#starter-kit">Starter kit</a></li>
             <li><a href="#core-engine">Core ontology + engine</a></li>
+            <li><a href="#interactive-demo">Interactive demo</a></li>
             <li><a href="#contribute">How to contribute</a></li>
             <li><a href="#license">License</a></li>
         </ol>
@@ -748,6 +749,31 @@
             <a href="assets/UPCJ-overview.pdf">UPCJ-overview.pdf</a>
             (also <a href="https://github.com/s1dd4rth/upcj/blob/main/docs/policy/UPCJ-overview.md">on GitHub as markdown</a>).
         </p>
+    </section>
+
+    <section id="interactive-demo">
+        <h2>Interactive demo (PWA)</h2>
+        <p>
+            The <code>pwa/</code> directory is a single-page React app that walks a visitor through a patient's claim, event by event, driven live by <code>@upcj/engine</code>'s pure functions. Five seeded scenarios (cashless happy path, emergency with TPA query, reimbursement with deductions and grievance, pre-auth rejection with SLA breach, withdrawal). Mobile-first, English and हिन्दी, route-based modes for stakeholders, presenters, and developers, and a "Design lens" overlay that surfaces the design decisions inline.
+        </p>
+        <ul>
+            <li>
+                <strong><a href="pwa/">Try the interactive demo →</a></strong>
+                — opens at <code>/pwa/</code>. Three routes: <code>/product</code> (zero chrome — "imagine this were real"), <code>/demo</code> (auto-plays with a scenario picker), <code>/dev</code> (engine internals — validate / replay / SLA evaluation).
+            </li>
+            <li>
+                <strong><a href="https://github.com/s1dd4rth/upcj/blob/main/pwa/README.md">PWA README</a></strong>
+                — quick start, scenarios, design lens, deploy.
+            </li>
+            <li>
+                <strong><a href="https://github.com/s1dd4rth/upcj/blob/main/docs/superpowers/specs/2026-05-13-upcj-demo-pwa-design.md">Demo design spec</a></strong>
+                — what every visible decision is the answer to.
+            </li>
+            <li>
+                <strong><a href="pwa/#/design">/design catalog</a></strong>
+                — every design principle the demo embodies, with a deep link to where each is visible in the demo.
+            </li>
+        </ul>
     </section>
 
     <section id="contribute">

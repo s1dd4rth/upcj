@@ -1,0 +1,9 @@
+{
+  "owners": {
+    "patient": "You",
+    "hospital": "Hospital",
+    "tpa": "TPA",
+    "insurer": "Insurer",
+    "regulator": "Regulator (Ombudsman)"
+  }
+}

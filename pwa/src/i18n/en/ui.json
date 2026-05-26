@@ -1,0 +1,178 @@
+{
+  "ui": {
+    "tabs": {
+      "status": "Status",
+      "activity": "Activity",
+      "docs": "Documents"
+    },
+    "actions": {
+      "next": "Next event",
+      "back": "Previous event",
+      "playAuto": "Play",
+      "pause": "Pause",
+      "openScenarios": "Choose another scenario"
+    },
+    "header": {
+      "appName": "UPCJ — Patient Claim Journey",
+      "mostUrgentSla": "Most urgent: {{phrase}}",
+      "lensOn": "Lens on",
+      "lensOff": "Lens off"
+    },
+    "engineTrace": {
+      "summary": "What just changed?",
+      "eventApplied": "Event applied",
+      "statusTransition": "Status moved from {{before}} to {{after}}",
+      "newInteractionId": "New interaction: {{id}}"
+    },
+    "sla": {
+      "comfortable": "{{owner}} has time — deadline {{when}}",
+      "approaching": "{{owner}} should be acting now — deadline {{when}}",
+      "dueSoon": "{{owner}} is running out of time — deadline {{when}}",
+      "breached": "The {{owner}}'s deadline passed on {{when}}. That's a breach — {{remedy}}."
+    },
+    "doc": {
+      "status": {
+        "required": "Needed",
+        "provided": "Submitted",
+        "verified": "Verified",
+        "rejected": "Rejected"
+      },
+      "relevantAt": "Relevant at: {{step}}",
+      "whyNeeded": "Why is this needed?",
+      "empty": "No documents required at this point.",
+      "phases": {
+        "beforeAdmission": "Before admission",
+        "atHospital": "At the hospital",
+        "dischargeSettlement": "Discharge & settlement",
+        "cashless": "Cashless flow",
+        "reimbursement": "Reimbursement flow",
+        "other": "Other"
+      }
+    },
+    "activity": {
+      "empty": "Nothing has happened yet."
+    },
+    "errors": {
+      "replayFailed": "Something went wrong replaying this claim. This shouldn't happen with the seeded scenarios — please report it."
+    },
+    "scenarioPicker": {
+      "title": "Choose a scenario",
+      "close": "Close picker",
+      "current": "Currently playing",
+      "teaches": "What this teaches"
+    },
+    "languageSwitcher": {
+      "label": "Language",
+      "en": "English",
+      "hi": "हिन्दी"
+    },
+    "archetype": {
+      "neutral": {
+        "affirmation": "Nothing to do right now."
+      },
+      "waiting": {
+        "title": "Who we're waiting on"
+      },
+      "active": {
+        "defaultActionLabel": "Submit the requested information"
+      }
+    },
+    "terminal": {
+      "settled": {
+        "badge": "Settled",
+        "claimed": "Claimed",
+        "approved": "Approved",
+        "paid": "Paid",
+        "deduction": "Deduction",
+        "paidOn": "Paid on"
+      },
+      "partiallySettled": {
+        "badge": "Partially settled",
+        "claimed": "Claimed",
+        "paid": "Paid",
+        "deductions": "Deductions",
+        "totalDeducted": "Total deducted",
+        "paidOn": "Paid on",
+        "remedyTitle": "What you can do",
+        "remedyBody": "If you disagree with the deduction, you can file a grievance. Each level has a regulated response window.",
+        "grievance": {
+          "filed": "Grievance filed — awaiting acknowledgement from the insurer.",
+          "acknowledged": "Grievance acknowledged by the insurer — awaiting resolution.",
+          "resolved": "Grievance resolved."
+        }
+      },
+      "rejected": {
+        "badge": "Decision: not approved",
+        "reasonTitle": "Reason given by the insurer",
+        "remedyTitle": "What you can do",
+        "remedyBody": "You can file a grievance — there is a regulated escalation ladder. Many cases that look closed at this point are resolved through it.",
+        "grievance": {
+          "filed": "Grievance filed — awaiting acknowledgement.",
+          "acknowledged": "Grievance acknowledged — awaiting resolution.",
+          "escalated": "Grievance escalated to level {{level}} — awaiting response.",
+          "resolved": "Grievance resolved."
+        }
+      },
+      "closed": {
+        "badge": "Closed",
+        "reasonTitle": "Reason",
+        "nextTitle": "What this means",
+        "reason": {
+          "withdrawn": "Withdrawn by patient",
+          "closedNoSettlement": "Closed without settlement"
+        },
+        "next": {
+          "withdrawn": "If circumstances change, you can intimate a new claim. The framework retains nothing that prevents that.",
+          "closedNoSettlement": "The insurer has closed this file without settlement. If you believe this was incorrect, you can file a grievance — there are regulated routes."
+        }
+      }
+    }
+  },
+  "dev": {
+    "specHash": "Spec hash",
+    "engineVersion": "Engine version",
+    "eventApplied": "Event applied",
+    "noEventYet": "No event applied yet",
+    "validateOk": "Claim validates",
+    "validateFailed": "Validate errors",
+    "transition": "claim.status",
+    "newInteraction": "New interaction id",
+    "slasAll": "All SLAs (precise)",
+    "verifyReplay": "Verify replay determinism",
+    "verifyOk": "Deterministic — stepped claim equals full replay",
+    "verifyFailed": "Replay drift detected",
+    "linksRepo": "Source on GitHub",
+    "linksSpec": "Design spec"
+  },
+  "journey": {
+    "showAll": "Show all 15 states",
+    "rail": {
+      "label": "Journey"
+    },
+    "phases": {
+      "intake": "Intake",
+      "admission": "Admission",
+      "treatment": "Treatment",
+      "discharge": "Discharge",
+      "dialogue": "Queries",
+      "closeout": "Closeout"
+    },
+    "states": {
+      "pre-admission": "Pre-admission",
+      "intimated": "Intimated",
+      "admission-advised": "Admission advised",
+      "pre-auth-pending": "Pre-auth pending",
+      "in-treatment-cashless": "In treatment (cashless)",
+      "in-treatment-reimbursement": "In treatment (reimbursement)",
+      "discharged": "Discharged",
+      "in-adjudication": "In adjudication",
+      "in-query": "In query",
+      "awaiting-patient-action": "Awaiting patient action",
+      "settled": "Settled",
+      "partially-settled": "Partially settled",
+      "rejected": "Rejected",
+      "withdrawn": "Withdrawn",
+      "closed-without-settlement": "Closed without settlement"
+    }
+  }
+}

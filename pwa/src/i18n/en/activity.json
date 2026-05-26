@@ -1,0 +1,26 @@
+{
+  "activity": {
+    "intimate-hospitalisation": "You intimated the TPA that you would be hospitalised.",
+    "doctor-signs-admission-advice": "The doctor signed the admission advice.",
+    "cashless-eligibility-confirmed": "The TPA confirmed you are eligible for cashless treatment.",
+    "pre-auth-filed": "The hospital filed the pre-authorisation request with the TPA.",
+    "pre-auth-approved": "The TPA approved the pre-authorisation.",
+    "patient-discharged": "You were discharged from the hospital.",
+    "discharge-bill-finalised": "The hospital finalised the discharge bill.",
+    "claim-settled": "The TPA settled the claim with the hospital.",
+    "query-raised": "The TPA raised a query and asked the hospital to clarify.",
+    "query-resolved": "The hospital answered the TPA's query.",
+    "cashless-eligibility-declined": "The TPA declined cashless eligibility — you will need to claim reimbursement after discharge.",
+    "claim-form-submitted": "You submitted the claim form with supporting documents.",
+    "patient-action-needed": "The TPA flagged that a response is needed from you before the claim can proceed.",
+    "claim-partially-settled": "The insurer settled part of your claim. Deductions have been applied.",
+    "grievance-filed": "You filed a grievance against the insurer's decision.",
+    "grievance-acknowledged": "The insurer acknowledged your grievance and is reviewing it.",
+    "grievance-resolved": "The insurer resolved your grievance.",
+    "pre-auth-rejected": "The TPA rejected the pre-authorisation.",
+    "claim-rejected": "The claim was rejected after adjudication.",
+    "grievance-escalated": "The grievance was escalated to the next level.",
+    "claim-withdrawn": "The claim was withdrawn.",
+    "claim-closed-no-settlement": "The insurer closed the file without settlement."
+  }
+}
