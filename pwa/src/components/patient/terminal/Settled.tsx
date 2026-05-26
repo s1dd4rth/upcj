@@ -1,16 +1,13 @@
 import { useTranslation } from "react-i18next";
 import type { Claim } from "../../../engine-adapter";
+import { formatINR, formatIndianDate } from "../../../format/intl";
 
 interface SettledProps {
   claim: Claim;
 }
 
-function formatINR(n: number): string {
-  return "₹" + n.toLocaleString("en-IN");
-}
-
 export function Settled({ claim }: SettledProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const interactions = claim.interactions ?? [];
 
@@ -57,11 +54,11 @@ export function Settled({ claim }: SettledProps) {
           <>
             <div className="settled-statement-row">
               <dt>{t("ui.terminal.settled.claimed")}</dt>
-              <dd>{formatINR(claimedAmount)}</dd>
+              <dd>{formatINR(claimedAmount, { language: i18n.language })}</dd>
             </div>
             <div className="settled-statement-row">
               <dt>{t("ui.terminal.settled.approved")}</dt>
-              <dd>{formatINR(claimedAmount)}</dd>
+              <dd>{formatINR(claimedAmount, { language: i18n.language })}</dd>
             </div>
           </>
         )}
@@ -69,14 +66,14 @@ export function Settled({ claim }: SettledProps) {
         {settledAmount !== null && (
           <div className="settled-statement-row">
             <dt>{t("ui.terminal.settled.paid")}</dt>
-            <dd>{formatINR(settledAmount)}</dd>
+            <dd>{formatINR(settledAmount, { language: i18n.language })}</dd>
           </div>
         )}
 
         {deduction !== null && deduction > 0 && (
           <div className="settled-statement-row settled-statement-deduction">
             <dt>{t("ui.terminal.settled.deduction")}</dt>
-            <dd>{formatINR(deduction)}</dd>
+            <dd>{formatINR(deduction, { language: i18n.language })}</dd>
           </div>
         )}
 
@@ -85,11 +82,7 @@ export function Settled({ claim }: SettledProps) {
             <dt>{t("ui.terminal.settled.paidOn")}</dt>
             <dd>
               <time dateTime={settledAt}>
-                {new Date(settledAt).toLocaleDateString("en-IN", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {formatIndianDate(settledAt, { language: i18n.language })}
               </time>
             </dd>
           </div>

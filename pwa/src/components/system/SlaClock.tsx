@@ -2,21 +2,17 @@ import { useTranslation } from "react-i18next";
 import type { SlaClockVM } from "../../state/selectors";
 import { ownerHue, ownerLabelKey } from "../../theme/owners";
 import { Annotatable } from "../lens/Annotatable";
+import { formatIndianDateTime } from "../../format/intl";
 
 export interface SlaClockProps {
   vm: SlaClockVM;
   precise?: boolean;
 }
 
-function formatDeadline(isoOrNull: string | null): string {
+function formatDeadline(isoOrNull: string | null, language: string): string {
   if (!isoOrNull) return "—";
   try {
-    return new Date(isoOrNull).toLocaleString("en-IN", {
-      day: "numeric",
-      month: "short",
-      hour: "numeric",
-      minute: "2-digit",
-    });
+    return formatIndianDateTime(isoOrNull, { language });
   } catch {
     return isoOrNull;
   }
@@ -50,10 +46,10 @@ function urgencyWidth(vm: SlaClockVM): number | null {
 }
 
 export function SlaClock({ vm, precise = false }: SlaClockProps): React.ReactElement {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const ownerLabel = t(ownerLabelKey(vm.owner));
-  const deadlineFormatted = formatDeadline(vm.deadline);
+  const deadlineFormatted = formatDeadline(vm.deadline, i18n.language);
 
   // ── Precise (dev) mode ──────────────────────────────────────────────────
   if (precise) {

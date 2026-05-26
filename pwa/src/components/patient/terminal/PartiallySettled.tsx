@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { Claim } from "../../../engine-adapter";
+import { formatINR, formatIndianDate } from "../../../format/intl";
 
 interface Deduction {
   amount: number;
@@ -11,12 +12,8 @@ interface PartiallySettledProps {
   claim: Claim;
 }
 
-function formatINR(n: number): string {
-  return "₹" + n.toLocaleString("en-IN");
-}
-
 export function PartiallySettled({ claim }: PartiallySettledProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const interactions = claim.interactions ?? [];
 
@@ -78,14 +75,14 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
         {claimedAmount !== null && (
           <div className="partially-settled-statement-row">
             <dt>{t("ui.terminal.partiallySettled.claimed")}</dt>
-            <dd>{formatINR(claimedAmount)}</dd>
+            <dd>{formatINR(claimedAmount, { language: i18n.language })}</dd>
           </div>
         )}
 
         {settledAmount !== null && (
           <div className="partially-settled-statement-row">
             <dt>{t("ui.terminal.partiallySettled.paid")}</dt>
-            <dd>{formatINR(settledAmount)}</dd>
+            <dd>{formatINR(settledAmount, { language: i18n.language })}</dd>
           </div>
         )}
 
@@ -99,7 +96,7 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
               >
                 {deductions.map((d, i) => (
                   <li key={i} className="partially-settled-deduction-item">
-                    <span className="deduction-amount">{formatINR(d.amount)}</span>
+                    <span className="deduction-amount">{formatINR(d.amount, { language: i18n.language })}</span>
                     {" — "}
                     <span className="deduction-reason">{d.reason}</span>
                   </li>
@@ -112,7 +109,7 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
         {totalDeducted > 0 && (
           <div className="partially-settled-statement-row partially-settled-total-deducted">
             <dt>{t("ui.terminal.partiallySettled.totalDeducted")}</dt>
-            <dd>{formatINR(totalDeducted)}</dd>
+            <dd>{formatINR(totalDeducted, { language: i18n.language })}</dd>
           </div>
         )}
 
@@ -121,11 +118,7 @@ export function PartiallySettled({ claim }: PartiallySettledProps) {
             <dt>{t("ui.terminal.partiallySettled.paidOn")}</dt>
             <dd>
               <time dateTime={settledAt}>
-                {new Date(settledAt).toLocaleDateString("en-IN", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {formatIndianDate(settledAt, { language: i18n.language })}
               </time>
             </dd>
           </div>

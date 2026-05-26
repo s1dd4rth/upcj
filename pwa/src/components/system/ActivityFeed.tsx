@@ -1,28 +1,14 @@
 import { useTranslation } from "react-i18next";
 import type { ActivityEntryVM } from "../../state/selectors";
 import { ownerHue, ownerLabelKey } from "../../theme/owners";
+import { formatIndianDateTime } from "../../format/intl";
 
 export interface ActivityFeedProps {
   entries: ActivityEntryVM[];
 }
 
-const timestampFormatter = new Intl.DateTimeFormat("en-IN", {
-  day: "numeric",
-  month: "short",
-  hour: "numeric",
-  minute: "2-digit",
-});
-
-function formatTimestamp(isoString: string): string {
-  try {
-    return timestampFormatter.format(new Date(isoString));
-  } catch {
-    return isoString;
-  }
-}
-
 export function ActivityFeed({ entries }: ActivityFeedProps): React.ReactElement {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (entries.length === 0) {
     return (
@@ -47,7 +33,7 @@ export function ActivityFeed({ entries }: ActivityFeedProps): React.ReactElement
             {t(ownerLabelKey(entry.actor))}
           </span>
           <time className="activity-feed-time" dateTime={entry.atIso}>
-            {formatTimestamp(entry.atIso)}
+            {formatIndianDateTime(entry.atIso, { language: i18n.language })}
           </time>
           <span className="activity-feed-phrase">
             {t(entry.plainTextKey)}
