@@ -4,25 +4,30 @@
   "description": "Reference implementation of the UPCJ core spec.",
   "license": "CC-BY-SA-4.0",
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
     "./spec/*.json": "./dist/spec/*.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build":   "node scripts/bundle-spec.mjs && tsc",
-    "test":    "node --test tests/unit/duration.test.mjs tests/unit/canonical-json.test.mjs tests/unit/validate.test.mjs tests/unit/lifecycle.test.mjs tests/unit/sla.test.mjs tests/conformance.test.mjs tests/framework-conformance.test.mjs",
+    "build": "node scripts/bundle-spec.mjs && tsc",
+    "test": "node --test tests/unit/duration.test.mjs tests/unit/canonical-json.test.mjs tests/unit/validate.test.mjs tests/unit/lifecycle.test.mjs tests/unit/sla.test.mjs tests/conformance.test.mjs tests/framework-conformance.test.mjs",
     "prepack": "npm run build"
   },
   "dependencies": {
     "ajv": "^8.16.0",
-    "ajv-formats": "^3.0.1"
+    "ajv-formats": "^3.0.1",
+    "js-sha256": "^0.11.1"
   },
   "devDependencies": {
-    "typescript": "^5.5.0",
-    "@types/node": "^20.14.0"
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
   }
 }
