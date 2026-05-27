@@ -12,6 +12,7 @@ on:
     paths:
       - "starter-kit/**"
       - "framework/**"
+      - ".github/workflows/starter-kit.yml"
 
 jobs:
   build-and-validate:
@@ -22,9 +23,9 @@ jobs:
     env:
       PUPPETEER_SKIP_DOWNLOAD: "true"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "20"
           cache: "npm"
@@ -58,14 +59,14 @@ jobs:
         run: ./scripts/validate-pdfs.sh
 
       - name: Upload PDF as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: starter-kit-pdf
           path: starter-kit/dist/upcj-starter-kit.pdf
           if-no-files-found: error
 
       - name: Upload HTML preview as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: starter-kit-html
           path: starter-kit/dist/html
@@ -80,11 +81,11 @@ jobs:
     steps:
       # Check out main so we can commit the PDF back to assets/ after release.
       # Default checkout would land in detached-HEAD on the tag commit.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: main
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: starter-kit-pdf
           path: dist
