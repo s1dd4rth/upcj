@@ -1,6 +1,6 @@
 {
   "name": "@upcj/engine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reference implementation of the UPCJ core spec.",
   "license": "CC-BY-SA-4.0",
   "type": "module",

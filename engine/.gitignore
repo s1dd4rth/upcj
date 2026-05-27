@@ -1,3 +1,4 @@
 node_modules/
 dist/
 src/spec-hash.ts
+src/generated-spec.ts
