@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "js-sha256";
 import { validate } from "./validate.js";
 import { canonicalJson } from "./canonical-json.js";
 import { CLAIM_LIFECYCLE, EVENTS, SLAS } from "./registries.js";
@@ -90,7 +90,7 @@ export function advance(claim: Claim, event: Event): AdvanceResult {
 function computeInteractionId(claim: Claim, event: Event): string {
   const seq = (claim.interactions ?? []).length;
   const input = `${claim.id}|${seq}|${event.at}|${event.name}|${canonicalJson(event.payload)}`;
-  const hash = createHash("sha256").update(input).digest("hex");
+  const hash = sha256(input);
   return `INT-${hash.slice(0, 16).toUpperCase()}`;
 }
 

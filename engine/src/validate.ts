@@ -1,7 +1,5 @@
-import { readFileSync, readdirSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 import type { ValidationResult, ValidationError, SchemaName } from "./types.js";
+import { SCHEMAS } from "./generated-spec.js";
 
 // Use dynamic require-style import to sidestep ESM default-export ambiguity with ajv.
 // `esModuleInterop: true` + `strict: false` (on ajv types) means we cast as any once.
@@ -15,39 +13,17 @@ const AjvCtor = ajvMod.default ?? ajvMod;
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 const addFmt = fmtMod.default ?? fmtMod;
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// Locate spec/schemas. Two valid layouts:
-// - engine/dist/spec/schemas/  (post-bundle, used in npm package)
-// - engine/../spec/schemas/    (dev/test, before bundle)
-const candidatePaths = [
-  join(__dirname, "spec", "schemas"),
-  join(__dirname, "..", "..", "spec", "schemas")
-];
-
-function safeReaddir(p: string): boolean {
-  try { readdirSync(p); return true; } catch { return false; }
-}
-
-const SCHEMA_DIR = candidatePaths.find(safeReaddir);
-if (!SCHEMA_DIR) {
-  throw new Error(
-    `validate: cannot locate spec/schemas. Searched: ${candidatePaths.join(", ")}`
-  );
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 const ajv = new AjvCtor({ allErrors: true, strict: false });
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 addFmt(ajv);
 
-// Load all schemas from SCHEMA_DIR
-for (const file of readdirSync(SCHEMA_DIR)) {
-  if (!file.endsWith(".schema.json")) continue;
-  const filePath = join(SCHEMA_DIR, file);
-  const schema = JSON.parse(readFileSync(filePath, "utf8")) as { $id: string };
+// Register every schema with ajv
+for (const [name, schema] of Object.entries(SCHEMAS)) {
+  void name; // key used only for iteration; $id is the canonical identifier
+  const s = schema as { $id: string };
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-  ajv.addSchema(schema, schema.$id);
+  ajv.addSchema(s, s.$id);
 }
 
 const KNOWN: SchemaName[] = [
