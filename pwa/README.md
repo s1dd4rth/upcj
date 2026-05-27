@@ -58,4 +58,9 @@ Then open the printed URL (with `#/demo` appended) to enter the demo.
 
 ## Deploy
 
-CI at `.github/workflows/pwa.yml`. On push to `main` touching `pwa/**`, runs test + build and uploads the dist as a workflow artifact. Deploys to `s1dd4rth.github.io/upcj/pwa/` once GitHub Pages is configured to use the GitHub Actions source.
+Two CI workflows touch the PWA:
+
+- **`.github/workflows/pwa.yml`** — the PR gate. On PRs touching `pwa/**`, `engine/**`, `spec/**`, or `framework/**`, runs the engine build + the PWA test suite + the Vite build.
+- **`.github/workflows/pages.yml`** — the unified GitHub Pages deploy. On every push to `main`, bundles the landing page + `assets/` + the built `pwa/dist/` into one Pages artifact (concurrency group `pages`) and deploys to `s1dd4rth.github.io/upcj/pwa/`.
+
+Pages source is configured to "GitHub Actions" at the repo level. The `pages` workflow rebuilds on any push to main; a change anywhere in the site (root HTML, assets, or PWA) refreshes the whole deploy.
