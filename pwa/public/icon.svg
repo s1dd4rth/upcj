@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="oklch(0.97 0.006 85)"/>
+  <rect x="40" y="40" width="432" height="432" rx="48" fill="oklch(0.6 0.10 250)" opacity="0.08"/>
+  <text x="256" y="208" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="148" font-weight="700" fill="oklch(0.22 0.01 85)" letter-spacing="-4">UPCJ</text>
+  <text x="256" y="296" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="500" fill="oklch(0.45 0.01 85)" letter-spacing="2">demo</text>
+  <g transform="translate(96 340)" stroke-width="14" stroke-linecap="round" fill="none">
+    <circle cx="0" cy="40" r="10" fill="oklch(0.6 0.10 250)" stroke="none"/>
+    <line x1="20" y1="40" x2="56" y2="40" stroke="oklch(0.88 0.006 85)"/>
+    <circle cx="80" cy="40" r="10" fill="oklch(0.6 0.10 160)" stroke="none"/>
+    <line x1="100" y1="40" x2="136" y2="40" stroke="oklch(0.88 0.006 85)"/>
+    <circle cx="160" cy="40" r="10" fill="oklch(0.62 0.10 300)" stroke="none"/>
+    <line x1="180" y1="40" x2="216" y2="40" stroke="oklch(0.88 0.006 85)"/>
+    <circle cx="240" cy="40" r="10" fill="oklch(0.6 0.10 30)" stroke="none"/>
+    <line x1="260" y1="40" x2="296" y2="40" stroke="oklch(0.88 0.006 85)"/>
+    <circle cx="320" cy="40" r="10" fill="oklch(0.55 0.08 100)" stroke="none"/>
+  </g>
+</svg>
